@@ -114,4 +114,19 @@ class RulesTest extends PHPUnit\Framework\TestCase
 
     }
 
+    public function testGivenTwoQueensFirstThenLegalToMoveReturnTrue() {
+
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '0,1' => [[1, "Q"]]
+            ];
+        $board = new \app\Board($boardTiles);
+        $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
+        $player = new \app\Player(0, $hand);
+        $fromPosition = '0,0';
+        $toPosition = '0,1';
+
+        $this->assertTrue(Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
+    }
+
 }
