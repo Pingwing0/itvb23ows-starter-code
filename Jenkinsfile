@@ -24,28 +24,12 @@ pipeline {
 
         }
 
-        stage("start container") {
+        stage("test docker compose up") {
 
             steps {
                 sh 'echo "building container"'
                 sh 'docker compose up -d --wait'
                 sh 'docker compose ps'
-            }
-
-        }
-
-        stage("test") {
-
-            steps {
-                sh 'echo "testing"'
-            }
-
-        }
-
-        stage("deploy") {
-
-            steps {
-                sh 'echo "deploying"'
             }
 
         }
