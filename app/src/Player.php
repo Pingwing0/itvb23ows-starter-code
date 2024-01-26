@@ -7,9 +7,9 @@ class Player
     private array $hand;
     private int $playerNumber;
 
-    public function __construct($playerNumber)
+    public function __construct($playerNumber, $startingHand)
     {
-        $this->hand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
+        $this->hand = $startingHand;
         $this->playerNumber = $playerNumber;
     }
 
@@ -30,7 +30,11 @@ class Player
 
     public function removePieceFromHand($piece): void
     {
-        $this->hand[$piece]--;
+        if ($this->getHand()[$piece] == 1) {
+            unset($this->hand[$piece]);
+        } else {
+            $this->hand[$piece]--;
+        }
     }
 
 }

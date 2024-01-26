@@ -5,8 +5,13 @@ namespace app;
 class Board
 {
     // Board bestaat alleen uit tiles, niet uit alle beschikbare plekken
-    private array $boardTiles = [];
+    private array $boardTiles;
     private array $offsets = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
+
+    public function __construct($boardTiles = [])
+    {
+        $this->boardTiles = $boardTiles;
+    }
 
     /**
      * Dit representeert de hexagon, de randen waar eventueel een tegel aankan.
@@ -59,7 +64,8 @@ class Board
         }
     }
 
-    public function neighboursOfPieceAreTheSameColor($player, $pieceOne) {
+    public function neighboursOfPieceAreTheSameColor($player, $pieceOne): bool
+    {
         foreach ($this->getBoardTiles() as $pieceTwo => $st) {
             //todo wat is st?
             if (!$st) {
@@ -72,6 +78,43 @@ class Board
             }
         }
         return true;
+    }
+
+    public function getTilesFromPlayer($playerNumber): array
+    {
+        $boardTiles = $this->getBoardTiles();
+        $playerBoardTiles = [];
+
+        foreach ($boardTiles as $position => $tiles) {
+            foreach ($tiles as $tile) {
+                if ($tile[0] == $playerNumber) {
+                    $playerBoardTiles[$position] = $tiles;
+                }
+            }
+        }
+        return $playerBoardTiles;
+    }
+
+    public function getPossiblePlayPositions($playerNumber, $hand): array {
+        $offsets = $this->getOffsets();
+        $boardTiles = $this->getBoardTiles();
+        $possiblePlayPositions = [];
+
+        foreach ($offsets as $offset) {
+            foreach (array_keys($boardTiles) as $position) {
+                $positionArray = explode(',', $position);
+                $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
+                if (Rules::positionIsLegalToPlay($possiblePosition, $playerNumber, $hand, $this)) {
+                    $possiblePlayPositions[] = $possiblePosition;
+                }
+            }
+        }
+        $possiblePlayPositions = array_unique($possiblePlayPositions);
+        if (!count($possiblePlayPositions)) {
+            $possiblePlayPositions[] = '0,0';
+        }
+
+        return $possiblePlayPositions;
     }
 
 }
