@@ -27,7 +27,7 @@ class RulesTest extends PHPUnit\Framework\TestCase
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
         $board = new \app\Board($boardTiles);
-        $hand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
+        $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
         $player = new \app\Player(0, $hand);
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
@@ -41,7 +41,7 @@ class RulesTest extends PHPUnit\Framework\TestCase
             '0,1' => [[1, "B"]],
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
-        $hand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
+        $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
         $playerNumber = 0;
         $fromPosition = '0,-1';
 
@@ -70,8 +70,8 @@ class RulesTest extends PHPUnit\Framework\TestCase
         $this->assertTrue(Rules::tileIsOwnedByPlayer($boardTiles, $position, 1));
     }
 
-    public function testHandContainsQueenButShouldNot() {
-        $hand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
+    public function testHandDoesNotContainQueen() {
+        $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
         $this->assertTrue(Rules::handDoesNotContainQueen($hand));
     }
 
