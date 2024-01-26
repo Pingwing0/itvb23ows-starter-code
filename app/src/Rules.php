@@ -129,7 +129,7 @@ class Rules
     public static function handDoesNotContainQueen($hand): bool
     {
         try {
-            if ($hand['Q']) {
+            if (array_key_exists("Q", $hand)) {
                 throw new RulesException("Queen bee is not played");
             }
         } catch(RulesException $e) {
@@ -147,21 +147,21 @@ class Rules
             if (!$board->pieceHasNeighbour($toPosition)) {
                 throw new RulesException("Move would split hive");
             } else {
-                $allTiles = array_keys($boardTiles);
-                $queue = [array_shift($allTiles)];
+                $allBoardPositions = array_keys($boardTiles);
+                $queue = [array_shift($allBoardPositions)];
                 while ($queue) {
                     $next = explode(',', array_shift($queue));
                     foreach ($board->getOffsets() as $offset) {
                         list($p, $q) = $offset;
                         $p += $next[0];
                         $q += $next[1];
-                        if (in_array("$p,$q", $allTiles)) {
+                        if (in_array("$p,$q", $allBoardPositions)) {
                             $queue[] = "$p,$q";
-                            $allTiles = array_diff($allTiles, ["$p,$q"]);
+                            $allBoardPositions = array_diff($allBoardPositions, ["$p,$q"]);
                         }
                     }
                 }
-                if ($allTiles) {
+                if ($allBoardPositions) {
                     throw new RulesException("Move would split hive");
                 }
             }
