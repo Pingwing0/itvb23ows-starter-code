@@ -17,8 +17,8 @@ class BoardTest extends PHPUnit\Framework\TestCase
         $playerNumber = 0;
         $hand = ["Q" => 1];
 
-        $possiblePlaypositions = $board->getPossiblePlayPositions($playerNumber, $hand);
-        self::assertEquals(['0,0'], $possiblePlaypositions);
+        $possiblePlayPositions = $board->getPossiblePlayPositions($playerNumber, $hand);
+        self::assertEquals(['0,0'], $possiblePlayPositions);
     }
 
     public function testGivenOneTileThenGetPossiblePlayPositionsReturnSixSides() {
@@ -46,7 +46,10 @@ class BoardTest extends PHPUnit\Framework\TestCase
     }
 
     public function testGivenPlayerZeroWhenGetTilesFromPlayerReturnOnlyTilesFromPlayerZero() {
-        $boardTiles = ['0,0' => [[0, "Q"]], '0,1' => [[1, "B"]], '0,-1' => [[0, "B"]],'0,2' => [[1, "S"]]];
+        $boardTiles = ['0,0' => [[0, "Q"]],
+            '0,1' => [[1, "B"]],
+            '0,-1' => [[0, "B"]],
+            '0,2' => [[1, "S"]]];
         $board = new Board($boardTiles);
 
         $playerZeroTiles = $board->getTilesFromPlayer(0);
@@ -89,5 +92,44 @@ class BoardTest extends PHPUnit\Framework\TestCase
         self::assertFalse($board->pieceHasNeighbour($boardTiles, $pieceOne));
     }
 
+    public function testGivenMovePieceThenMovePieceMovesPieceToPosition() {
+        $boardTiles = ['0,0' => [[0, "Q"]],
+            '0,1' => [[1, "B"]]];
+        $board = new Board($boardTiles);
+        $fromPosition = '0,0';
+        $toPosition = '1,0';
+        $board->movePiece($boardTiles, $fromPosition, $toPosition);
+
+        $expectedResult = ['0,1' => [[1, "B"]], '1,0' => [[0, "Q"]]];
+        self::assertEquals($expectedResult, $board->getBoardTiles());
+    }
+
+    public function testGivenPieceThenRemovePieceRemovesPieceFromPosition() {
+        $boardTiles = ['0,0' => [[0, "Q"]],
+            '0,1' => [[1, "B"]]];
+        $board = new Board($boardTiles);
+        $position = '0,1';
+
+        $result = $board->removePiece($boardTiles, $position);
+
+        $expectedResult = ['0,0' => [[0, "Q"]]];
+        self::assertEquals($expectedResult, $result);
+
+    }
+
+    public function testGivenStackedPieceThenRemovePieceRemovesPieceFromPosition() {
+        $boardTiles = ['0,0' => [[0, "Q"]],
+            '0,1' => [[1, "B"], [0, "B"]]];
+        $board = new Board($boardTiles);
+        $position = '0,1';
+
+        $result = $board->removePiece($boardTiles, $position);
+
+        $expectedResult = ['0,0' => [[0, "Q"]], '0,1' => [[1, "B"]]];
+        self::assertEquals($expectedResult, $result);
+
+
+
+    }
 
 }
