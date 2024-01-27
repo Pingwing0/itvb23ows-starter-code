@@ -9,7 +9,8 @@ session_start();
 
 /** @var Game $game **/
 $game = $_SESSION['game'];
+$database = $_SESSION['database'];
 
-Moves::undoLastMove($game);
+Moves::undoLastMove($game, $database);
 
 header('Location: /../../index.php');

@@ -9,8 +9,17 @@ use app\Moves;
 
     session_start();
 
+    if (!isset($_SESSION['database'])) {
+        $database = new Database();
+        $_SESSION['database'] = $database;
+    } else {
+        $database = $_SESSION['database'];
+    }
+
     if (!isset($_SESSION['game'])) {
         $game = new Game();
+        $game->restart($database);
+        $_SESSION['game'] = $game;
     } else {
         $game = $_SESSION['game'];
     }
@@ -20,6 +29,14 @@ use app\Moves;
     $playerOne = $game->getPlayerOne();
     $playerTwo = $game->getPlayerTwo();
     $offsets = $board->getOffsets();
+
+    $lastMoveId = $game->getLastMoveId();
+    $gameId = $game->getGameId();
+    $databaseTest = $database->selectLastMoveFromGame($game);
+    echo('lastMoveId = '.$lastMoveId.', gameId = '.$gameId);
+    if ($databaseTest) {
+        echo('\\n db last move id = '.$databaseTest[0]);
+    }
 
 ?>
 <!DOCTYPE html>
@@ -214,7 +231,7 @@ use app\Moves;
             <?php
                 //todo bugfix, hij select alle moves van alle games
                 $gameId = $game->getGameId();
-                $result = Database::selectAllMovesFromGame($gameId);
+                $result = $database->selectAllMovesFromGame($gameId);
                 while ($row = $result->fetch_array()) {
                     echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
                 }

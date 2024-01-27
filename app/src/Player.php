@@ -7,7 +7,9 @@ class Player
     private array $hand;
     private int $playerNumber;
 
-    public function __construct($playerNumber, $startingHand)
+    public function __construct(
+        $playerNumber,
+        $startingHand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3])
     {
         $this->hand = $startingHand;
         $this->playerNumber = $playerNumber;

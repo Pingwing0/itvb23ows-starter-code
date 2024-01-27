@@ -4,11 +4,11 @@ use mysqli;
 
 class Database {
 
-    public static function addMoveToDatabase(
+    public function addMoveToDatabase(
         Game $game, String $type, String $toPosition = '', $fromPosition = ''
     ): void
     {
-        $db = Database::initDatabase();
+        $db = $this->initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
@@ -20,24 +20,25 @@ class Database {
         $lastMoveId = $game->getLastMoveId();
         $stmt->bind_param('isssis', $gameId,$type, $fromPosition, $toPosition, $lastMoveId, $state);
         $stmt->execute();
+        $id = $db->insert_id;
+        $game->setLastMoveId($id);
     }
 
-    public static function addNewGameToDatabase($game): void {
-        $db = Database::initDatabase();
+    public function addNewGameToDatabase($game): void {
+        $db = $this->initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
         $db->prepare('INSERT INTO games VALUES ()')->execute();
         $id = $db->insert_id;
         $game->setGameId($id);
-
     }
 
-    public static function selectAllMovesFromGame(int $gameId) {
+    public function selectAllMovesFromGame(int $gameId) {
         //todo op een of andere manier selecteert hij alle moves, ook van oude spellen?
         // misschien dat er wat misgaat met de gameId
 
-        $db = Database::initDatabase();
+        $db = $this->initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
@@ -46,8 +47,8 @@ class Database {
         return $stmt->get_result();
     }
 
-    public static function selectLastMoveFromGame(Game $game) {
-        $db = Database::initDatabase();
+    public function selectLastMoveFromGame(Game $game) {
+        $db = $this->initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
@@ -55,14 +56,12 @@ class Database {
         $gameId = $game->getGameId();
         $stmt = $db->prepare('SELECT * FROM moves WHERE id = '.$lastMoveId.' AND game_id = '.$gameId);
         $stmt->execute();
-        $id = $db->insert_id;
-        $game->setLastMoveId($id);
         return $stmt->get_result()->fetch_array();
     }
 
-    public static function removeLastMoveFromGame(Game $game): void
+    public function removeLastMoveFromGame(Game $game): void
     {
-        $db = Database::initDatabase();
+        $db = $this->initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
@@ -71,16 +70,8 @@ class Database {
         $db->prepare('DELETE FROM moves WHERE id = '.$lastMoveId.' AND game_id = '.$gameId)->execute();
     }
 
-    public static function getLastInsertedId() {
-        $db = Database::initDatabase();
-        if ($db->connect_error) {
-            die($db->connect_error);
-        }
-        return $db->insert_id;
-    }
-
-    public static function getLastMoveId() {
-        $db = Database::initDatabase();
+    public function getLastMoveId() {
+        $db = $this->initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
@@ -89,7 +80,7 @@ class Database {
         return $stmt->get_result()->fetch_array();
     }
 
-    private static function initDatabase(): mysqli
+    private function initDatabase(): mysqli
     {
         $host = $_ENV["MYSQL_HOST"];
         $user = $_ENV["MYSQL_USERNAME"];

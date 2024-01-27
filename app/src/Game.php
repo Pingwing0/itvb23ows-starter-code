@@ -10,16 +10,6 @@ class Game
     private int $gameId;
     private int $lastMoveId;
 
-    public function __construct()
-    {
-        $_SESSION['game'] = $this;
-
-        $lastMoveId = Database::getLastMoveId();
-        $this->lastMoveId = $lastMoveId[0];
-
-        $this->restart();
-    }
-
     public function getBoard(): Board
     {
         return $this->board;
@@ -89,37 +79,44 @@ class Game
         }
     }
 
-    public function restart(): void {
-        $startingHand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
-        $this->setBoard(new Board());
-        $this->setPlayerOne(new Player(0, $startingHand));
-        $this->setPlayerTwo(new Player(1, $startingHand));
+    public function restart(
+        Database $database,
+        $board = new Board(),
+        $playerOne = new Player(0),
+        $playerTwo = new Player(1)
+    ): void {
+        $this->setBoard($board);
+        $this->setPlayerOne($playerOne);
+        $this->setPlayerTwo($playerTwo);
         $this->setCurrentPlayer($this->getPlayerOne());
-        Database::addNewGameToDatabase($this);
+        $lastMoveId = $database->getLastMoveId();
+        $this->lastMoveId = $lastMoveId[0];
+
+        $database->addNewGameToDatabase($this);
     }
 
     public function getState(): string
     {
         $hand = $this->getCurrentPlayer()->getHand();
-        $board = $this->getBoard()->getBoardTiles();
-        $player = $this->getCurrentPlayer()->getPlayerNumber();
+        $boardTiles = $this->getBoard()->getBoardTiles();
+        $playerNumber = $this->getCurrentPlayer()->getPlayerNumber();
 
-        return serialize([$hand, $board, $player]);
+        return serialize([$hand, $boardTiles, $playerNumber]);
     }
 
     public function setState($state): void
     {
         list($a, $b, $c) = unserialize($state);
         $hand = $a;
-        $board = $b;
-        $player = $c;
+        $boardTiles = $b;
+        $playerNumber = $c;
 
-        if ($player == 0) {
+        if ($playerNumber == 0) {
             $this->getPlayerOne()->setHand($hand);
         } else {
             $this->getPlayerTwo()->setHand($hand);
         }
-        $this->getBoard()->setBoardTiles($board);
+        $this->getBoard()->setBoardTiles($boardTiles);
         $this->switchTurn();
     }
 
