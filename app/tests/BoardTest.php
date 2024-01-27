@@ -55,5 +55,39 @@ class BoardTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $playerZeroTiles);
     }
 
+    public function testGivenTwoQueensThenGetPossibleMovePositionsReturnAllOptions() {
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "Q"]]];
+        $board = new Board($boardTiles);
+        $fromPosition = '0,0';
+        $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
+        $player = new \app\Player(0, $hand);
+
+        $possibleMovePositions = $board->getPossibleMovePositions($fromPosition, $player);
+
+        $expectedResult = [0 => '0,1', 1 => '1,-1'];
+
+        self::assertEquals($expectedResult, $possibleMovePositions);
+
+    }
+
+    public function testGivenPieceWithoutNeighbourThenPieceIsNeighbourOfReturnFalse() {
+        $pieceOne = '0,1';
+        $pieceTwo = '-1,0';
+        $board = new Board();
+
+        self::assertFalse($board->pieceIsNeighbourOf($pieceOne, $pieceTwo));
+    }
+
+    public function testGivenPieceWithoutNeighbourThenPieceHasNeighbourReturnFalse() {
+        $boardTiles = [
+            '1,0' => [[1, "Q"]]];
+        $pieceOne = '0,-1';
+        $board = new Board($boardTiles);
+
+        self::assertFalse($board->pieceHasNeighbour($boardTiles, $pieceOne));
+    }
+
 
 }

@@ -20,10 +20,8 @@ class Rules
         $playerNumber = $player->getPlayerNumber();
         $hand = $player->getHand();
 
-        unset($_SESSION['error']);
-
         return self::thereIsATileToMoveLegally($boardTiles, $hand, $playerNumber, $fromPosition) &&
-            self::tileMoveWontSplitHive($board, $fromPosition) &&
+            self::tileMoveWontSplitHive($board, $fromPosition, $toPosition) &&
             self::tileToMoveCanMove($board, $fromPosition, $toPosition);
 
     }
@@ -41,10 +39,10 @@ class Rules
         return false;
     }
 
-    private static function boardPositionIsEmpty($boardTiles, $position): bool
+    private static function boardPositionIsEmpty($boardTiles, $toPosition): bool
     {
         try{
-            if (isset($boardTiles[$position])) {
+            if (isset($boardTiles[$toPosition])) {
                 throw new RulesException("Board position is not empty");
             }
         } catch(RulesException $e) {
@@ -57,7 +55,7 @@ class Rules
     private static function boardPositionHasANeighbour(Board $board, $boardTiles, $position): bool
     {
         try{
-            if (count($boardTiles) && !$board->pieceHasNeighbour($position)) {
+            if (count($boardTiles) && !$board->pieceHasNeighbour($boardTiles, $position)) {
                 throw new RulesException("Board position has no neighbour");
             }
         } catch(RulesException $e) {
@@ -129,7 +127,7 @@ class Rules
     public static function handDoesNotContainQueen($hand): bool
     {
         try {
-            if ($hand['Q']) {
+            if (array_key_exists("Q", $hand)) {
                 throw new RulesException("Queen bee is not played");
             }
         } catch(RulesException $e) {
@@ -139,29 +137,30 @@ class Rules
         return true;
     }
 
-    public static function tileMoveWontSplitHive(Board $board, $toPosition): bool
+    public static function tileMoveWontSplitHive(Board $board, $fromPosition, $toPosition): bool
     {
-        // todo var namen anders (begrijpen wat ermee bedoeld wordt)
         $boardTiles = $board->getBoardTiles();
+        unset($boardTiles[$fromPosition]);
+
         try{
-            if (!$board->pieceHasNeighbour($toPosition)) {
+            if (!($board->pieceHasNeighbour($boardTiles, $toPosition))) {
                 throw new RulesException("Move would split hive");
             } else {
-                $allTiles = array_keys($boardTiles);
-                $queue = [array_shift($allTiles)];
+                $allBoardPositions = array_keys($boardTiles);
+                $queue = [array_shift($allBoardPositions)];
                 while ($queue) {
                     $next = explode(',', array_shift($queue));
                     foreach ($board->getOffsets() as $offset) {
                         list($p, $q) = $offset;
                         $p += $next[0];
                         $q += $next[1];
-                        if (in_array("$p,$q", $allTiles)) {
+                        if (in_array("$p,$q", $allBoardPositions)) {
                             $queue[] = "$p,$q";
-                            $allTiles = array_diff($allTiles, ["$p,$q"]);
+                            $allBoardPositions = array_diff($allBoardPositions, ["$p,$q"]);
                         }
                     }
                 }
-                if ($allTiles) {
+                if ($allBoardPositions) {
                     throw new RulesException("Move would split hive");
                 }
             }
@@ -174,12 +173,13 @@ class Rules
 
     public static function tileToMoveCanMove(Board $board, $fromPosition, $toPosition): bool
     {
-        $boardTiles = $board->getBoardTiles();
-        $tile = array_pop($boardTiles[$fromPosition]);
+        $newBoardTiles = $board->getBoardTiles();
+        $fromTile = array_pop($newBoardTiles[$fromPosition]);
+        unset($newBoardTiles[$fromPosition]);
 
         return self::positionsAreNotTheSame($fromPosition, $toPosition) &&
-            self::destinationTileIsEmpty($boardTiles, $toPosition, $tile) &&
-            self::tileIsAbleToSlide($tile, $board, $fromPosition, $toPosition);
+            self::destinationTileIsEmpty($newBoardTiles, $toPosition, $fromTile) &&
+            self::tileIsAbleToSlide($fromTile, $board, $fromPosition, $toPosition);
     }
 
 
@@ -196,11 +196,9 @@ class Rules
         return true;
     }
 
-    private static function destinationTileIsEmpty($boardTiles, $toPosition, $tile): bool
+    public static function destinationTileIsEmpty($boardTiles, $toPosition, $tile): bool
     {
         try {
-            //todo tile[1] = B? check
-            // tile needs to be like [0, "B"]
             if (isset($boardTiles[$toPosition]) && $tile[1] != "B"){
                 throw new RulesException("Tile is not empty");
             }
@@ -214,7 +212,7 @@ class Rules
     private static function tileIsAbleToSlide($tile, $board, $fromPosition, $toPosition): bool
     {
         try{
-            if (($tile[1] == "Q" || $tile[1] == "B") && !self::slide($board, $fromPosition, $toPosition)) {
+            if (($tile[1] == "Q" || $tile[1] == "B") && !self::slideOneSpace($board, $fromPosition, $toPosition)) {
                 throw new RulesException("Tile is not able to slide");
             }
         } catch(RulesException $e) {
@@ -229,23 +227,35 @@ class Rules
         return $tile ? count($tile) : 0;
     }
 
-    public static function slide(Board $board, $from, $to): bool
+    public static function slideOneSpace(Board $board, $from, $to): bool
     {
         $boardTiles = $board->getBoardTiles();
-        //todo herschrijven met logische var namen
-        if ((!$board->pieceHasNeighbour($to)) || (!$board->pieceIsNeighbourOf($from, $to))){
+        unset($boardTiles[$from]);
+
+        if ((!$board->pieceHasNeighbour($boardTiles, $to)) || (!$board->pieceIsNeighbourOf($from, $to))) {
             return false;
         }
 
-        $b = explode(',', $to);
+        return true;
+    }
+
+    public static function oldSlideToRefactor(Board $board, $from, $to) {
+        //todo wat is dit? wat doet dit?
+        $boardTiles = $board->getBoardTiles();
+        unset($boardTiles[$from]);
+
+        $toPositionArray = explode(',', $to);
         $common = [];
-        foreach ($board->getOffsets() as $pq) {
-            $p = $b[0] + $pq[0];
-            $q = $b[1] + $pq[1];
-            if ($board->pieceIsNeighbourOf($from, $p.",".$q)) {
+        // probeer alle 6 richtingen? waarom?
+        foreach ($board->getOffsets() as $offset) {
+            $p = $toPositionArray[0] + $offset[0];
+            $q = $toPositionArray[1] + $offset[1];
+            $tryToPosition = $p.",".$q;
+            if ($board->pieceIsNeighbourOf($from, $tryToPosition)) {
                 $common[] = $p.",".$q;
             }
         }
+
         if (!$boardTiles[$common[0]] && !$boardTiles[$common[1]]
             && !$boardTiles[$from] && !$boardTiles[$to]) {
             return false;

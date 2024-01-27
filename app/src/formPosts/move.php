@@ -10,7 +10,7 @@ session_start();
 /** @var Game $game **/
 $game = $_SESSION['game'];
 
-$fromPosition = $_POST['fromPosition'];
+$fromPosition = $_SESSION['fromPosition'];
 $toPosition = $_POST['toPosition'];
 
 Moves::movePiece($fromPosition, $toPosition, $game);
