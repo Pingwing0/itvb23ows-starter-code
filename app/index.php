@@ -162,7 +162,9 @@ use app\Moves;
             <select name="toPosition" required>
                 <?php
                     // dropdown possible play positions
-                    $possiblePlayPositions = $board->getPossiblePlayPositions($currentPlayer->getPlayerNumber(), $currentPlayer->getHand());
+                    $possiblePlayPositions = $board->getPossiblePlayPositions(
+                            $currentPlayer->getPlayerNumber(), $currentPlayer->getHand()
+                    );
                     foreach ($possiblePlayPositions as $position) {
                         echo "<option value=\"$position\">$position</option>";
                     }

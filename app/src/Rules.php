@@ -4,7 +4,9 @@ namespace app;
 
 class Rules
 {
-    public static function positionIsLegalToPlay(String $toPosition, int $playerNumber, array $hand, Board $board, $pieceToPlay = 'Q'): bool
+    public static function positionIsLegalToPlay(
+        String $toPosition, int $playerNumber, array $hand, Board $board, $pieceToPlay = 'Q'
+    ): bool
     {
         $boardTiles = $board->getBoardTiles();
         return
@@ -14,7 +16,9 @@ class Rules
             self::queenBeeIsPlayedBeforeTurnFour($hand, $pieceToPlay);
     }
 
-    public static function positionIsLegalToMove(Board $board, Player $player, String $fromPosition, String $toPosition): bool
+    public static function positionIsLegalToMove(
+        Board $board, Player $player, String $fromPosition, String $toPosition
+    ): bool
     {
         $boardTiles = $board->getBoardTiles();
         $playerNumber = $player->getPlayerNumber();
