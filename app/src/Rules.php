@@ -211,6 +211,7 @@ class Rules
 
     private static function tileIsAbleToSlide($tile, $board, $fromPosition, $toPosition): bool
     {
+        //todo hier in de toekomst verschil maken in type tile, verschillende tiles hebben verschillende slide regels
         try{
             if (($tile[1] == "Q" || $tile[1] == "B") && !self::slideOneSpace($board, $fromPosition, $toPosition)) {
                 throw new RulesException("Tile is not able to slide");
@@ -232,11 +233,7 @@ class Rules
         $boardTiles = $board->getBoardTiles();
         unset($boardTiles[$from]);
 
-        if ((!$board->pieceHasNeighbour($boardTiles, $to)) || (!$board->pieceIsNeighbourOf($from, $to))) {
-            return false;
-        }
-
-        return true;
+        return $board->pieceHasNeighbour($boardTiles, $to) && $board->pieceIsNeighbourOf($from, $to);
     }
 
     public static function oldSlideToRefactor(Board $board, $from, $to) {
