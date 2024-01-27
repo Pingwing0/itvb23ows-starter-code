@@ -11,7 +11,7 @@ class Moves
         $hand = $player->getHand();
         $playerNumber = $player->getPlayerNumber();
 
-        if (Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board) && !Rules::tileNotInHand($hand, $piece)) {
+        if (Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $piece) && !Rules::tileNotInHand($hand, $piece)) {
             $board->addPiece($piece, $playerNumber, $toPosition);
             $player->removePieceFromHand($piece);
             $game->switchTurn();
@@ -26,9 +26,6 @@ class Moves
     public static function movePiece(String $fromPosition, String $toPosition, Game $game): void
     {
         //todo checken of stapelen werkt
-        // errors tonen opeens niet meer, checken
-        // although, errors moeten eigenlijk sowieso anders
-        // nja, geen prio
 
         $player = $game->getCurrentPlayer();
         $board = $game->getBoard();
