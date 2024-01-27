@@ -30,14 +30,6 @@ use app\Moves;
     $playerTwo = $game->getPlayerTwo();
     $offsets = $board->getOffsets();
 
-    $lastMoveId = $game->getLastMoveId();
-    $gameId = $game->getGameId();
-    $databaseTest = $database->selectLastMoveFromGame($game);
-    echo('lastMoveId = '.$lastMoveId.', gameId = '.$gameId);
-    if ($databaseTest) {
-        echo('\\n db last move id = '.$databaseTest[0]);
-    }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,8 +100,6 @@ use app\Moves;
                 }
                 foreach (array_filter($board->getBoardTiles()) as $position => $tile) {
                     $pq = explode(',', $position);
-                    $pq[0];
-                    $pq[1];
                     $h = count($tile);
                     echo '<div class="tile player';
                     echo $tile[$h-1][0];

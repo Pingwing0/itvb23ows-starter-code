@@ -12,10 +12,11 @@ class Moves
         $playerNumber = $player->getPlayerNumber();
 
         if (Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $piece) && !Rules::tileNotInHand($hand, $piece)) {
+            $currentState = $game->getState();
             $board->addPiece($piece, $playerNumber, $toPosition);
             $player->removePieceFromHand($piece);
             $game->switchTurn();
-            $database->addMoveToDatabase($game,"play", toPosition: $toPosition);
+            $database->addMoveToDatabase($game, $currentState,"play", toPosition: $toPosition);
         }
 
     }
@@ -29,8 +30,9 @@ class Moves
         $boardTiles = $board->getBoardTiles();
 
         if (Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+            $currentState = $game->getState();
             $board->movePiece($boardTiles, $fromPosition, $toPosition);
-            $database->addMoveToDatabase($game, "move", toPosition: $toPosition, fromPosition: $fromPosition);
+            $database->addMoveToDatabase($game, $currentState, "move", toPosition: $toPosition, fromPosition: $fromPosition);
             $game->switchTurn();
         }
 
@@ -38,24 +40,21 @@ class Moves
 
     public static function pass(Game $game, Database $database): void
     {
-        $database->addMoveToDatabase($game, "pass");
+        $currentState = $game->getState();
+        $database->addMoveToDatabase($game, $currentState, "pass");
         $game->switchTurn();
     }
 
     public static function undoLastMove(Game $game, Database $database): void
     {
-        //todo bugfix & werkt niet als de vorige beurt ongeldig was? Hij gaf iig een error
-
         //check if move is first move, if so, do nothing
         if (count($game->getBoard()->getBoardTiles()) > 0) {
             $result = $database->selectLastMoveFromGame($game);
-            $database->removeLastMoveFromGame($game); //wordt verwijderd
-            $game->setLastMoveId($result[5]); // lijkt te werken
-            $game->setState($result[6]); //dit werkt nog niet, bord wordt niet gereset
+            $database->removeLastMoveFromGame($game);
+            $game->setLastMoveId($result['previous_id']);
+            $game->setState($result['state']);
+            $game->switchTurn();
         }
 
-        //todo remove last move from database
-        //todo reset board
-        //todo no reset at first move
     }
 }

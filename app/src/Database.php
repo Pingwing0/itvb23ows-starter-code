@@ -5,7 +5,11 @@ use mysqli;
 class Database {
 
     public function addMoveToDatabase(
-        Game $game, String $type, String $toPosition = '', $fromPosition = ''
+        Game $game,
+        String $state,
+        String $type,
+        String $toPosition = '',
+        $fromPosition = ''
     ): void
     {
         $db = $this->initDatabase();
@@ -15,7 +19,6 @@ class Database {
         $stmt = $db->prepare('insert into moves
             (game_id, type, move_from, move_to, previous_id, state)
             values (?, ?, ?, ?, ?, ?)');
-        $state = $game->getState();
         $gameId = $game->getGameId();
         $lastMoveId = $game->getLastMoveId();
         $stmt->bind_param('isssis', $gameId,$type, $fromPosition, $toPosition, $lastMoveId, $state);

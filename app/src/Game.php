@@ -90,7 +90,12 @@ class Game
         $this->setPlayerTwo($playerTwo);
         $this->setCurrentPlayer($this->getPlayerOne());
         $lastMoveId = $database->getLastMoveId();
-        $this->lastMoveId = $lastMoveId[0];
+        if ($lastMoveId) {
+            $this->lastMoveId = $lastMoveId[0];
+        } else {
+            $this->lastMoveId = 0;
+        }
+
 
         $database->addNewGameToDatabase($this);
     }
@@ -117,7 +122,6 @@ class Game
             $this->getPlayerTwo()->setHand($hand);
         }
         $this->getBoard()->setBoardTiles($boardTiles);
-        $this->switchTurn();
     }
 
 }
