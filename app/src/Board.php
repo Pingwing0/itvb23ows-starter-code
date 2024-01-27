@@ -41,6 +41,30 @@ class Board
         $this->boardTiles[$toPosition] = [[$playerNumber, $piece]];
     }
 
+    public function movePiece($boardTiles, $fromPosition, $toPosition): void
+    {
+        $key = array_key_last($boardTiles[$fromPosition]);
+        $tile = $boardTiles[$fromPosition][$key];
+
+        if (isset($boardTiles[$toPosition])) {
+            $boardTiles[$toPosition][] = $tile;
+        } else {
+            $boardTiles[$toPosition] = [$tile];
+        }
+        $boardTiles = $this->removePiece($boardTiles, $fromPosition);
+        $this->setBoardTiles($boardTiles);
+    }
+
+    public function removePiece($boardTiles, $position): array
+    {
+        if (count($boardTiles[$position]) > 1) {
+            array_pop($boardTiles[$position]);
+        } else {
+            unset($boardTiles[$position]);
+        }
+        return $boardTiles;
+    }
+
     //todo logica van util
 
     public function pieceHasNeighbour($boardTiles, $pieceOne): bool

@@ -25,32 +25,19 @@ class Moves
 
     public static function movePiece(String $fromPosition, String $toPosition, Game $game): void
     {
-        //todo checken of stapelen werkt
+        //todo checken of stapelen werkt (werkt volgens mij nog niet)
 
         $player = $game->getCurrentPlayer();
         $board = $game->getBoard();
         $boardTiles = $board->getBoardTiles();
 
-        $tile = array_pop($boardTiles[$fromPosition]);
-        //check if move is legal
         if (Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
-            if (isset($boardTiles[$toPosition])) {
-                array_push($boardTiles[$toPosition], $tile);
-            } else {
-                $boardTiles[$toPosition] = [$tile];
-            }
+            $board->movePiece($boardTiles, $fromPosition, $toPosition);
             Database::addMoveToDatabase($game, "move", toPosition: $toPosition, fromPosition: $fromPosition);
             $game->setLastMoveId(Database::getLastMoveId());
             $game->switchTurn();
-        } else {
-            if (isset($boardTiles[$fromPosition])) {
-                array_push($boardTiles[$fromPosition], $tile);
-            } else {
-                $boardTiles[$fromPosition] = [$tile];
-            }
         }
-        //todo weet niet zeker of dit klopt, de boardTiles moeten iig veranderd worden naar de nieuwe situatie
-        $board->setBoardTiles($boardTiles);
+
     }
 
     public static function pass(Game $game): void
