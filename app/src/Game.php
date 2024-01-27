@@ -12,8 +12,12 @@ class Game
 
     public function __construct()
     {
-        $this->restart();
         $_SESSION['game'] = $this;
+
+        $lastMoveId = Database::getLastMoveId();
+        $this->lastMoveId = $lastMoveId[0];
+
+        $this->restart();
     }
 
     public function getBoard(): Board
@@ -91,8 +95,7 @@ class Game
         $this->setPlayerOne(new Player(0, $startingHand));
         $this->setPlayerTwo(new Player(1, $startingHand));
         $this->setCurrentPlayer($this->getPlayerOne());
-        Database::addGameToDatabase($this);
-        $this->setLastMoveId(Database::getLastMoveId());
+        Database::addNewGameToDatabase($this);
     }
 
     public function getState(): string

@@ -22,13 +22,15 @@ class Database {
         $stmt->execute();
     }
 
-    public static function addGameToDatabase(Game $game): void {
+    public static function addNewGameToDatabase($game): void {
         $db = Database::initDatabase();
         if ($db->connect_error) {
             die($db->connect_error);
         }
         $db->prepare('INSERT INTO games VALUES ()')->execute();
-        $game->setGameId(Database::initDatabase()->insert_id);
+        $id = $db->insert_id;
+        $game->setGameId($id);
+
     }
 
     public static function selectAllMovesFromGame(int $gameId) {
@@ -50,9 +52,31 @@ class Database {
             die($db->connect_error);
         }
         $lastMoveId = $game->getLastMoveId();
-        $stmt = $db->prepare('SELECT * FROM moves WHERE id = '.$lastMoveId);
+        $gameId = $game->getGameId();
+        $stmt = $db->prepare('SELECT * FROM moves WHERE id = '.$lastMoveId.' AND game_id = '.$gameId);
         $stmt->execute();
+        $id = $db->insert_id;
+        $game->setLastMoveId($id);
         return $stmt->get_result()->fetch_array();
+    }
+
+    public static function removeLastMoveFromGame(Game $game): void
+    {
+        $db = Database::initDatabase();
+        if ($db->connect_error) {
+            die($db->connect_error);
+        }
+        $lastMoveId = $game->getLastMoveId();
+        $gameId = $game->getGameId();
+        $db->prepare('DELETE FROM moves WHERE id = '.$lastMoveId.' AND game_id = '.$gameId)->execute();
+    }
+
+    public static function getLastInsertedId() {
+        $db = Database::initDatabase();
+        if ($db->connect_error) {
+            die($db->connect_error);
+        }
+        return $db->insert_id;
     }
 
     public static function getLastMoveId() {
@@ -60,7 +84,9 @@ class Database {
         if ($db->connect_error) {
             die($db->connect_error);
         }
-        return $db->insert_id;
+        $stmt = $db->prepare('SELECT id FROM moves WHERE id = (SELECT max(id) FROM moves)');
+        $stmt->execute();
+        return $stmt->get_result()->fetch_array();
     }
 
     private static function initDatabase(): mysqli
