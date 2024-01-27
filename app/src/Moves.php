@@ -4,7 +4,7 @@ namespace app;
 
 class Moves
 {
-    public static function playPiece(String $piece, String $toPosition, Game $game): void
+    public static function playPiece(String $piece, String $toPosition, Game $game, Database $database): void
     {
         $player = $game->getCurrentPlayer();
         $board = $game->getBoard();
@@ -12,18 +12,16 @@ class Moves
         $playerNumber = $player->getPlayerNumber();
 
         if (Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $piece) && !Rules::tileNotInHand($hand, $piece)) {
+            $currentState = $game->getState();
             $board->addPiece($piece, $playerNumber, $toPosition);
             $player->removePieceFromHand($piece);
             $game->switchTurn();
-            Database::addMoveToDatabase($game,"play", toPosition: $toPosition);
-
-            //change last move to just done move
-            $game->setLastMoveId(Database::getLastMoveId());
+            $database->addMoveToDatabase($game, $currentState,"play", toPosition: $toPosition);
         }
 
     }
 
-    public static function movePiece(String $fromPosition, String $toPosition, Game $game): void
+    public static function movePiece(String $fromPosition, String $toPosition, Game $game, Database $database): void
     {
         //todo checken of stapelen werkt (werkt volgens mij nog niet)
 
@@ -32,27 +30,31 @@ class Moves
         $boardTiles = $board->getBoardTiles();
 
         if (Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+            $currentState = $game->getState();
             $board->movePiece($boardTiles, $fromPosition, $toPosition);
-            Database::addMoveToDatabase($game, "move", toPosition: $toPosition, fromPosition: $fromPosition);
-            $game->setLastMoveId(Database::getLastMoveId());
+            $database->addMoveToDatabase($game, $currentState, "move", toPosition: $toPosition, fromPosition: $fromPosition);
             $game->switchTurn();
         }
 
     }
 
-    public static function pass(Game $game): void
+    public static function pass(Game $game, Database $database): void
     {
-        Database::addMoveToDatabase($game, "pass");
-        $game->setLastMoveId(Database::getLastMoveId());
+        $currentState = $game->getState();
+        $database->addMoveToDatabase($game, $currentState, "pass");
         $game->switchTurn();
     }
 
-    public static function undoLastMove(Game $game): void
+    public static function undoLastMove(Game $game, Database $database): void
     {
-        //todo bugfix & werkt niet als de vorige beurt ongeldig was? Hij gaf iig een error
-        $result = Database::selectLastMoveFromGame($game);
-        $game->setLastMoveId($result[5]);
-        $game->setState($result[6], $game);
-    }
+        //check if move is first move, if so, do nothing
+        if (count($game->getBoard()->getBoardTiles()) > 0) {
+            $result = $database->selectLastMoveFromGame($game);
+            $database->removeLastMoveFromGame($game);
+            $game->setLastMoveId($result['previous_id']);
+            $game->setState($result['state']);
+            $game->switchTurn();
+        }
 
+    }
 }

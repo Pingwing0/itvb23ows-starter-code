@@ -9,8 +9,17 @@ use app\Moves;
 
     session_start();
 
+    if (!isset($_SESSION['database'])) {
+        $database = new Database();
+        $_SESSION['database'] = $database;
+    } else {
+        $database = $_SESSION['database'];
+    }
+
     if (!isset($_SESSION['game'])) {
         $game = new Game();
+        $game->restart($database);
+        $_SESSION['game'] = $game;
     } else {
         $game = $_SESSION['game'];
     }
@@ -91,8 +100,6 @@ use app\Moves;
                 }
                 foreach (array_filter($board->getBoardTiles()) as $position => $tile) {
                     $pq = explode(',', $position);
-                    $pq[0];
-                    $pq[1];
                     $h = count($tile);
                     echo '<div class="tile player';
                     echo $tile[$h-1][0];
@@ -214,7 +221,7 @@ use app\Moves;
             <?php
                 //todo bugfix, hij select alle moves van alle games
                 $gameId = $game->getGameId();
-                $result = Database::selectAllMovesFromGame($gameId);
+                $result = $database->selectAllMovesFromGame($gameId);
                 while ($row = $result->fetch_array()) {
                     echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
                 }

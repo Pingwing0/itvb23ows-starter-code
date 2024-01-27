@@ -2,6 +2,7 @@
 
 require_once '../../vendor/autoload.php';
 
+use app\Database;
 use app\Game;
 use app\Moves;
 
@@ -9,7 +10,9 @@ session_start();
 
 /** @var Game $game **/
 $game = $_SESSION['game'];
+/** @var Database $database **/
+$database = $_SESSION['database'];
 
-Moves::pass($game);
+Moves::pass($game, $database);
 
 header('Location: /../../index.php');
