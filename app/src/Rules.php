@@ -4,14 +4,14 @@ namespace app;
 
 class Rules
 {
-    public static function positionIsLegalToPlay(String $toPosition, int $playerNumber, array $hand, Board $board): bool
+    public static function positionIsLegalToPlay(String $toPosition, int $playerNumber, array $hand, Board $board, $pieceToPlay = 'Q'): bool
     {
         $boardTiles = $board->getBoardTiles();
         return
             self::boardPositionIsEmpty($boardTiles, $toPosition) &&
             self::boardPositionHasANeighbour($board, $boardTiles, $toPosition) &&
             self::boardPositionHasNoOpposingNeighbour($board, $hand, $playerNumber, $toPosition) &&
-            self::queenBeeIsPlayedBeforeTurnFour($hand);
+            self::queenBeeIsPlayedBeforeTurnFour($hand, $pieceToPlay);
     }
 
     public static function positionIsLegalToMove(Board $board, Player $player, String $fromPosition, String $toPosition): bool
@@ -24,6 +24,11 @@ class Rules
             self::tileMoveWontSplitHive($board, $fromPosition, $toPosition) &&
             self::tileToMoveCanMove($board, $fromPosition, $toPosition);
 
+    }
+
+    public static function itIsTurnFourAndQueenBeeIsNotYetPlayed($hand): bool
+    {
+        return array_sum($hand) == 8 && array_key_exists("Q", $hand);
     }
 
     public static function tileNotInHand($hand, $piece): bool
@@ -78,10 +83,10 @@ class Rules
         return true;
     }
 
-    private static function queenBeeIsPlayedBeforeTurnFour($hand): bool
+    public static function queenBeeIsPlayedBeforeTurnFour($hand, $pieceToPlay): bool
     {
         try {
-            if (array_sum($hand) <= 8 && array_key_exists("Q", $hand)) {
+            if (array_sum($hand) <= 8 && array_key_exists("Q", $hand) && $pieceToPlay != "Q") {
                 throw new RulesException("Must play queen bee before turn four");
             }
         } catch(RulesException $e) {

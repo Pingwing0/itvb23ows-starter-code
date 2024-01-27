@@ -143,7 +143,11 @@ use app\Moves;
             <select name="piece" required>
                 <?php
                     // dropdown player pieces
-                    foreach ($game->getCurrentPlayer()->getHand() as $tileName => $count) {
+                    $hand = $game->getCurrentPlayer()->getHand();
+                    if (\app\Rules::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand)) {
+                        $hand = ['Q' => 1];
+                    }
+                    foreach ($hand as $tileName => $count) {
                         echo "<option value=\"$tileName\">$tileName</option>";
                     }
                 ?>
