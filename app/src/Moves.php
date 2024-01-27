@@ -11,8 +11,8 @@ class Moves
         $hand = $player->getHand();
         $playerNumber = $player->getPlayerNumber();
 
-        if (Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $piece)
-            && !Rules::tileNotInHand($hand, $piece)) {
+        if (RulesPlay::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $piece)
+            && !RulesPlay::tileNotInHand($hand, $piece)) {
             $currentState = $game->getState();
             $board->addPiece($piece, $playerNumber, $toPosition);
             $player->removePieceFromHand($piece);
@@ -30,7 +30,7 @@ class Moves
         $board = $game->getBoard();
         $boardTiles = $board->getBoardTiles();
 
-        if (Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
             $currentState = $game->getState();
             $board->movePiece($boardTiles, $fromPosition, $toPosition);
             $database->addMoveToDatabase(

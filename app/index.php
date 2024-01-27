@@ -151,7 +151,7 @@ use app\Moves;
                 <?php
                     // dropdown player pieces
                     $hand = $game->getCurrentPlayer()->getHand();
-                    if (\app\Rules::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand)) {
+                    if (\app\RulesPlay::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand)) {
                         $hand = ['Q' => 1];
                     }
                     foreach ($hand as $tileName => $count) {

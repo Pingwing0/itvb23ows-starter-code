@@ -1,6 +1,6 @@
 <?php
 
-use app\Rules;
+use app\RulesMove;
 
 class RulesMoveTest extends PHPUnit\Framework\TestCase
 {
@@ -16,7 +16,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
 
-        $this->assertTrue(Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
     }
 
     public function testGivenIllegalMovePositionPositionIsLegalToMoveReturnFalse() {
@@ -29,7 +29,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '-1,0';
 
-        $this->assertFalse(Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
+        $this->assertFalse(RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
     }
 
     public function testGivenLegalTileThereIsATileToMoveLegallyReturnTrue() {
@@ -42,7 +42,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $playerNumber = 0;
         $fromPosition = '0,-1';
 
-        $this->assertTrue(Rules::thereIsATileToMoveLegally($boardTiles, $hand, $playerNumber, $fromPosition));
+        $this->assertTrue(RulesMove::thereIsATileToMoveLegally($boardTiles, $hand, $playerNumber, $fromPosition));
     }
 
     public function testBoardPositionIsNotEmpty() {
@@ -53,7 +53,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
             '0,2' => [[1, "S"]]];
         $position = '0,1';
 
-        $this->assertTrue(Rules::boardPositionIsNotEmpty($boardTiles, $position));
+        $this->assertTrue(RulesMove::boardPositionIsNotEmpty($boardTiles, $position));
     }
 
     public function testTileIsOwnedByPlayer() {
@@ -64,12 +64,12 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
             '0,2' => [[1, "S"]]];
         $position = '0,1';
 
-        $this->assertTrue(Rules::tileIsOwnedByPlayer($boardTiles, $position, 1));
+        $this->assertTrue(RulesMove::tileIsOwnedByPlayer($boardTiles, $position, 1));
     }
 
     public function testHandDoesNotContainQueen() {
         $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
-        $this->assertTrue(Rules::handDoesNotContainQueen($hand));
+        $this->assertTrue(RulesMove::handDoesNotContainQueen($hand));
     }
 
     public function testGivenLegalMoveMoveWontSplitHiveReturnTrue() {
@@ -82,7 +82,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
 
-        $this->assertTrue(Rules::tileMoveWontSplitHive($board, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::tileMoveWontSplitHive($board, $fromPosition, $toPosition));
     }
 
     public function testGivenIllegalMoveMoveWontSplitHiveReturnFalse() {
@@ -93,7 +93,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '-1,0';
 
-        $this->assertFalse(Rules::tileMoveWontSplitHive($board, $fromPosition, $toPosition));
+        $this->assertFalse(RulesMove::tileMoveWontSplitHive($board, $fromPosition, $toPosition));
     }
 
     public function testGivenALegalTMoveThenTileToMoveCanMoveReturnTrue() {
@@ -106,7 +106,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
 
-        $this->assertTrue(Rules::tileToMoveCanMove($board, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::tileToMoveCanMove($board, $fromPosition, $toPosition));
     }
 
     public function testGivenLegalTileThenSlideReturnTrue() {
@@ -119,7 +119,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
 
-        $this->assertTrue(Rules::slideOneSpace($board, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::slideOneSpace($board, $fromPosition, $toPosition));
     }
 
     public function testGivenLegalTileThenDestinationTileIsEmptyReturnTrue() {
@@ -131,7 +131,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromTile = [[0, "B"]];
         $toPosition = '1,-1';
 
-        $this->assertTrue(Rules::destinationTileIsEmpty($boardTiles, $toPosition, $fromTile));
+        $this->assertTrue(RulesMove::destinationTileIsEmpty($boardTiles, $toPosition, $fromTile));
     }
 
     public function testGivenTwoQueensFirstThenLegalToMoveReturnTrue() {
@@ -145,7 +145,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '0,1';
 
-        $this->assertTrue(Rules::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition));
     }
 
     public function testGivenTwoQueensThenTileToMoveCanMoveReturnTrue() {
@@ -156,7 +156,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '0,1';
 
-        $this->assertTrue(Rules::tileToMoveCanMove($board, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::tileToMoveCanMove($board, $fromPosition, $toPosition));
     }
 
     public function testGivenTwoQueensThenSlideReturnTrue() {
@@ -167,7 +167,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '1,0';
 
-        $this->assertTrue(Rules::slideOneSpace($board, $fromPosition, $toPosition));
+        $this->assertTrue(RulesMove::slideOneSpace($board, $fromPosition, $toPosition));
     }
 
     public function testGivenTwoQueensButIllegalMoveThenSlideReturnFalse() {
@@ -178,7 +178,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '-1,0';
 
-        $this->assertFalse(Rules::slideOneSpace($board, $fromPosition, $toPosition));
+        $this->assertFalse(RulesMove::slideOneSpace($board, $fromPosition, $toPosition));
     }
 
     public function testDestinationTileIsEmpty() {
@@ -188,7 +188,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $toPosition = '0,1';
         $tile = [[0, "Q"]];
 
-        $this->assertTrue(Rules::destinationTileIsEmpty($boardTiles, $toPosition, $tile));
+        $this->assertTrue(RulesMove::destinationTileIsEmpty($boardTiles, $toPosition, $tile));
     }
 
 }

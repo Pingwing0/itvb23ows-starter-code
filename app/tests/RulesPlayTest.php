@@ -1,6 +1,6 @@
 <?php
 
-use app\Rules;
+use app\RulesPlay;
 
 class RulesPlayTest extends PHPUnit\Framework\TestCase
 {
@@ -10,7 +10,7 @@ class RulesPlayTest extends PHPUnit\Framework\TestCase
         $playerNumber = 0;
         $toPosition = '0,0';
 
-        $this->assertTrue(Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board));
+        $this->assertTrue(RulesPlay::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board));
     }
 
     public function testGivenQueenBeeIsBeingPlayedOnTurnFourWithLegalMoveThenPositionIsLegalToPlayReturnTrue() {
@@ -28,16 +28,16 @@ class RulesPlayTest extends PHPUnit\Framework\TestCase
         $toPosition = '0,-3';
         $pieceToPlay = "Q";
 
-        $this->assertTrue(Rules::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $pieceToPlay));
+        $this->assertTrue(RulesPlay::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $pieceToPlay));
     }
 
     public function testQueenBeeIsPlayedBeforeTurnFour() {
         $hand = ["B" => 2, "S" => 2, "A" => 1, "G" => 3];
-        $this->assertTrue(Rules::queenBeeIsPlayedBeforeTurnFour($hand, "B"));
+        $this->assertTrue(RulesPlay::queenBeeIsPlayedBeforeTurnFour($hand, "B"));
     }
 
     public function testItIsTurnFourAndQueenBeeIsNotYetPlayed() {
         $hand = ["Q" => 1, "B" => 1, "S" => 2, "A" => 1, "G" => 3];
-        $this->assertTrue(Rules::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand));
+        $this->assertTrue(RulesPlay::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand));
     }
 }

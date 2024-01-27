@@ -128,7 +128,7 @@ class Board
             foreach (array_keys($boardTiles) as $position) {
                 $positionArray = explode(',', $position);
                 $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
-                if (Rules::positionIsLegalToPlay($possiblePosition, $playerNumber, $hand, $this)) {
+                if (RulesPlay::positionIsLegalToPlay($possiblePosition, $playerNumber, $hand, $this)) {
                     $possiblePlayPositions[] = $possiblePosition;
                 }
             }
@@ -151,7 +151,7 @@ class Board
             foreach (array_keys($boardTiles) as $position) {
                 $positionArray = explode(',', $position);
                 $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
-                if (Rules::positionIsLegalToMove($this, $player, $fromPosition, $possiblePosition)) {
+                if (RulesMove::positionIsLegalToMove($this, $player, $fromPosition, $possiblePosition)) {
                     $possibleMovePositions[] = $possiblePosition;
                 }
             }
