@@ -140,7 +140,7 @@ use app\Moves;
         </div>
 
         <form method="post" action="src/formPosts/play.php">
-            <select name="piece">
+            <select name="piece" required>
                 <?php
                     // dropdown player pieces
                     foreach ($game->getCurrentPlayer()->getHand() as $tileName => $count) {
@@ -148,7 +148,7 @@ use app\Moves;
                     }
                 ?>
             </select>
-            <select name="toPosition">
+            <select name="toPosition" required>
                 <?php
                     // dropdown possible play positions
                     $possiblePlayPositions = $board->getPossiblePlayPositions($currentPlayer->getPlayerNumber(), $currentPlayer->getHand());
@@ -160,22 +160,36 @@ use app\Moves;
             <input type="submit" value="Play">
         </form>
 
-        <form method="post" action="src/formPosts/move.php">
-            <select name="fromPosition">
+        <form method="post" action="src/formPosts/pieceToMove.php">
+            <select name="fromPosition" required>
                 <?php
+                    if (array_key_exists('fromPosition', $_SESSION)) {
+                        $fromPosition = $_SESSION['fromPosition'];
+                    } else {
+                        $fromPosition = '';
+                    }
+
                     foreach (array_keys($board->getTilesFromPlayer($currentPlayer->getPlayerNumber())) as $position) {
-                        echo "<option value=\"$position\">$position</option>";
+                        if ($position == $fromPosition) {
+                            echo "<option selected=\"selected\" value=\"$position\">$position</option>";
+                        } else {
+                            echo "<option value=\"$position\">$position</option>";
+                        }
                     }
                 ?>
             </select>
-            <select name="toPosition">
+            <input type="submit" value="Select tile to move">
+        </form>
+        <form method="post" action="src/formPosts/move.php">
+            <select name="toPosition" required>
                 <?php
-                    foreach ($possiblePlayPositions as $position) {
+                    $possibleMovePositions = $board->getPossibleMovePositions($fromPosition, $currentPlayer);
+                    foreach ($possibleMovePositions as $position) {
                         echo "<option value=\"$position\">$position</option>";
                     }
                 ?>
             </select>
-            <input type="submit" value="Move">
+            <input type="submit" value="Move tile">
         </form>
 
         <form method="post" action="src/formPosts/pass.php">

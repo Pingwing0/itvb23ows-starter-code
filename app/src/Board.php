@@ -43,9 +43,9 @@ class Board
 
     //todo logica van util
 
-    public function pieceHasNeighbour($pieceOne): bool
+    public function pieceHasNeighbour($boardTiles, $pieceOne): bool
     {
-        foreach (array_keys($this->boardTiles) as $pieceTwo) {
+        foreach (array_keys($boardTiles) as $pieceTwo) {
             if ($this->pieceIsNeighbourOf($pieceOne, $pieceTwo)) {
                 return true;
             }
@@ -115,6 +115,24 @@ class Board
         }
 
         return $possiblePlayPositions;
+    }
+
+    public function getPossibleMovePositions(String $fromPosition, Player $player): array
+    {
+        $offsets = $this->getOffsets();
+        $boardTiles = $this->getBoardTiles();
+        $possibleMovePositions = [];
+
+        foreach ($offsets as $offset) {
+            foreach (array_keys($boardTiles) as $position) {
+                $positionArray = explode(',', $position);
+                $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
+                if (Rules::positionIsLegalToMove($this, $player, $fromPosition, $possiblePosition)) {
+                    $possibleMovePositions[] = $possiblePosition;
+                }
+            }
+        }
+        return array_unique($possibleMovePositions);
     }
 
 }
