@@ -2,6 +2,8 @@
 
 namespace app;
 
+use function PHPUnit\Framework\throwException;
+
 class Sprinkhaan
 {
     private String $position;
@@ -21,8 +23,16 @@ class Sprinkhaan
         $this->position = $position;
     }
 
+    /**
+     * @throws RulesException
+     */
     public function move($toPosition): void
     {
+
+        if ($toPosition == $this->getPosition()) {
+            throw new RulesException("Tile to move to is the same");
+        }
+
         if ($this->moveIsAStraightLine($this->getPosition(), $toPosition)) {
             $this->setPosition($toPosition);
         }

@@ -46,7 +46,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $toPosition = '0,0';
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
-
+        
         $this->expectException(\app\RulesException::class);
         $sprinkhaan->move($toPosition);
     }
