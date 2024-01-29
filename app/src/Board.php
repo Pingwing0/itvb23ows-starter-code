@@ -2,6 +2,9 @@
 
 namespace app;
 
+use app\pieces\Koningin;
+use app\pieces\Sprinkhaan;
+
 class Board
 {
     // Board bestaat alleen uit tiles, niet uit alle beschikbare plekken
@@ -143,16 +146,28 @@ class Board
 
     public function getPossibleMovePositions(String $fromPosition, Player $player): array
     {
+        //todo misschien naar bordstuk class verplaatsen?
+
         $offsets = $this->getOffsets();
         $boardTiles = $this->getBoardTiles();
         $possibleMovePositions = [];
+        $piece = $boardTiles[$fromPosition][0][1];
 
         foreach ($offsets as $offset) {
             foreach (array_keys($boardTiles) as $position) {
                 $positionArray = explode(',', $position);
                 $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
-                if (RulesMove::positionIsLegalToMove($this, $player, $fromPosition, $possiblePosition)) {
-                    $possibleMovePositions[] = $possiblePosition;
+                if ($piece == 'Q') {
+                    $koningin = new Koningin($fromPosition);
+                    if ($koningin->moveIsLegal($this, $player, $fromPosition, $possiblePosition)) {
+                        $possibleMovePositions[] = $possiblePosition;
+                    }
+                }
+                if ($piece == 'G') {
+                    $sprinkhaan = new Sprinkhaan($fromPosition);
+                    if ($sprinkhaan->moveIsLegal($this, $player, $fromPosition, $possiblePosition)) {
+                        $possibleMovePositions[] = $possiblePosition;
+                    }
                 }
             }
         }
