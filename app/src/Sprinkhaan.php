@@ -30,6 +30,10 @@ class Sprinkhaan
             throw new RulesException("Tile to move to is the same");
         }
 
+        if(array_key_exists($toPosition, $boardTiles)) {
+            throw new RulesException("Tile can't move to occupied space");
+        }
+
         if ($this->moveIsAStraightLine($this->getPosition(), $toPosition)) {
             if ($this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles) == 0) {
                 throw new RulesException("Can't jump over empty space");

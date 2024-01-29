@@ -130,12 +130,5 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $sprinkhaan->move($toPosition, $boardTiles);
     }
 
-    //todo regel 5: Een sprinkhaan mag niet over lege velden springen.
-    // dit betekent dat alle velden tussen de start- en eindpositie
-    // bezet moeten zijn
-
-
-
-
 
 }
