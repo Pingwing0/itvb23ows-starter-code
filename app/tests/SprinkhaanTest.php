@@ -38,10 +38,18 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         self::assertTrue($result);
     }
 
-
     //todo regel 2: Een sprinkhaan mag zich niet verplaatsen
     // naar het veld waar hij al staat
 
+    public function testWhenSprinkhaanMovesToSameFieldThenThrowException() {
+        $fromPosition = '0,0';
+        $toPosition = '0,0';
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $this->expectException(\app\RulesException::class);
+        $sprinkhaan->move($toPosition);
+    }
 
 
     //todo regel 3: Een sprinkhaan moet over minimaal 1 steen springen
