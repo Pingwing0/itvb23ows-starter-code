@@ -23,7 +23,21 @@ class Sprinkhaan
 
     public function move($toPosition): void
     {
-        $this->setPosition($toPosition);
+        if ($this->moveIsAStraightLine($this->getPosition(), $toPosition)) {
+            $this->setPosition($toPosition);
+        }
+    }
+
+    public function moveIsAStraightLine($fromPosition, $toPosition) :bool
+    {
+        $fromArray = explode(",", $fromPosition);
+        $toArray = explode(",", $toPosition);
+
+        // of 1 van beide coordinates is hetzelfde, of ze verschuiven in omgekeerde richting met 1
+        return $fromArray[0] == $toArray[0] ||
+            $fromArray[1] == $toArray[1] ||
+            abs($fromArray[0] - $toArray[0]) == abs($fromArray[1] - $toArray[1]);
+
     }
 
 
