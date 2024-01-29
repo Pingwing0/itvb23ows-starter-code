@@ -2,8 +2,6 @@
 
 namespace app;
 
-use function PHPUnit\Framework\throwException;
-
 class Sprinkhaan
 {
     private String $position;

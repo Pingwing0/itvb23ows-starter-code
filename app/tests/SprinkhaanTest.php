@@ -114,6 +114,22 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
     //todo regel 4: Een sprinkhaan mag niet naar een bezet veld springen
 
+    public function testWhenSprinkhaanMovesToOccupiedSpaceThenMoveThrowsException() {
+        $fromPosition = '0,0';
+        $toPosition = '2,-2';
+
+        $boardTiles = [
+            '1,-1' => [[0, "Q"]],
+            '0,0' => [[0, "S"]],
+            '2,-2' => [[1, "B"]]
+        ];
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $this->expectException(\app\RulesException::class);
+        $sprinkhaan->move($toPosition, $boardTiles);
+    }
+
     //todo regel 5: Een sprinkhaan mag niet over lege velden springen.
     // dit betekent dat alle velden tussen de start- en eindpositie
     // bezet moeten zijn
