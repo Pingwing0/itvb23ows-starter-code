@@ -38,9 +38,6 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         self::assertTrue($result);
     }
 
-    //todo regel 2: Een sprinkhaan mag zich niet verplaatsen
-    // naar het veld waar hij al staat
-
     public function testWhenSprinkhaanMovesToSameFieldThenThrowException() {
         $fromPosition = '0,0';
         $toPosition = '0,0';
@@ -51,8 +48,40 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $sprinkhaan->move($toPosition);
     }
 
-
     //todo regel 3: Een sprinkhaan moet over minimaal 1 steen springen
+
+    public function testWhenMovingThenJumpOverStonesCountReturnMinimumOne() {
+        $fromPosition = '0,0';
+        $toPosition = '2,0';
+
+        $boardTiles = [
+            '1,-1' => [[0, "Q"]],
+            '0,0' => [[0, "S"]],
+            '1,0' => [[1, "B"]]
+        ];
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $result = $sprinkhaan->countNoOfStonesToJumpOver($fromPosition, $toPosition, $boardTiles);
+        $expected = (1);
+        self::assertEquals($expected, $result);
+    }
+
+    public function testWhenSprinkhaanMovesAndDoesntJumpOverStonesThenThrowsException() {
+        $fromPosition = '0,0';
+        $toPosition = '2,0';
+
+        $boardTiles = [
+            '1,-1' => [[0, "Q"]],
+            '0,0' => [[0, "S"]],
+            '2,-1' => [[1, "B"]]
+        ];
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $this->expectException(\app\RulesException::class);
+        $sprinkhaan->move($toPosition);
+    }
 
     //todo regel 4: Een sprinkhaan mag niet naar een bezet veld springen
 
