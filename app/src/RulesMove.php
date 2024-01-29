@@ -13,9 +13,7 @@ class RulesMove
         $hand = $player->getHand();
 
         return self::thereIsATileToMoveLegally($boardTiles, $hand, $playerNumber, $fromPosition) &&
-            self::tileMoveWontSplitHive($board, $fromPosition, $toPosition) &&
-            self::tileToMoveCanMove($board, $fromPosition, $toPosition);
-
+            self::tileMoveWontSplitHive($board, $fromPosition, $toPosition);
     }
 
     public static function thereIsATileToMoveLegally($boardTiles, $hand, $playerNumber, $fromPosition): bool
@@ -159,7 +157,19 @@ class RulesMove
         $boardTiles = $board->getBoardTiles();
         unset($boardTiles[$from]);
 
-        return $board->pieceHasNeighbour($boardTiles, $to) && $board->pieceIsNeighbourOf($from, $to);
+        return $board->pieceHasNeighbour($boardTiles, $to) &&
+            $board->pieceIsNeighbourOf($from, $to) &&
+            self::onlyOneTileDifference($from, $to);
+    }
+
+    public static function onlyOneTileDifference($from, $to): bool {
+        $fromArray = explode(",", $from);
+        $toArray = explode(",", $to);
+
+        return (abs($fromArray[0] - $toArray[0]) == 1 && $fromArray[1] == $toArray[1]) ||
+            (abs($fromArray[1] - $toArray[1]) == 1 && $fromArray[0] == $toArray[0]) ||
+            ($fromArray[0] - $toArray[0] == -1 && $fromArray[1] - $toArray[1] == 1) ||
+            ($fromArray[0] - $toArray[0] == 1 && $fromArray[1] - $toArray[1] == -1);
     }
 
     public static function oldSlideToRefactor(Board $board, $from, $to) {

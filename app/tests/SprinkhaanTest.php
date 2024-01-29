@@ -1,6 +1,6 @@
 <?php
 
-use app\Sprinkhaan;
+use app\pieces\Sprinkhaan;
 
 class SprinkhaanTest extends PHPUnit\Framework\TestCase
 {

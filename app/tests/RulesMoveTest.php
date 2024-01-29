@@ -191,4 +191,18 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $this->assertTrue(RulesMove::destinationTileIsEmpty($boardTiles, $toPosition, $tile));
     }
 
+    public function testGivenMoreThanOneTileDifferenceThenOnlyOneTileDifferenceReturnsFalse() {
+        $fromPosition = '-1,0';
+        $toPosition = '0,1';
+
+        self::assertFalse(RulesMove::onlyOneTileDifference($fromPosition, $toPosition));
+    }
+
+    public function testGivenOneTileDifferenceThenOnlyOneTileDifferenceReturnsTrue() {
+        $fromPosition = '0,-1';
+        $toPosition = '1,-1';
+
+        self::assertTrue(RulesMove::onlyOneTileDifference($fromPosition, $toPosition));
+    }
+
 }

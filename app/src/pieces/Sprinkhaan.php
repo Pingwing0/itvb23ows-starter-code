@@ -1,6 +1,11 @@
 <?php
 
-namespace app;
+namespace app\pieces;
+
+use app\Board;
+use app\Player;
+use app\RulesException;
+use app\RulesMove;
 
 class Sprinkhaan
 {
@@ -39,7 +44,23 @@ class Sprinkhaan
                 throw new RulesException("Can't jump over empty space");
             }
             $this->setPosition($toPosition);
+        } else {
+            throw new RulesException("Move is not a straight line");
         }
+    }
+
+    public function moveIsLegal(Board $board, Player $player, $fromPosition, $toPosition): bool
+    {
+        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+            $boardTiles = $board->getBoardTiles();
+            try {
+                $this->move($toPosition, $boardTiles);
+                return true;
+            } catch(RulesException $e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     public function moveIsAStraightLine($fromPosition, $toPosition) :bool
