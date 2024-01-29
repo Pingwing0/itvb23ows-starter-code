@@ -7,7 +7,7 @@ use app\Player;
 use app\RulesException;
 use app\RulesMove;
 
-class Sprinkhaan
+class Sprinkhaan extends Piece
 {
     private String $position;
 

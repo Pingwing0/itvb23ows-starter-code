@@ -87,7 +87,7 @@ class Board
             return
                 ($pieceOne[0] == $pieceTwo[0] && abs($pieceOne[1] - $pieceTwo[1]) == 1) ||
                 ($pieceOne[1] == $pieceTwo[1] && abs($pieceOne[0] - $pieceTwo[0]) == 1) ||
-                ($pieceOne[0] + $pieceOne[1] == $pieceTwo[0] + $pieceTwo[1]);
+                ((int)$pieceOne[0] + (int)$pieceOne[1] == (int)$pieceTwo[0] + (int)$pieceTwo[1]);
         }
     }
 
@@ -130,7 +130,7 @@ class Board
         foreach ($offsets as $offset) {
             foreach (array_keys($boardTiles) as $position) {
                 $positionArray = explode(',', $position);
-                $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
+                $possiblePosition = ((int)$offset[0] + (int)$positionArray[0]).','.((int)$offset[1] + (int)$positionArray[1]);
                 if (RulesPlay::positionIsLegalToPlay($possiblePosition, $playerNumber, $hand, $this)) {
                     $possiblePlayPositions[] = $possiblePosition;
                 }
@@ -146,30 +146,17 @@ class Board
 
     public function getPossibleMovePositions(String $fromPosition, Player $player): array
     {
-        //todo misschien naar bordstuk class verplaatsen?
-
-        $offsets = $this->getOffsets();
-        $boardTiles = $this->getBoardTiles();
         $possibleMovePositions = [];
+        $boardTiles = $this->getBoardTiles();
         $piece = $boardTiles[$fromPosition][0][1];
 
-        foreach ($offsets as $offset) {
-            foreach (array_keys($boardTiles) as $position) {
-                $positionArray = explode(',', $position);
-                $possiblePosition = ($offset[0] + $positionArray[0]).','.($offset[1] + $positionArray[1]);
-                if ($piece == 'Q') {
-                    $koningin = new Koningin($fromPosition);
-                    if ($koningin->moveIsLegal($this, $player, $fromPosition, $possiblePosition)) {
-                        $possibleMovePositions[] = $possiblePosition;
-                    }
-                }
-                if ($piece == 'G') {
-                    $sprinkhaan = new Sprinkhaan($fromPosition);
-                    if ($sprinkhaan->moveIsLegal($this, $player, $fromPosition, $possiblePosition)) {
-                        $possibleMovePositions[] = $possiblePosition;
-                    }
-                }
-            }
+        if ($piece == 'Q') {
+            $koningin = new Koningin($fromPosition);
+            $possibleMovePositions = $koningin->getPossibleMovePositions($fromPosition, $player, $this);
+        }
+        if ($piece == 'G') {
+            $sprinkhaan = new Sprinkhaan($fromPosition);
+            $possibleMovePositions = $sprinkhaan->getPossibleMovePositions($fromPosition, $player, $this);
         }
         return array_unique($possibleMovePositions);
     }

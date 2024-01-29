@@ -2,10 +2,9 @@
 
 namespace app\pieces;
 
-use app\RulesException;
 use app\RulesMove;
 
-class Koningin
+class Koningin extends Piece
 {
     private String $position;
 
