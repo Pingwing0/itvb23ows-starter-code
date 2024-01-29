@@ -50,7 +50,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
     //todo regel 3: Een sprinkhaan moet over minimaal 1 steen springen
 
-    public function testWhenMovingThenJumpOverStonesCountReturnMinimumOne() {
+    public function testWhenMovingHorizontallyThenJumpOverStonesCountReturnMinimumOne() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
 
@@ -67,6 +67,41 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expected, $result);
     }
 
+    public function testWhenMovingDiagonallyRightDownThenJumpOverStonesCountReturnMinimumOne()
+    {
+        $fromPosition = '0,0';
+        $toPosition = '0,2';
+
+        $boardTiles = [
+            '1,1' => [[0, "Q"]],
+            '0,0' => [[0, "S"]],
+            '0,1' => [[1, "B"]]
+        ];
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $result = $sprinkhaan->countNoOfStonesToJumpOver($fromPosition, $toPosition, $boardTiles);
+        $expected = (1);
+        self::assertEquals($expected, $result);
+    }
+
+    public function testWhenMovingDiagonallyLeftDownThenJumpOverStonesCountReturnMinimumOne()
+    {
+        $fromPosition = '0,0';
+        $toPosition = '-2,2';
+
+        $boardTiles = [
+            '0,1' => [[0, "Q"]],
+            '0,0' => [[0, "S"]],
+            '-1,1' => [[1, "B"]]
+        ];
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $result = $sprinkhaan->countNoOfStonesToJumpOver($fromPosition, $toPosition, $boardTiles);
+        $expected = (1);
+        self::assertEquals($expected, $result);
+    }
     public function testWhenSprinkhaanMovesAndDoesntJumpOverStonesThenThrowsException() {
         $fromPosition = '0,0';
         $toPosition = '2,0';

@@ -50,5 +50,9 @@ class Sprinkhaan
 
     }
 
+    public function countNoOfStonesToJumpOver($fromPosition, $toPosition, $boardTiles) {
+
+    }
+
 
 }
