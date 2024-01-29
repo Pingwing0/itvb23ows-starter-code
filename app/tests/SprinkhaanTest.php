@@ -4,8 +4,6 @@ use app\Sprinkhaan;
 
 class SprinkhaanTest extends PHPUnit\Framework\TestCase
 {
-    //todo regels implementeren
-
     public function testWhenSprinkhaanMovesThenItMovesInAStraightLine() {
         $fromPosition = '0,0';
         $toPosition = '0,2';
@@ -28,12 +26,23 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $result = $sprinkhaan->getPosition();
         $expectedPosition = ('1,0');
         self::assertEquals($expectedPosition, $result);
+    }
 
+    public function testWhenFromZeroTwoToTwoZeroIsAStraightLineReturnsTrue() {
+        $fromPosition = '0,2';
+        $toPosition = '2,0';
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+
+        $result = $sprinkhaan->moveIsAStraightLine($fromPosition, $toPosition);
+        self::assertTrue($result);
     }
 
 
     //todo regel 2: Een sprinkhaan mag zich niet verplaatsen
     // naar het veld waar hij al staat
+
+
 
     //todo regel 3: Een sprinkhaan moet over minimaal 1 steen springen
 
