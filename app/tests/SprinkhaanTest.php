@@ -22,6 +22,19 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedPosition, $result);
     }
 
+    public function testWhenSprinkhaanMovesNotInStraightLineThenItDoesntMove() {
+        $fromPosition = '1,0';
+        $toPosition = '0,2';
+
+        $sprinkhaan = new Sprinkhaan($fromPosition);
+        $sprinkhaan->move($toPosition);
+
+        $result = $sprinkhaan->getPosition();
+        $expectedPosition = ('1,0');
+        self::assertEquals($expectedPosition, $result);
+
+    }
+
 
     //todo regel 2: Een sprinkhaan mag zich niet verplaatsen
     // naar het veld waar hij al staat
