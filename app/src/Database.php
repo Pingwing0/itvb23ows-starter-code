@@ -38,8 +38,6 @@ class Database {
     }
 
     public function selectAllMovesFromGame(int $gameId) {
-        //todo op een of andere manier selecteert hij alle moves, ook van oude spellen?
-        // misschien dat er wat misgaat met de gameId
 
         $db = $this->initDatabase();
         if ($db->connect_error) {
