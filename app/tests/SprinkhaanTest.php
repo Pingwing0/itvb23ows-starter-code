@@ -4,28 +4,24 @@ use app\Sprinkhaan;
 
 class SprinkhaanTest extends PHPUnit\Framework\TestCase
 {
-    public function testWhenSprinkhaanMovesThenItMovesInAStraightLine() {
+    public function testWhenMoveIsAStraightLineThenMoveIsAStraightLineReturnTrue() {
         $fromPosition = '0,0';
         $toPosition = '0,2';
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
-        $sprinkhaan->move($toPosition);
 
-        $result = $sprinkhaan->getPosition();
-        $expectedPosition = ('0,2');
-        self::assertEquals($expectedPosition, $result);
+        $result = $sprinkhaan->moveIsAStraightLine($fromPosition, $toPosition);
+        self::assertTrue($result);
     }
 
-    public function testWhenSprinkhaanMovesNotInStraightLineThenItDoesntMove() {
+    public function testWhenMoveIsAStraightLineThenMoveIsAStraightLineReturnFalse() {
         $fromPosition = '1,0';
         $toPosition = '0,2';
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
-        $sprinkhaan->move($toPosition);
 
-        $result = $sprinkhaan->getPosition();
-        $expectedPosition = ('1,0');
-        self::assertEquals($expectedPosition, $result);
+        $result = $sprinkhaan->moveIsAStraightLine($fromPosition, $toPosition);
+        self::assertFalse($result);
     }
 
     public function testWhenFromZeroTwoToTwoZeroIsAStraightLineReturnsTrue() {
@@ -45,7 +41,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $sprinkhaan = new Sprinkhaan($fromPosition);
         
         $this->expectException(\app\RulesException::class);
-        $sprinkhaan->move($toPosition);
+        $sprinkhaan->move($toPosition, []);
     }
 
     //todo regel 3: Een sprinkhaan moet over minimaal 1 steen springen
@@ -115,7 +111,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $sprinkhaan = new Sprinkhaan($fromPosition);
 
         $this->expectException(\app\RulesException::class);
-        $sprinkhaan->move($toPosition);
+        $sprinkhaan->move($toPosition, $boardTiles);
     }
 
     //todo regel 4: Een sprinkhaan mag niet naar een bezet veld springen
