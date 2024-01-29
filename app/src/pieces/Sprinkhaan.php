@@ -85,10 +85,10 @@ class Sprinkhaan
         if ($fromArray[1] == $toArray[1]) {
             //horizontal check
             $count = $this->countHorizontalMove($fromPosition, $toPosition, $boardTiles);
-        } else if ($fromArray[0] == $toArray[0]){
+        } elseif ($fromArray[0] == $toArray[0]){
             //right down check
             $count = $this->countDiagonalRightDownMove($fromPosition, $toPosition, $boardTiles);
-        } else if (abs($fromArray[0] - $toArray[0]) == abs($fromArray[1] - $toArray[1])) {
+        } elseif (abs($fromArray[0] - $toArray[0]) == abs($fromArray[1] - $toArray[1])) {
             //left down check
             $count = $this->countDiagonalLeftDownMove($fromPosition, $toPosition, $boardTiles);
         }
