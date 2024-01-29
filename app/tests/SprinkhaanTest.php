@@ -1,5 +1,7 @@
 <?php
 
+use app\Sprinkhaan;
+
 class SprinkhaanTest extends PHPUnit\Framework\TestCase
 {
     //todo regels implementeren
@@ -9,8 +11,8 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
     // achter een andere steen in de richting van de sprong
 
     public function testWhenSprinkhaanMovesThenItMovesInAStraightLine() {
-        $fromPosition = '(0,0)';
-        $toPosition = '(0,2)';
+        $fromPosition = '0,0';
+        $toPosition = '0,2';
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
         $sprinkhaan->move($toPosition);
