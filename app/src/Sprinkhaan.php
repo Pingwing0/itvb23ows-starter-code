@@ -28,14 +28,14 @@ class Sprinkhaan
      */
     public function move($toPosition, $boardTiles): void
     {
-
         if ($toPosition == $this->getPosition()) {
             throw new RulesException("Tile to move to is the same");
         }
 
-        $this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles);
-
         if ($this->moveIsAStraightLine($this->getPosition(), $toPosition)) {
+            if ($this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles) == 0) {
+                throw new RulesException("Can't jump over empty space");
+            }
             $this->setPosition($toPosition);
         }
     }
@@ -52,115 +52,125 @@ class Sprinkhaan
 
     }
 
-    /**
-     * @throws RulesException
-     */
-    public function countNoOfStonesToJumpOver($fromPosition, $toPosition, $boardTiles)
+    public function countNoOfStonesToJumpOver($fromPosition, $toPosition, $boardTiles): int
     {
         $fromArray = explode(",", $fromPosition);
         $toArray = explode(",", $toPosition);
 
         $count = 0;
 
-        //horizontal check
         if ($fromArray[1] == $toArray[1]) {
-            if ($fromArray[0] < $toArray[0]) {
-                //move right from fromPosition
-                $position = (int) $fromArray[0] + 1;
-                while ($position < $toArray[0]) {
-                    $positionToCheck = $position . ',' . $fromArray[1];
-                    if (array_key_exists($positionToCheck, $boardTiles)) {
-                        $count++;
-                        $position++;
-                    } else {
-                        throw new RulesException("Can't jump over empty space");
-                    }
-                }
-            } else {
-                // move right from toPosition
-                $position = (int) $toArray[0] + 1;
-                while ($position < $fromArray[0]) {
-                    $positionToCheck = $position . ',' . $fromArray[1];
-                    if (array_key_exists($positionToCheck, $boardTiles)) {
-                        $count++;
-                        $position++;
-                    } else {
-                        throw new RulesException("Can't jump over empty space");
-                    }
-                }
-            }
+            //horizontal check
+            $count = $this->countHorizontalMove($fromPosition, $toPosition, $boardTiles);
         } else if ($fromArray[0] == $toArray[0]){
             //right down check
-            if ($fromArray[1] < $toArray[1]) {
-                //move right from fromPosition
-                $position = (int) $fromArray[1] + 1;
-                while ($position < $toArray[1]) {
-                    $positionToCheck = $fromArray[0] . ',' . $position;
-                    if (array_key_exists($positionToCheck, $boardTiles)) {
-                        $count++;
-                        $position++;
-                    } else {
-                        throw new RulesException("Can't jump over empty space");
-                    }
-                }
-            } else {
-                // move right from toPosition
-                $position = (int) $toArray[1] + 1;
-                while ($position < $fromArray[1]) {
-                    $positionToCheck = $fromArray[0] . ',' . $position;
-                    if (array_key_exists($positionToCheck, $boardTiles)) {
-                        $count++;
-                        $position++;
-                    } else {
-                        throw new RulesException("Can't jump over empty space");
-                    }
-                }
-            }
+            $count = $this->countDiagonalRightDownMove($fromPosition, $toPosition, $boardTiles);
         } else if (abs($fromArray[0] - $toArray[0]) == abs($fromArray[1] - $toArray[1])) {
-            $count = $this->countDiagonalMove($fromPosition, $toPosition, $boardTiles);
+            //left down check
+            $count = $this->countDiagonalLeftDownMove($fromPosition, $toPosition, $boardTiles);
         }
 
         return $count;
     }
 
-    public function countDiagonalMove($fromPosition, $toPosition, $boardTiles) {
+    public function countHorizontalMove($fromPosition, $toPosition, $boardTiles): int
+    {
         $fromArray = explode(",", $fromPosition);
         $toArray = explode(",", $toPosition);
 
-        $count = 0;
-
-        //left down check
         if ($fromArray[0] < $toArray[0]) {
             //move right from fromPosition
-            $posLeft = (int) $fromArray[0] + 1;
-            $posRight = (int) $fromArray[1] - 1;
-            while ($posRight < $toArray[1]) {
-                $positionToCheck = $posLeft. ',' . $posRight;
-                if (array_key_exists($positionToCheck, $boardTiles)) {
-                    $count++;
-                    $posLeft++;
-                    $posRight--;
-                } else {
-                    throw new RulesException("Can't jump over empty space");
-                }
-            }
+            $count = $this->countHorizontalLeftToRight($fromArray, $toArray, $boardTiles);
         } else {
             // move right from toPosition
-            $posLeft = (int) $toArray[0] + 1;
-            $posRight = (int) $toArray[1] - 1;
-            while ($posLeft < $fromArray[0]) {
-                $positionToCheck = $posLeft. ',' . $posRight;
-                if (array_key_exists($positionToCheck, $boardTiles)) {
-                    $count++;
-                    $posLeft++;
-                    $posRight--;
-                } else {
-                    throw new RulesException("Can't jump over empty space");
-                }
+            $count = $this->countHorizontalLeftToRight($toArray, $fromArray, $boardTiles);
+        }
+
+        return $count;
+    }
+
+    private function countHorizontalLeftToRight(array $leftPosition, array $rightPosition, $boardTiles): int
+    {
+        $count = 0;
+
+        $position = (int) $leftPosition[0] + 1;
+        while ($position < $rightPosition[0]) {
+            $positionToCheck = $position . ',' . $leftPosition[1];
+            if (array_key_exists($positionToCheck, $boardTiles)) {
+                $count++;
+                $position++;
+            } else {
+                return 0;
+            }
+        }
+        return $count;
+    }
+
+    public function countDiagonalRightDownMove($fromPosition, $toPosition, $boardTiles): int
+    {
+        $fromArray = explode(",", $fromPosition);
+        $toArray = explode(",", $toPosition);
+
+        if ($fromArray[1] < $toArray[1]) {
+            //move right from fromPosition
+            $count = $this->countDiagonalRightDownLeftToRight($fromArray, $toArray, $boardTiles);
+        } else {
+            // move right from toPosition
+            $count = $this->countDiagonalRightDownLeftToRight($toArray, $fromArray, $boardTiles);
+        }
+
+        return $count;
+    }
+
+    private function countDiagonalRightDownLeftToRight(array $leftPosition, array $rightPosition, $boardTiles): int
+    {
+        $count = 0;
+
+        $position = (int) $leftPosition[1] + 1;
+        while ($position < $rightPosition[1]) {
+            $positionToCheck = $leftPosition[0] . ',' . $position;
+            if (array_key_exists($positionToCheck, $boardTiles)) {
+                $count++;
+                $position++;
+            } else {
+                return 0;
             }
         }
         return $count;
     }
 
 
+    public function countDiagonalLeftDownMove($fromPosition, $toPosition, $boardTiles): int
+    {
+        $fromArray = explode(",", $fromPosition);
+        $toArray = explode(",", $toPosition);
+
+        if ($fromArray[0] < $toArray[0]) {
+            //move right from fromPosition
+            $count = $this->countDiagonalLeftDownLeftToRight($fromArray, $toArray, $boardTiles);
+        } else {
+            // move right from toPosition
+            $count = $this->countDiagonalLeftDownLeftToRight($toArray, $fromArray, $boardTiles);
+        }
+        return $count;
+    }
+
+    private function countDiagonalLeftDownLeftToRight(array $leftPosition, array $rightPosition, $boardTiles): int
+    {
+        $count = 0;
+
+        $posLeft = (int) $leftPosition[0] + 1;
+        $posRight = (int) $leftPosition[1] - 1;
+        while ($posRight > $rightPosition[1]) {
+            $positionToCheck = $posLeft. ',' . $posRight;
+            if (array_key_exists($positionToCheck, $boardTiles)) {
+                $count++;
+                $posLeft++;
+                $posRight--;
+            } else {
+                return 0;
+            }
+        }
+        return $count;
+    }
 }

@@ -44,8 +44,6 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $sprinkhaan->move($toPosition, []);
     }
 
-    //todo regel 3: Een sprinkhaan moet over minimaal 1 steen springen
-
     public function testWhenMovingHorizontallyThenJumpOverStonesCountReturnMinimumOne() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
