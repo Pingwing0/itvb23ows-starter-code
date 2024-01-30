@@ -5,6 +5,7 @@ namespace app\pieces;
 use app\Board;
 use app\Player;
 use app\RulesException;
+use app\RulesMove;
 
 class Soldatenmier extends Piece
 {
@@ -97,8 +98,16 @@ class Soldatenmier extends Piece
     }
 
 
-    public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition)
+    public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition): bool
     {
-        // TODO: Implement moveIsLegal() method.
+        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+            try {
+                $this->move($board, $toPosition);
+                return true;
+            } catch(RulesException $e) {
+                return false;
+            }
+        }
+        return false;
     }
 }
