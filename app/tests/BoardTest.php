@@ -29,7 +29,7 @@ class BoardTest extends PHPUnit\Framework\TestCase
 
         $possiblePlaypositions = $board->getPossiblePlayPositions($playerNumber, $hand);
 
-        $expectedResult = [0 => '0,1', 1 => '0,-1', 2 => '1,0', 3 => '-1,0', 4 => '-1,1', 5 => '1,-1'];
+        $expectedResult = [0 => '1,-1', 1 => '1,0', 2 => '0,1', 3 => '-1,1', 4 => '-1,0', 5 => '0,-1'];
         self::assertEquals($expectedResult, $possiblePlaypositions);
     }
 
@@ -41,7 +41,7 @@ class BoardTest extends PHPUnit\Framework\TestCase
 
         $possiblePlaypositions = $board->getPossiblePlayPositions($playerNumber, $hand);
 
-        $expectedResult = [0 => '0,-1', 1 => '-1,0', 2 => '1,-1'];
+        $expectedResult = [0 => '1,-1', 1 => '-1,0', 2 => '0,-1'];
         self::assertEquals($expectedResult, $possiblePlaypositions);
     }
 
@@ -69,7 +69,7 @@ class BoardTest extends PHPUnit\Framework\TestCase
 
         $possibleMovePositions = $board->getPossibleMovePositions($fromPosition, $player);
 
-        $expectedResult = [0 => '0,1', 1 => '1,-1'];
+        $expectedResult = [0 => '1,-1', 1 => '0,1',];
 
         self::assertEquals($expectedResult, $possibleMovePositions);
 
