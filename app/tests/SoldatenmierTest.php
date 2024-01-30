@@ -17,7 +17,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
-        $result = $soldatenmier->moveOnce($board, $toPosition);
+        $result = $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
         $expectedResult = '-1,1';
         self::assertEquals($expectedResult, $result);
 
@@ -37,7 +37,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $soldatenmier = new Soldatenmier($fromPosition);
 
         $this->expectException(\app\RulesException::class);
-        $soldatenmier->moveOnce($board, $toPosition);
+        $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
     }
 
    public function testWhenSoldatenmierMovesToCurrentPositionThenThrowException() {
@@ -99,7 +99,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
-        $result = $soldatenmier->moveClockwise($board, $fromPosition);
+        $result = $soldatenmier->moveClockwise($board, $boardTiles, $fromPosition);
         $expectedResult = '0,-1';
         self::assertEquals($expectedResult, $result);
     }
@@ -115,13 +115,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $soldatenmier = new Soldatenmier($fromPosition);
 
         $this->expectException(\app\RulesException::class);
-        $soldatenmier->moveOnce($board, $toPosition);
+        $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
     }
-
-    //todo regel 1
-    // Een soldatenmier verplaatst zich door een onbeperkt aantal keren te verschuiven
-
-    //todo regel 4
-    // Een soldatenmier mag alleen verplaatst worden over en naar lege velden.
 
 }
