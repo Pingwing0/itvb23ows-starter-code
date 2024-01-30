@@ -9,7 +9,7 @@ class Board
 {
     // Board bestaat alleen uit tiles, niet uit alle beschikbare plekken
     private array $boardTiles;
-    private array $offsets = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
+    private array $offsets = [[1, -1], [1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1]];
 
     public function __construct($boardTiles = [])
     {

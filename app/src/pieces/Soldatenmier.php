@@ -18,13 +18,45 @@ class Soldatenmier extends Piece
             throw new RulesException("Ant can't move to occupied position");
         }
 
-        $newPosition = $this->moveOnce($board, $toPosition);
+        $currentPosition = $this->moveClockwise($board,$this->getPosition());
+        while ($currentPosition != $toPosition
+            && $currentPosition != $this->getPosition()) {
+
+        }
+        if ($currentPosition == $toPosition) {
+            $this->setPosition($toPosition);
+        } else {
+            throw new RulesException("Can't reach this tile");
+        }
+    }
+
+    public function moveClockwise(Board $board, $fromPosition): String {
+        // check directions clockwise and move to first one possible
+        $fromArray = explode(",", $fromPosition);
+
+        foreach ($board->getOffsets() as $offset) {
+            $p = (int)$fromArray[0] + $offset[0];
+            $q = (int)$fromArray[1] + $offset[1];
+            $tryPosition = $p . "," . $q;
+            try {
+                $this->moveOnce($board, $tryPosition);
+                return $tryPosition;
+            } catch(RulesException $e) {
+                continue;
+            }
+        }
+        throw new RulesException("Can't move anywhere");
+
     }
 
     /**
      * @throws RulesException
      */
     public function moveOnce($board, $toPosition) {
+        if (array_key_exists($toPosition, $board->getBoardTiles())) {
+            throw new RulesException("Ant can't move to occupied position");
+        }
+
         if ($this->slideOneSpace($board, $this->position, $toPosition)) {
             return $toPosition;
         } else {
