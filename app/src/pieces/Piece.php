@@ -33,7 +33,10 @@ abstract class Piece
         foreach ($offsets as $offset) {
             foreach (array_keys($boardTiles) as $position) {
                 $positionArray = explode(',', $position);
-                $possiblePosition = ((int)$offset[0] + (int)$positionArray[0]) . ',' . ((int)$offset[1] + (int)$positionArray[1]);
+                $possiblePosition = (
+                    (int)$offset[0] + (int)$positionArray[0]) . ',' .
+                    ((int)$offset[1] + (int)$positionArray[1]
+                    );
                 if ($this->moveIsLegal($board, $player, $fromPosition, $possiblePosition)) {
                     $possibleMovePositions[] = $possiblePosition;
                 }
