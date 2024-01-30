@@ -88,7 +88,8 @@ class Board
             return
                 ($pieceOne[0] == $pieceTwo[0] && abs($pieceOne[1] - $pieceTwo[1]) == 1) ||
                 ($pieceOne[1] == $pieceTwo[1] && abs($pieceOne[0] - $pieceTwo[0]) == 1) ||
-                ((int)$pieceOne[0] + (int)$pieceOne[1] == (int)$pieceTwo[0] + (int)$pieceTwo[1]);
+                ($pieceOne[0] - $pieceTwo[0] == -1 && $pieceOne[1] - $pieceTwo[1] == 1) ||
+                ($pieceOne[0] - $pieceTwo[0] == 1 && $pieceOne[1] - $pieceTwo[1] == -1);
         }
     }
 

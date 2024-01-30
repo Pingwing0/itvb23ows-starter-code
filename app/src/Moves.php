@@ -3,6 +3,7 @@
 namespace app;
 
 use app\pieces\Koningin;
+use app\pieces\Soldatenmier;
 use app\pieces\Sprinkhaan;
 
 class Moves
@@ -35,35 +36,41 @@ class Moves
         $boardTiles = $board->getBoardTiles();
 
         //todo dit werkt niet bij stapelen (maar dat werkt sowieso nog niet)
-        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
-            $piece = $boardTiles[$fromPosition][0][1];
-            if ($piece == 'G') {
-                $sprinkhaan = new Sprinkhaan($fromPosition);
-                try {
-                    $sprinkhaan->move($toPosition, $boardTiles);
-                    $currentState = $game->getState();
-                    $board->movePiece($boardTiles, $fromPosition, $toPosition);
-                    $database->addMoveToDatabase(
-                        $game, $currentState, "move", toPosition: $toPosition, fromPosition: $fromPosition
-                    );
-                    $game->switchTurn();
-                } catch (RulesException $e) {
-                    echo $e->errorMessage();
-                }
+        $piece = $boardTiles[$fromPosition][0][1];
+        if ($piece == 'G') {
+            $sprinkhaan = new Sprinkhaan($fromPosition);
+            if ($sprinkhaan->moveIsLegal($board, $player, $fromPosition, $toPosition)) {
+                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
             }
-            if ($piece == 'Q') {
-                $koningin = new Koningin($fromPosition);
-                if ($koningin->moveIsLegal($board, $player, $fromPosition, $toPosition))
-                {
-                    $currentState = $game->getState();
-                    $board->movePiece($boardTiles, $fromPosition, $toPosition);
-                    $database->addMoveToDatabase(
-                        $game, $currentState, "move", toPosition: $toPosition, fromPosition: $fromPosition
-                    );
-                    $game->switchTurn();
-                }
+
+        }
+        if ($piece == 'Q') {
+            $koningin = new Koningin($fromPosition);
+            if ($koningin->moveIsLegal($board, $player, $fromPosition, $toPosition))
+            {
+                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
             }
         }
+        if ($piece == 'A') {
+            $soldatenmier = new Soldatenmier($fromPosition);
+            if ($soldatenmier->moveIsLegal($board, $player, $fromPosition, $toPosition))
+            {
+                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
+            }
+        }
+
+    }
+
+    private static function executeMove(Game $game, Board $board, Database $database, $fromPosition, $toPosition): void
+    {
+        $boardTiles = $board->getBoardTiles();
+
+        $currentState = $game->getState();
+        $board->movePiece($boardTiles, $fromPosition, $toPosition);
+        $database->addMoveToDatabase(
+            $game, $currentState, "move", toPosition: $toPosition, fromPosition: $fromPosition
+        );
+        $game->switchTurn();
     }
 
     public static function pass(Game $game, Database $database): void

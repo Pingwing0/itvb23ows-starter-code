@@ -31,20 +31,21 @@ class Soldatenmier extends Piece
         $newBoardTiles = $board->getBoardTiles();
         $oldPosition = $this->getPosition();
         $tile = $newBoardTiles[$oldPosition];
-        $currentPosition = $this->moveClockwise($board, $newBoardTiles, $this->getPosition());
-        // zolang het doel nog niet is bereikt, of zolang hij nog geen cirkel heeft gemaakt
+        $currentPosition = $this->moveClockwise($board, $newBoardTiles, $this->getPosition(), '');
 
-        while ($currentPosition != $toPosition
-            && $currentPosition !== $this->getPosition()) {
+        // zolang het doel nog niet is bereikt, of zolang hij nog geen cirkel heeft gemaakt
+        while ($currentPosition != $toPosition && $currentPosition != $this->getPosition()) {
+
             unset($newBoardTiles[$oldPosition]);
             $newBoardTiles[$currentPosition] = $tile;
+            $oldPositionNotToCheck = $oldPosition;
             $oldPosition = $currentPosition;
-            $currentPosition = $this->moveClockwise($board, $newBoardTiles, $currentPosition);
+            $currentPosition = $this->moveClockwise($board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck);
         }
         return ($currentPosition == $toPosition);
     }
 
-    public function moveClockwise(Board $board, $boardTiles, $fromPosition): String {
+    public function moveClockwise(Board $board, $boardTiles, $fromPosition, $oldPositionNotToCheck): String {
         // check directions clockwise and move to first one possible
         $fromArray = explode(",", $fromPosition);
 
@@ -52,10 +53,16 @@ class Soldatenmier extends Piece
             $p = (int)$fromArray[0] + $offset[0];
             $q = (int)$fromArray[1] + $offset[1];
             $tryPosition = $p . "," . $q;
+
+            if ($tryPosition == $oldPositionNotToCheck) { // niet een oude positie opnieuw bezoeken!
+                continue;
+            }
+
             try {
                 $this->moveOnce($board, $boardTiles, $fromPosition, $tryPosition);
                 return $tryPosition;
             } catch(RulesException $e) {
+                echo $e;
                 continue;
             }
         }
@@ -100,14 +107,14 @@ class Soldatenmier extends Piece
 
     public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition): bool
     {
-        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+//        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
             try {
                 $this->move($board, $toPosition);
                 return true;
             } catch(RulesException $e) {
                 return false;
             }
-        }
-        return false;
+//        }
+//        return false;
     }
 }
