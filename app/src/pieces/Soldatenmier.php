@@ -107,14 +107,14 @@ class Soldatenmier extends Piece
 
     public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition): bool
     {
-//        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
             try {
                 $this->move($board, $toPosition);
                 return true;
             } catch(RulesException $e) {
                 return false;
             }
-//        }
-//        return false;
+        }
+        return false;
     }
 }

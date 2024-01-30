@@ -126,12 +126,12 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '0,0' => [[0, "A"]],
             '1,0' => [[0, "Q"]],];
         $board = new \app\Board($boardTiles);
-        $player = new \app\Player(0);
+        $player = new \app\Player(0, []);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
         $result = $soldatenmier->getPossibleMovePositions($fromPosition, $player, $board);
-        $expectedResult = ['1,-1', '2,-1', '2,0', '1,1', '0,1']; //oid (misschien andere volgorde?)
+        $expectedResult = ['1,-1', '2,-1', '2,0', '0,1', '1,1']; //oid (misschien andere volgorde?)
         self::assertEquals($expectedResult, $result);
     }
 
