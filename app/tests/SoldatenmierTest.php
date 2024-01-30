@@ -55,7 +55,17 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
    }
 
    public function testWhenSoldatenmierMovesToOccupiedSpaceThenThrowException() {
+       $fromPosition = '0,0';
+       $toPosition = '1,0';
+       $boardTiles = [
+           '0,0' => [[0, "A"]],
+           '1,0' => [[0, "Q"]],];
+       $board = new \app\Board($boardTiles);
 
+       $soldatenmier = new Soldatenmier($fromPosition);
+
+       $this->expectException(\app\RulesException::class);
+       $soldatenmier->move($board, $toPosition);
    }
 
 

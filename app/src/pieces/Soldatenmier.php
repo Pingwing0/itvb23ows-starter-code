@@ -9,11 +9,16 @@ use app\RulesException;
 class Soldatenmier extends Piece
 {
 
-    public function move($board, $toPosition): void
+    public function move(Board $board, $toPosition): void
     {
         if ($this->position == $toPosition) {
             throw new RulesException("Ant can't move to current position");
         }
+        if (array_key_exists($toPosition, $board->getBoardTiles())) {
+            throw new RulesException("Ant can't move to occupied position");
+        }
+
+        $newPosition = $this->moveOnce($board, $toPosition);
     }
 
     /**
