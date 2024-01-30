@@ -23,7 +23,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
     }
 
-    public function testGivenMoveToNotNeighbourWhenSoldatenmierMovesOnceThenThrowsException() {
+    public function testGivenMoveToNotNeighbourWhenSoldatenmierMovesOnceThenReturnsFalse() {
         $fromPosition = '0,0';
         $toPosition = '1,1';
         $boardTiles = [
@@ -36,11 +36,11 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
-        $this->expectException(\app\RulesException::class);
-        $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
+        $result = $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
+        self::assertFalse($result);
     }
 
-   public function testWhenSoldatenmierMovesToCurrentPositionThenThrowException() {
+   public function testWhenSoldatenmierMovesToCurrentPositionThenReturnFalse() {
        $fromPosition = '0,0';
        $toPosition = '0,0';
        $boardTiles = [
@@ -50,11 +50,11 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
        $soldatenmier = new Soldatenmier($fromPosition);
 
-       $this->expectException(\app\RulesException::class);
-       $soldatenmier->move($board, $toPosition);
+       $result = $soldatenmier->move($board, $toPosition);
+       self::assertFalse($result);
    }
 
-   public function testWhenSoldatenmierMovesToOccupiedSpaceThenThrowException() {
+   public function testWhenSoldatenmierMovesToOccupiedSpaceThenReturnFalse() {
        $fromPosition = '0,0';
        $toPosition = '1,0';
        $boardTiles = [
@@ -64,8 +64,8 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
        $soldatenmier = new Soldatenmier($fromPosition);
 
-       $this->expectException(\app\RulesException::class);
-       $soldatenmier->move($board, $toPosition);
+       $result = $soldatenmier->move($board, $toPosition);
+       self::assertFalse($result);
    }
 
     public function testWhenSoldatenmierMovesThenCanMoveMultipleTiles() {
@@ -104,7 +104,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function testWhenMoveOnceToOccupiedTileThenThrowException() {
+    public function testWhenMoveOnceToOccupiedTileThenReturnFalse() {
         $fromPosition = '0,0';
         $toPosition = '1,0';
         $boardTiles = [
@@ -114,8 +114,8 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
-        $this->expectException(\app\RulesException::class);
-        $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
+        $result = $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
+        self::assertFalse($result);
     }
 
     public function testWhenTwoTilesOnBoardThenGetPossibleMovePositionsReturnsPositions() {
