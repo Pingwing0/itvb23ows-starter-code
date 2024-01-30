@@ -118,4 +118,6 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
     }
 
+    //todo bugfix move is legal
+
 }
