@@ -4,8 +4,6 @@ use app\pieces\Soldatenmier;
 
 class SoldatenmierTest extends PHPUnit\Framework\TestCase
 {
-    //todo regel 2
-    // Een verschuiving is een zet zoals de bijenkoningin die mag maken.
     public function testWhenSoldatenmierMovesOnceThenItMovesToANeighbouringField() {
         $fromPosition = '-1,0';
         $toPosition = '-1,1';
@@ -40,12 +38,37 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $this->expectException(\app\RulesException::class);
         $soldatenmier->moveOnce($board, $toPosition);
+    }
+
+   public function testWhenSoldatenmierMovesToCurrentPositionThenThrowException() {
+       $fromPosition = '0,0';
+       $toPosition = '0,0';
+       $boardTiles = [
+           '0,0' => [[0, "A"]],
+           '1,0' => [[0, "Q"]],];
+       $board = new \app\Board($boardTiles);
+
+       $soldatenmier = new Soldatenmier($fromPosition);
+
+       $this->expectException(\app\RulesException::class);
+       $soldatenmier->move($board, $toPosition);
+   }
+
+   public function testWhenSoldatenmierMovesToOccupiedSpaceThenThrowException() {
+
+   }
+
+
+    public function testWhenSoldatenmierMovesThenCanMoveMultipleTiles() {
+
 
     }
 
+    public function testWhenSoldatenmierMovesMultipleTilesThenPassesMultipleTiles() {
+
+    }
     //todo regel 1
     // Een soldatenmier verplaatst zich door een onbeperkt aantal keren te verschuiven
-
 
     //todo regel 3
     // Een soldatenmier mag zich niet verplaatsen naar het veld waar hij al staat.
