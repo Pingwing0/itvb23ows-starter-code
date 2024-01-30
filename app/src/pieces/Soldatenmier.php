@@ -12,20 +12,18 @@ class Soldatenmier extends Piece
 
     public function move(Board $board, $toPosition): bool
     {
-        if ($this->position == $toPosition) {
+        if ($this->position == $toPosition ||
+            array_key_exists($toPosition, $board->getBoardTiles()))
+        {
             return false;
-        }
-        if (array_key_exists($toPosition, $board->getBoardTiles())) {
-           return false;
         }
 
         if ($this->canMoveToToPosition($board, $toPosition)){
             $this->setPosition($toPosition);
-        } else {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public function canMoveToToPosition(Board $board, $toPosition): bool
@@ -43,13 +41,15 @@ class Soldatenmier extends Piece
             $oldPositionNotToCheck = $oldPosition;
             $oldPosition = $currentPosition;
             if ($this->moveClockwise($board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck) != '') {
-                $currentPosition = $this->moveClockwise($board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck);
+                $currentPosition = $this->moveClockwise(
+                    $board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck
+                );
             } else {
                 return false;
             }
 
         }
-        return ($currentPosition == $toPosition);
+        return $currentPosition == $toPosition;
     }
 
 
