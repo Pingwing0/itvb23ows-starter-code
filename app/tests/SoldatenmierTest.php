@@ -100,7 +100,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
-        $result = $soldatenmier->moveClockwise($board, $toPosition);
+        $result = $soldatenmier->moveClockwise($board, $fromPosition);
         $expectedResult = '0,-1';
         self::assertEquals($expectedResult, $result);
     }
