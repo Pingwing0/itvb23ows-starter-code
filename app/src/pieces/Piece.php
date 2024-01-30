@@ -7,6 +7,23 @@ use app\Player;
 
 abstract class Piece
 {
+    protected String $position;
+
+    public function __construct($position)
+    {
+        $this->position = $position;
+    }
+
+    public function getPosition(): String
+    {
+        return $this->position;
+    }
+
+    public function setPosition($position): void
+    {
+        $this->position = $position;
+    }
+
     public function getPossibleMovePositions(String $fromPosition, Player $player, Board $board): array
     {
         $offsets = $board->getOffsets();
@@ -24,5 +41,7 @@ abstract class Piece
         }
         return array_unique($possibleMovePositions);
     }
+
+    abstract public function moveIsLegal(Board $board, Player $player, String $fromPosition, String $toPosition);
 
 }

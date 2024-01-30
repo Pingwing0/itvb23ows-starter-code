@@ -9,23 +9,6 @@ use app\RulesMove;
 
 class Sprinkhaan extends Piece
 {
-    private String $position;
-
-    public function __construct(String $position)
-    {
-        $this->setPosition($position);
-    }
-
-    public function getPosition(): String
-    {
-        return $this->position;
-    }
-
-    public function setPosition($position): void
-    {
-        $this->position = $position;
-    }
-
     /**
      * @throws RulesException
      */

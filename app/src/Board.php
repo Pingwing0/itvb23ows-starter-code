@@ -3,13 +3,14 @@
 namespace app;
 
 use app\pieces\Koningin;
+use app\pieces\Soldatenmier;
 use app\pieces\Sprinkhaan;
 
 class Board
 {
     // Board bestaat alleen uit tiles, niet uit alle beschikbare plekken
     private array $boardTiles;
-    private array $offsets = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
+    private array $offsets = [[1, -1], [1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1]];
 
     public function __construct($boardTiles = [])
     {
@@ -87,7 +88,8 @@ class Board
             return
                 ($pieceOne[0] == $pieceTwo[0] && abs($pieceOne[1] - $pieceTwo[1]) == 1) ||
                 ($pieceOne[1] == $pieceTwo[1] && abs($pieceOne[0] - $pieceTwo[0]) == 1) ||
-                ((int)$pieceOne[0] + (int)$pieceOne[1] == (int)$pieceTwo[0] + (int)$pieceTwo[1]);
+                ($pieceOne[0] - $pieceTwo[0] == -1 && $pieceOne[1] - $pieceTwo[1] == 1) ||
+                ($pieceOne[0] - $pieceTwo[0] == 1 && $pieceOne[1] - $pieceTwo[1] == -1);
         }
     }
 
@@ -157,6 +159,10 @@ class Board
         if ($piece == 'G') {
             $sprinkhaan = new Sprinkhaan($fromPosition);
             $possibleMovePositions = $sprinkhaan->getPossibleMovePositions($fromPosition, $player, $this);
+        }
+        if ($piece == 'A') {
+            $soldatenmier = new Soldatenmier($fromPosition);
+            $possibleMovePositions = $soldatenmier->getPossibleMovePositions($fromPosition, $player, $this);
         }
         return array_unique($possibleMovePositions);
     }
