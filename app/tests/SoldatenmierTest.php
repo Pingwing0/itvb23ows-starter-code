@@ -135,4 +135,22 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
+    public function testWhenLegalMoveThenMoveIsLegalReturnsTrue() {
+        $fromPosition = '-1,0';
+        $toPosition = '-1,1';
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "Q"]],
+            '-1,0' => [[0, "A"]],
+            '2,0' => [[1, "B"]]
+        ];
+        $board = new \app\Board($boardTiles);
+        $player = new \app\Player(0);
+
+        $soldatenmier = new Soldatenmier($fromPosition);
+
+        self::assertTrue($soldatenmier->moveIsLegal($board, $player, $fromPosition, $toPosition));
+
+    }
+
 }
