@@ -29,7 +29,6 @@ class Moves
     public static function movePiece(String $fromPosition, String $toPosition, Game $game, Database $database): void
     {
         //todo checken of stapelen werkt (werkt volgens mij nog niet)
-        //todo refactoren later met verschillende bordstukken
 
         $player = $game->getCurrentPlayer();
         $board = $game->getBoard();
