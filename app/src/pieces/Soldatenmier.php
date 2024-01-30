@@ -10,20 +10,22 @@ use app\RulesMove;
 class Soldatenmier extends Piece
 {
 
-    public function move(Board $board, $toPosition): void
+    public function move(Board $board, $toPosition): bool
     {
         if ($this->position == $toPosition) {
-            throw new RulesException("Ant can't move to current position");
+            return false;
         }
         if (array_key_exists($toPosition, $board->getBoardTiles())) {
-            throw new RulesException("Ant can't move to occupied position");
+           return false;
         }
 
         if ($this->canMoveToToPosition($board, $toPosition)){
             $this->setPosition($toPosition);
         } else {
-            throw new RulesException("Can't reach this tile");
+            return false;
         }
+
+        return true;
     }
 
     public function canMoveToToPosition(Board $board, $toPosition): bool
@@ -40,13 +42,20 @@ class Soldatenmier extends Piece
             $newBoardTiles[$currentPosition] = $tile;
             $oldPositionNotToCheck = $oldPosition;
             $oldPosition = $currentPosition;
-            $currentPosition = $this->moveClockwise($board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck);
+            if ($this->moveClockwise($board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck) != '') {
+                $currentPosition = $this->moveClockwise($board, $newBoardTiles, $currentPosition, $oldPositionNotToCheck);
+            } else {
+                return false;
+            }
+
         }
         return ($currentPosition == $toPosition);
     }
 
+
     public function moveClockwise(Board $board, $boardTiles, $fromPosition, $oldPositionNotToCheck): String {
         // check directions clockwise and move to first one possible
+
         $fromArray = explode(",", $fromPosition);
 
         foreach ($board->getOffsets() as $offset) {
@@ -58,31 +67,28 @@ class Soldatenmier extends Piece
                 continue;
             }
 
-            try {
-                $this->moveOnce($board, $boardTiles, $fromPosition, $tryPosition);
+            if ($this->moveOnce($board, $boardTiles, $fromPosition, $tryPosition) != '') {
                 return $tryPosition;
-            } catch(RulesException $e) {
-                echo $e;
-                continue;
             }
         }
-        throw new RulesException("Can't move anywhere from " . $fromPosition);
+        return '';
 
     }
 
-    /**
-     * @throws RulesException
-     */
-    public function moveOnce($board, $boardTiles, $fromPosition, $toPosition) {
+
+    public function moveOnce($board, $boardTiles, $fromPosition, $toPosition): string
+    {
+
         if (array_key_exists($toPosition, $boardTiles)) {
-            throw new RulesException("Ant can't move to occupied position");
+            return '';
         }
 
         if ($this->slideOneSpace($board, $boardTiles, $fromPosition, $toPosition)) {
             return $toPosition;
         } else {
-            throw new RulesException("Ant can't move more than 1 tile at once");
+            return '';
         }
+
     }
 
     public function slideOneSpace(Board $board, $boardTiles, $from, $to): bool
@@ -108,12 +114,7 @@ class Soldatenmier extends Piece
     public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition): bool
     {
         if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
-            try {
-                $this->move($board, $toPosition);
-                return true;
-            } catch(RulesException $e) {
-                return false;
-            }
+            return $this->move($board, $toPosition);
         }
         return false;
     }

@@ -23,7 +23,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
     }
 
-    public function testGivenMoveToNotNeighbourWhenSoldatenmierMovesOnceThenReturnsFalse() {
+    public function testGivenMoveToNotNeighbourWhenSoldatenmierMovesOnceThenReturnsEmptyString() {
         $fromPosition = '0,0';
         $toPosition = '1,1';
         $boardTiles = [
@@ -37,7 +37,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $soldatenmier = new Soldatenmier($fromPosition);
 
         $result = $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
-        self::assertFalse($result);
+        self::assertEquals('',$result);
     }
 
    public function testWhenSoldatenmierMovesToCurrentPositionThenReturnFalse() {
@@ -104,7 +104,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function testWhenMoveOnceToOccupiedTileThenReturnFalse() {
+    public function testWhenMoveOnceToOccupiedTileThenReturnEmptyString() {
         $fromPosition = '0,0';
         $toPosition = '1,0';
         $boardTiles = [
@@ -115,7 +115,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $soldatenmier = new Soldatenmier($fromPosition);
 
         $result = $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
-        self::assertFalse($result);
+        self::assertEquals('',$result);
     }
 
     public function testWhenTwoTilesOnBoardThenGetPossibleMovePositionsReturnsPositions() {
@@ -143,7 +143,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '2,0' => [[1, "B"]]
         ];
         $board = new \app\Board($boardTiles);
-        $player = new \app\Player(0);
+        $player = new \app\Player(0, []);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
