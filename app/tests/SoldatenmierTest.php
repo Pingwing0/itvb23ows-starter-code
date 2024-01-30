@@ -85,11 +85,24 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $result = $soldatenmier->getPosition();
         $expectedResult = '1,-1';
         self::assertEquals($expectedResult, $result);
-
     }
 
-    public function testWhenSoldatenmierMovesMultipleTilesThenPassesMultipleTiles() {
+    public function testWhenSoldatenmierMovesOnceClockwiseThenItMovesClockWise() {
+        $fromPosition = '-1,0';
+        $toPosition = '1,-1';
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "Q"]],
+            '-1,0' => [[0, "A"]],
+            '2,0' => [[1, "B"]]
+        ];
+        $board = new \app\Board($boardTiles);
 
+        $soldatenmier = new Soldatenmier($fromPosition);
+
+        $result = $soldatenmier->moveClockwise($board, $toPosition);
+        $expectedResult = '0,-1';
+        self::assertEquals($expectedResult, $result);
     }
     //todo regel 1
     // Een soldatenmier verplaatst zich door een onbeperkt aantal keren te verschuiven
