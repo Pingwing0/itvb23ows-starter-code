@@ -3,6 +3,7 @@
 namespace app;
 
 use app\pieces\Koningin;
+use app\pieces\Soldatenmier;
 use app\pieces\Sprinkhaan;
 
 class Board
@@ -157,6 +158,10 @@ class Board
         if ($piece == 'G') {
             $sprinkhaan = new Sprinkhaan($fromPosition);
             $possibleMovePositions = $sprinkhaan->getPossibleMovePositions($fromPosition, $player, $this);
+        }
+        if ($piece == 'A') {
+            $soldatenmier = new Soldatenmier($fromPosition);
+            $possibleMovePositions = $soldatenmier->getPossibleMovePositions($fromPosition, $player, $this);
         }
         return array_unique($possibleMovePositions);
     }
