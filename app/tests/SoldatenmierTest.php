@@ -68,9 +68,23 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
        $soldatenmier->move($board, $toPosition);
    }
 
-
     public function testWhenSoldatenmierMovesThenCanMoveMultipleTiles() {
+        $fromPosition = '-1,0';
+        $toPosition = '1,-1';
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "Q"]],
+            '-1,0' => [[0, "A"]],
+            '2,0' => [[1, "B"]]
+        ];
+        $board = new \app\Board($boardTiles);
 
+        $soldatenmier = new Soldatenmier($fromPosition);
+        $soldatenmier->move($board, $toPosition);
+
+        $result = $soldatenmier->getPosition();
+        $expectedResult = '1,-1';
+        self::assertEquals($expectedResult, $result);
 
     }
 
