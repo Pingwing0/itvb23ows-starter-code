@@ -118,6 +118,21 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $soldatenmier->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
     }
 
-    //todo bugfix move is legal
+    //todo bugfix move is legal (bij het ophalen van alle mogelijke velden lijkt hij in een oneindige loop te komen)
+
+    public function testWhenTwoTilesOnBoardThenGetPossibleMovePositionsReturnsPositions() {
+        $fromPosition = '0,0';
+        $boardTiles = [
+            '0,0' => [[0, "A"]],
+            '1,0' => [[0, "Q"]],];
+        $board = new \app\Board($boardTiles);
+        $player = new \app\Player(0);
+
+        $soldatenmier = new Soldatenmier($fromPosition);
+
+        $result = $soldatenmier->getPossibleMovePositions($fromPosition, $player, $board);
+        $expectedResult = ['1,-1', '2,-1', '2,0', '1,1', '0,1']; //oid (misschien andere volgorde?)
+        self::assertEquals($expectedResult, $result);
+    }
 
 }
