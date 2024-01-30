@@ -99,7 +99,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
-        $result = $soldatenmier->moveClockwise($board, $boardTiles, $fromPosition);
+        $result = $soldatenmier->moveClockwise($board, $boardTiles, $fromPosition, '');
         $expectedResult = '0,-1';
         self::assertEquals($expectedResult, $result);
     }
@@ -151,6 +151,23 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
 
         self::assertTrue($soldatenmier->moveIsLegal($board, $player, $fromPosition, $toPosition));
 
+    }
+
+    public function testWhenSoldatenmierMovesOnceClockwiseThenItMovesClockWiseToLegalPosition() {
+        $fromPosition = '0,1';
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "Q"]],
+            '0,1' => [[0, "A"]],
+            '2,0' => [[1, "B"]]
+        ];
+        $board = new \app\Board($boardTiles);
+
+        $soldatenmier = new Soldatenmier($fromPosition);
+
+        $result = $soldatenmier->moveClockwise($board, $boardTiles, $fromPosition, '1,1');
+        $expectedResult = '-1,1';
+        self::assertEquals($expectedResult, $result);
     }
 
 }
