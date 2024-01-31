@@ -36,30 +36,22 @@ class Moves
         $boardTiles = $board->getBoardTiles();
 
         //todo dit werkt niet bij stapelen (maar dat werkt sowieso nog niet)
-        $piece = $boardTiles[$fromPosition][0][1];
-        if ($piece == 'G') {
-            $sprinkhaan = new Sprinkhaan($fromPosition);
-            if ($sprinkhaan->moveIsLegal($board, $player, $fromPosition, $toPosition)) {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        $pieceLetter = $boardTiles[$fromPosition][0][1];
+        $piece = null;
+        if ($pieceLetter == 'G') {
+            $piece = new Sprinkhaan($fromPosition);
         }
-        if ($piece == 'Q') {
-            $koningin = new Koningin($fromPosition);
-            if ($koningin->moveIsLegal($board, $player, $fromPosition, $toPosition))
-            {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        if ($pieceLetter == 'Q') {
+            $piece = new Koningin($fromPosition);
         }
-        if ($piece == 'A') {
-            $soldatenmier = new Soldatenmier($fromPosition);
-            if ($soldatenmier->moveIsLegal($board, $player, $fromPosition, $toPosition))
-            {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        if ($pieceLetter == 'A') {
+            $piece = new Soldatenmier($fromPosition);
         }
-        if ($piece == 'S') {
-            $spin = new Spin($fromPosition);
-            if ($spin->moveIsLegal($board, $player, $fromPosition, $toPosition))
+        if ($pieceLetter == 'S') {
+            $piece = new Spin($fromPosition);
+        }
+        if ($piece) {
+            if ($piece->moveIsLegal($board, $player, $fromPosition, $toPosition))
             {
                 self::executeMove($game, $board, $database, $fromPosition, $toPosition);
             }
@@ -81,9 +73,12 @@ class Moves
 
     public static function pass(Game $game, Database $database): void
     {
-        $currentState = $game->getState();
-        $database->addMoveToDatabase($game, $currentState, "pass");
-        $game->switchTurn();
+        if (self::playerIsAbleToPass($game->getBoard(), $game->getCurrentPlayer())) {
+            $currentState = $game->getState();
+            $database->addMoveToDatabase($game, $currentState, "pass");
+            $game->switchTurn();
+        }
+
     }
 
     public static function undoLastMove(Game $game, Database $database): void
@@ -97,5 +92,30 @@ class Moves
             $game->switchTurn();
         }
 
+    }
+
+    public static function playerIsAbleToPass(Board $board, Player $player): bool
+    {
+        return !self::thereIsAPieceAbleToBePlayed($board, $player) &&
+            !self::thereIsAPieceAbleToMove($board, $player);
+    }
+
+    public static function thereIsAPieceAbleToMove(Board $board, Player $player): bool
+    {
+        $tilesToCheck = $board->getTilesFromPlayer($player->getPlayerNumber());
+
+        foreach ($tilesToCheck as $position => $tile) {
+            if (count($board->getPossibleMovePositions($position, $player)) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function thereIsAPieceAbleToBePlayed(Board $board, Player $player): bool
+    {
+        $possiblePlayPositions = $board->getPossiblePlayPositions($player->getPlayerNumber(), $player->getHand());
+
+        return count($possiblePlayPositions) > 0;
     }
 }

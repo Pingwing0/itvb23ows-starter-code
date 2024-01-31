@@ -1,11 +1,12 @@
 <?php
 
 use app\RulesPlay;
+use app\Board;
 
 class RulesPlayTest extends PHPUnit\Framework\TestCase
 {
     public function testGivenLegalPlayPositionPositionIsLegalToPlayReturnTrue() {
-        $board = new \app\Board();
+        $board = new Board();
         $hand = ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3];
         $playerNumber = 0;
         $toPosition = '0,0';
@@ -22,7 +23,7 @@ class RulesPlayTest extends PHPUnit\Framework\TestCase
             '0,-2' => [[0, "A"]],
             '0,3' => [[1, "B"]]];
 
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $hand = ["Q" => 1, "B" => 1, "S" => 2, "A" => 1, "G" => 3];
         $playerNumber = 0;
         $toPosition = '0,-3';

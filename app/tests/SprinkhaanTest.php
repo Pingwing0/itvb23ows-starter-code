@@ -34,14 +34,14 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         self::assertTrue($result);
     }
 
-    public function testWhenSprinkhaanMovesToSameFieldThenThrowException() {
+    public function testWhenSprinkhaanMovesToSameFieldThenReturnFalse() {
         $fromPosition = '0,0';
         $toPosition = '0,0';
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
-        
-        $this->expectException(\app\RulesException::class);
-        $sprinkhaan->move($toPosition, []);
+        $result = $sprinkhaan->move($toPosition, []);
+
+        self::assertFalse($result);
     }
 
     public function testWhenMovingHorizontallyThenJumpOverStonesCountReturnMinimumOne() {
@@ -96,7 +96,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
         $expected = (1);
         self::assertEquals($expected, $result);
     }
-    public function testWhenSprinkhaanMovesAndDoesntJumpOverStonesThenThrowsException() {
+    public function testWhenSprinkhaanMovesAndDoesntJumpOverStonesThenReturnsFalse() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
 
@@ -108,11 +108,11 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
 
-        $this->expectException(\app\RulesException::class);
-        $sprinkhaan->move($toPosition, $boardTiles);
+        $result = $sprinkhaan->move($toPosition, $boardTiles);
+        self::assertFalse($result);
     }
 
-    public function testWhenSprinkhaanMovesToOccupiedSpaceThenMoveThrowsException() {
+    public function testWhenSprinkhaanMovesToOccupiedSpaceThenMoveReturnsFalse() {
         $fromPosition = '0,0';
         $toPosition = '2,-2';
 
@@ -124,9 +124,8 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
 
-        $this->expectException(\app\RulesException::class);
-        $sprinkhaan->move($toPosition, $boardTiles);
+        $result = $sprinkhaan->move($toPosition, $boardTiles);
+        self::assertFalse($result);
     }
-
 
 }

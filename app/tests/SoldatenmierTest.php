@@ -1,6 +1,8 @@
 <?php
 
 use app\pieces\Soldatenmier;
+use app\Board;
+use app\Player;
 
 class SoldatenmierTest extends PHPUnit\Framework\TestCase
 {
@@ -13,7 +15,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '-1,0' => [[0, "A"]],
             '2,0' => [[1, "B"]]
         ];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -32,7 +34,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '-1,0' => [[0, "A"]],
             '2,0' => [[1, "B"]]
         ];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -46,7 +48,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
        $boardTiles = [
            '0,0' => [[0, "A"]],
            '1,0' => [[0, "Q"]],];
-       $board = new \app\Board($boardTiles);
+       $board = new Board($boardTiles);
 
        $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -60,7 +62,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
        $boardTiles = [
            '0,0' => [[0, "A"]],
            '1,0' => [[0, "Q"]],];
-       $board = new \app\Board($boardTiles);
+       $board = new Board($boardTiles);
 
        $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -77,7 +79,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '-1,0' => [[0, "A"]],
             '2,0' => [[1, "B"]]
         ];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $soldatenmier = new Soldatenmier($fromPosition);
         $soldatenmier->move($board, $toPosition);
@@ -95,7 +97,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '-1,0' => [[0, "A"]],
             '2,0' => [[1, "B"]]
         ];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -110,7 +112,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "A"]],
             '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -123,8 +125,8 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "A"]],
             '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
-        $player = new \app\Player(0, []);
+        $board = new Board($boardTiles);
+        $player = new Player(0, []);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -142,8 +144,8 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '-1,0' => [[0, "A"]],
             '2,0' => [[1, "B"]]
         ];
-        $board = new \app\Board($boardTiles);
-        $player = new \app\Player(0, []);
+        $board = new Board($boardTiles);
+        $player = new Player(0, []);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 
@@ -159,7 +161,7 @@ class SoldatenmierTest extends PHPUnit\Framework\TestCase
             '0,1' => [[0, "A"]],
             '2,0' => [[1, "B"]]
         ];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $soldatenmier = new Soldatenmier($fromPosition);
 

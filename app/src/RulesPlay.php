@@ -23,67 +23,27 @@ class RulesPlay
 
     public static function tileNotInHand($hand, $piece): bool
     {
-        try {
-            if (!$hand[$piece]) {
-                throw new RulesException("Player does not have tile in hand");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return false;
+            return !$hand[$piece];
     }
 
     private static function boardPositionIsEmpty($boardTiles, $toPosition): bool
     {
-        try{
-            if (isset($boardTiles[$toPosition])) {
-                throw new RulesException("Board position is not empty");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+            return !isset($boardTiles[$toPosition]);
     }
 
     private static function boardPositionHasANeighbour(Board $board, $boardTiles, $position): bool
     {
-        try{
-            if (count($boardTiles) && !$board->pieceHasNeighbour($boardTiles, $position)) {
-                throw new RulesException("Board position has no neighbour");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return !(count($boardTiles) && !$board->pieceHasNeighbour($boardTiles, $position));
     }
 
     private static function boardPositionHasNoOpposingNeighbour(Board $board, $hand, $playerNumber, $position): bool
     {
-        try{
-            if (array_sum($hand) < 11 && !$board->neighboursOfPieceAreTheSameColor($playerNumber, $position)) {
-                throw new RulesException("Board position has opposing neighbour");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return !(array_sum($hand) < 11 && !$board->neighboursOfPieceAreTheSameColor($playerNumber, $position));
     }
 
     public static function queenBeeIsPlayedBeforeTurnFour($hand, $pieceToPlay): bool
     {
-        try {
-            if (array_sum($hand) <= 8 && array_key_exists("Q", $hand) && $pieceToPlay != "Q") {
-                throw new RulesException("Must play queen bee before turn four");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return !(array_sum($hand) <= 8 && array_key_exists("Q", $hand) && $pieceToPlay != "Q");
     }
 
 }
