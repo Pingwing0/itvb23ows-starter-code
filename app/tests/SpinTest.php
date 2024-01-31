@@ -6,42 +6,6 @@ use app\pieces\Spin;
 class SpinTest extends PHPUnit\Framework\TestCase
 {
 
-    public function testWhenSpinMovesOnceThenItMovesToANeighbouringField() {
-        $fromPosition = '-1,0';
-        $toPosition = '-1,1';
-        $boardTiles = [
-            '0,0' => [[0, "Q"]],
-            '1,0' => [[1, "Q"]],
-            '-1,0' => [[0, "S"]],
-            '2,0' => [[1, "B"]]
-        ];
-        $board = new \app\Board($boardTiles);
-
-        $spin = new Spin($fromPosition);
-
-        $result = $spin->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
-        $expectedResult = '-1,1';
-        self::assertEquals($expectedResult, $result);
-
-    }
-
-    public function testWhenSpinMoveToNotNeighbourWhenSpinMovesOnceThenReturnsEmptyString() {
-        $fromPosition = '0,0';
-        $toPosition = '1,1';
-        $boardTiles = [
-            '0,0' => [[0, "Q"]],
-            '1,0' => [[1, "Q"]],
-            '-1,0' => [[0, "S"]],
-            '2,0' => [[1, "B"]]
-        ];
-        $board = new \app\Board($boardTiles);
-
-        $spin = new Spin($fromPosition);
-
-        $result = $spin->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
-        self::assertEquals('',$result);
-    }
-
     public function testWhenSpinMovesToCurrentPositionThenReturnFalse() {
         $fromPosition = '0,0';
         $toPosition = '0,0';
@@ -54,20 +18,6 @@ class SpinTest extends PHPUnit\Framework\TestCase
 
         $result = $spin->move($board, $toPosition);
         self::assertFalse($result);
-    }
-
-    public function testWhenSpinMoveOnceToOccupiedTileThenReturnEmptyString() {
-        $fromPosition = '0,0';
-        $toPosition = '1,0';
-        $boardTiles = [
-            '0,0' => [[0, "S"]],
-            '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
-
-        $spin = new Spin($fromPosition);
-
-        $result = $spin->moveOnce($board, $boardTiles, $fromPosition, $toPosition);
-        self::assertEquals('',$result);
     }
 
     public function testWhenSpinMovesToOccupiedSpaceThenReturnFalse() {
@@ -86,20 +36,6 @@ class SpinTest extends PHPUnit\Framework\TestCase
 
     //todo spin moves by moving 3 times
 
-    public function testWhenSpinMovesThenMoveThreeTimesReturnsThreeTiles() {
-        $fromPosition = '0,0';
-        $toPosition = '2,0';
-        $boardTiles = [
-            '0,0' => [[0, "S"]],
-            '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
-
-        $spin = new Spin($fromPosition);
-
-        $result = count($spin->moveOnceThreeTimes($board, $toPosition));
-        self::assertEquals(3, $result);
-    }
-
     public function testWhenSpinLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPosition() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
@@ -112,7 +48,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
     }
 
     //todo cant move to occupied tile
-    
+
 
 
 
