@@ -171,7 +171,7 @@ class Board
             $possibleMovePositions = $piece->getPossibleMovePositions($fromPosition, $player, $this);
         }
 
-        return array_unique($possibleMovePositions);
+        return $possibleMovePositions;
     }
 
     public function koninginIsSurrounded(int $playerNumber): bool
