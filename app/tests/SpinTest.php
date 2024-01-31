@@ -34,9 +34,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertFalse($result);
     }
 
-    //todo spin moves by moving 3 times
-
-    public function testWhenSpinLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPosition() {
+    public function testWhenSpinLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPositionReturnsTrue() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
         $board = new Board([]);
@@ -47,8 +45,48 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertTrue($result);
     }
 
-    //todo cant move to occupied tile
+    public function testWhenSpinNotLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPositionReturnsFalse() {
+        $fromPosition = '0,0';
+        $toPosition = '4,0';
+        $board = new Board([]);
 
+        $spin = new Spin($fromPosition);
+
+        $result = $spin->neighbourOfFromPositionIsNeighbourOfToPosition($board, $fromPosition, $toPosition);
+        self::assertFalse($result);
+    }
+
+    //todo cant move to occupied tile
+    public function testWhenSpinNeighbourIsOccupiedThenNeighbourIsNotOccupiedReturnsFalse() {
+        $position = '1,0';
+        $boardTiles = [
+            '0,0' => [[0, "S"]],
+            '1,0' => [[0, "Q"]],];
+        $board = new Board($boardTiles);
+
+        $spin = new Spin('0,0');
+
+        $result = $spin->neighbourIsNotOccupied($board, $position);
+        self::assertFalse($result);
+    }
+
+    public function testWhenSpinIsSurroundedGetAllLegalNeighboursOfPositionReturnsEmptyArray() {
+        $position = '1,0';
+        $boardTiles = [
+            '0,0' => [[0, "S"]],
+            '1,0' => [[0, "Q"]],
+            '0,1' => [[0, "Q"]],
+            '-1,1' => [[0, "Q"]],
+            '-1,0' => [[0, "Q"]],
+            '0,-1' => [[0, "Q"]],
+            '1,-1' => [[0, "Q"]],];
+        $board = new Board($boardTiles);
+
+        $spin = new Spin('0,0');
+
+        $result = $spin->getAllLegalNeighboursOfPosition($board, $position);
+        self::assertFalse($result);
+    }
 
 
 
