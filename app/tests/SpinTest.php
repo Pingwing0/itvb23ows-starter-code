@@ -34,6 +34,34 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertFalse($result);
     }
 
+    public function testWhenSpinLegalMovesThenMoveReturnTrue() {
+        $fromPosition = '0,0';
+        $toPosition = '0,1';
+        $boardTiles = [
+            '0,0' => [[0, "S"]],
+            '1,0' => [[0, "Q"]],];
+        $board = new \app\Board($boardTiles);
+
+        $spin = new Spin($fromPosition);
+
+        $result = $spin->move($board, $toPosition);
+        self::assertTrue($result);
+    }
+
+    public function testWhenSpinIllegalMovesThenMoveReturnFalse() {
+        $fromPosition = '0,0';
+        $toPosition = '4,0';
+        $boardTiles = [
+            '0,0' => [[0, "S"]],
+            '1,0' => [[0, "Q"]],];
+        $board = new \app\Board($boardTiles);
+
+        $spin = new Spin($fromPosition);
+
+        $result = $spin->move($board, $toPosition);
+        self::assertFalse($result);
+    }
+
     public function testWhenSpinLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPositionReturnsTrue() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
@@ -57,7 +85,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
     }
 
     //todo cant move to occupied tile
-    public function testWhenSpinNeighbourIsOccupiedThenNeighbourIsNotOccupiedReturnsFalse() {
+    public function testWhenSpinNeighbourIsOccupiedThenPositionIsOccupiedReturnsTrue() {
         $position = '1,0';
         $boardTiles = [
             '0,0' => [[0, "S"]],
@@ -66,8 +94,8 @@ class SpinTest extends PHPUnit\Framework\TestCase
 
         $spin = new Spin('0,0');
 
-        $result = $spin->neighbourIsNotOccupied($board, $position);
-        self::assertFalse($result);
+        $result = $spin->positionIsOccupied($board, $position);
+        self::assertTrue($result);
     }
 
     public function testWhenSpinIsSurroundedGetAllLegalNeighboursOfPositionReturnsEmptyArray() {
