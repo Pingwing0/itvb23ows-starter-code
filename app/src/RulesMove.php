@@ -53,8 +53,8 @@ class RulesMove
             $next = explode(',', array_shift($queue));
             foreach ($board->getOffsets() as $offset) {
                 list($p, $q) = $offset;
-                $p += $next[0];
-                $q += $next[1];
+                $p += (int)$next[0];
+                $q += (int)$next[1];
                 if (in_array("$p,$q", $allBoardPositions)) {
                     $queue[] = "$p,$q";
                     $allBoardPositions = array_diff($allBoardPositions, ["$p,$q"]);
@@ -62,38 +62,6 @@ class RulesMove
             }
         }
         return !$allBoardPositions;
-    }
-
-    // hieronder oude code waarvan nog niet duidelijk is wat het is en of het nodig is
-
-    private static function len($tile): int
-    {
-        return $tile ? count($tile) : 0;
-    }
-
-    public static function oldSlideToRefactor(Board $board, $from, $to) {
-        //todo wat is dit? wat doet dit?
-        $boardTiles = $board->getBoardTiles();
-        unset($boardTiles[$from]);
-
-        $toPositionArray = explode(',', $to);
-        $common = [];
-        // probeer alle 6 richtingen? waarom?
-        foreach ($board->getOffsets() as $offset) {
-            $p = $toPositionArray[0] + $offset[0];
-            $q = $toPositionArray[1] + $offset[1];
-            $tryToPosition = $p.",".$q;
-            if ($board->pieceIsNeighbourOf($from, $tryToPosition)) {
-                $common[] = $p.",".$q;
-            }
-        }
-
-        if (!$boardTiles[$common[0]] && !$boardTiles[$common[1]]
-            && !$boardTiles[$from] && !$boardTiles[$to]) {
-            return false;
-        }
-        return min(self::len($boardTiles[$common[0]]), self::len($boardTiles[$common[1]]))
-            <= max(self::len($boardTiles[$from]), self::len($boardTiles[$to]));
     }
 
 }
