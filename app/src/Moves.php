@@ -57,11 +57,8 @@ class Moves
         if ($pieceLetter == 'S') {
             $piece = new Spin($fromPosition);
         }
-        if ($piece) {
-            if ($piece->moveIsLegal($board, $player, $fromPosition, $toPosition))
-            {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        if ($piece && $piece->moveIsLegal($board, $player, $fromPosition, $toPosition)) {
+            self::executeMove($game, $board, $database, $fromPosition, $toPosition);
         }
 
     }
