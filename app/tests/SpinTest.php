@@ -99,7 +99,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
     }
 
     public function testWhenSpinIsSurroundedGetAllLegalNeighboursOfPositionReturnsEmptyArray() {
-        $position = '1,0';
+        $position = '0,0';
         $boardTiles = [
             '0,0' => [[0, "S"]],
             '1,0' => [[0, "Q"]],
@@ -113,7 +113,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
         $spin = new Spin('0,0');
 
         $result = $spin->getAllLegalNeighboursOfPosition($board, $position);
-        self::assertFalse($result);
+        self::assertEquals([], $result);
     }
 
 
