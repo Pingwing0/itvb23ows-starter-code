@@ -16,14 +16,8 @@ class Sprinkhaan extends Piece
             return false;
         }
 
-        if ($this->moveIsAStraightLine($this->getPosition(), $toPosition) &&
-            $this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles) > 0)
-        {
-            $this->setPosition($toPosition);
-            return true;
-        }
-
-        return false;
+        return $this->moveIsAStraightLine($this->getPosition(), $toPosition) &&
+            $this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles) > 0;
     }
 
     public function moveIsLegal(Board $board, Player $player, $fromPosition, $toPosition): bool
