@@ -4,46 +4,33 @@ namespace app\pieces;
 
 use app\Board;
 use app\Player;
-use app\RulesException;
 use app\RulesMove;
 
 class Sprinkhaan extends Piece
 {
     //todo change Exceptions for booleans
 
-    /**
-     * @throws RulesException
-     */
-    public function move($toPosition, $boardTiles): void
+    public function move($toPosition, $boardTiles): bool
     {
-        if ($toPosition == $this->getPosition()) {
-            throw new RulesException("Tile to move to is the same");
+        if ($toPosition == $this->getPosition() || array_key_exists($toPosition, $boardTiles)) {
+            return false;
         }
 
-        if(array_key_exists($toPosition, $boardTiles)) {
-            throw new RulesException("Tile can't move to occupied space");
-        }
-
-        if ($this->moveIsAStraightLine($this->getPosition(), $toPosition)) {
-            if ($this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles) == 0) {
-                throw new RulesException("Can't jump over empty space");
-            }
+        if ($this->moveIsAStraightLine($this->getPosition(), $toPosition) &&
+            $this->countNoOfStonesToJumpOver($this->getPosition(), $toPosition, $boardTiles) > 0)
+        {
             $this->setPosition($toPosition);
-        } else {
-            throw new RulesException("Move is not a straight line");
+            return true;
         }
+
+        return false;
     }
 
     public function moveIsLegal(Board $board, Player $player, $fromPosition, $toPosition): bool
     {
         if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
             $boardTiles = $board->getBoardTiles();
-            try {
-                $this->move($toPosition, $boardTiles);
-                return true;
-            } catch(RulesException $e) {
-                return false;
-            }
+            return $this->move($toPosition, $boardTiles);
         }
         return false;
     }
