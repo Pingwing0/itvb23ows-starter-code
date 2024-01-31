@@ -84,7 +84,6 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertFalse($result);
     }
 
-    //todo cant move to occupied tile
     public function testWhenSpinNeighbourIsOccupiedThenPositionIsOccupiedReturnsTrue() {
         $position = '1,0';
         $boardTiles = [
@@ -115,7 +114,5 @@ class SpinTest extends PHPUnit\Framework\TestCase
         $result = $spin->getAllLegalNeighboursOfPosition($board, $position);
         self::assertEquals([], $result);
     }
-
-
 
 }
