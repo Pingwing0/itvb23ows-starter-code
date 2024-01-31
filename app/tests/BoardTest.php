@@ -5,13 +5,6 @@ use app\Player;
 
 class BoardTest extends PHPUnit\Framework\TestCase
 {
-    public function testTest(): void
-    {
-        $s = "abc";                    // arrange
-        $len = strlen($s);             // act
-        $this->assertEquals(3, $len);  // assert
-    }
-
     public function testGivenNoLegalPlayPositionsThenGetPossiblePlayPositionsReturnZeroZero() {
         $boardTiles = [];
         $board = new Board($boardTiles);
@@ -73,7 +66,6 @@ class BoardTest extends PHPUnit\Framework\TestCase
         $expectedResult = [0 => '1,-1', 1 => '0,1',];
 
         self::assertEquals($expectedResult, $possibleMovePositions);
-
     }
 
     public function testGivenPieceWithoutNeighbourThenPieceIsNeighbourOfReturnFalse() {
@@ -128,9 +120,26 @@ class BoardTest extends PHPUnit\Framework\TestCase
 
         $expectedResult = ['0,0' => [[0, "Q"]], '0,1' => [[1, "B"]]];
         self::assertEquals($expectedResult, $result);
-
-
-
     }
+
+    //todo check if queen is surrounded
+
+    public function testWhenKoninginIsSurroundedThenKoninginIsSurroundedReturnsTrue() {
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "A"]],
+            '0,1' => [[0, "B"]],
+            '-1,1' => [[1, "B"]],
+            '-1,0' => [[1, "Q"]],
+            '0,-1' => [[0, "A"]],
+            '1,-1' => [[0, "G"]],];
+        $board = new Board($boardTiles);
+        $playerNumber = 0;
+
+        $result = $board->koninginIsSurrounded($playerNumber);
+        self::assertTrue($result);
+    }
+
+
 
 }
