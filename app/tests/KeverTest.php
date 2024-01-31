@@ -5,8 +5,6 @@ use app\pieces\Kever;
 
 class KeverTest extends PHPUnit\Framework\TestCase
 {
-    //todo test of kan stapelen
-
     public function testWhenKeverMovesToOccupiedTileThenMoveReturnsTrue() {
         $boardTiles = [
             '0,0' => [[0, "B"]],
