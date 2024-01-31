@@ -25,41 +25,17 @@ class RulesMove
 
     public static function boardPositionIsNotEmpty($boardTiles, $position): bool
     {
-        try {
-            if (!isset($boardTiles[$position])) {
-                throw new RulesException("Board position is empty");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return isset($boardTiles[$position]);
     }
 
     public static function tileIsOwnedByPlayer($boardTiles, $position, $playerNumber): bool
     {
-        try {
-            if ($boardTiles[$position][count($boardTiles[$position])-1][0] != $playerNumber) {
-                throw new RulesException("Tile is not owned by player");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return $boardTiles[$position][count($boardTiles[$position])-1][0] == $playerNumber;
     }
 
     public static function handDoesNotContainQueen($hand): bool
     {
-        try {
-            if (array_key_exists("Q", $hand)) {
-                throw new RulesException("Queen bee is not played");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+            return !array_key_exists("Q", $hand);
     }
 
     public static function tileMoveWontSplitHive(Board $board, $fromPosition, $toPosition): bool
@@ -67,36 +43,28 @@ class RulesMove
         $boardTiles = $board->getBoardTiles();
         unset($boardTiles[$fromPosition]);
 
-        try{
-            if (!($board->pieceHasNeighbour($boardTiles, $toPosition))) {
-                throw new RulesException("Move would split hive");
-            } else {
-                $allBoardPositions = array_keys($boardTiles);
-                $queue = [array_shift($allBoardPositions)];
-                while ($queue) {
-                    $next = explode(',', array_shift($queue));
-                    foreach ($board->getOffsets() as $offset) {
-                        list($p, $q) = $offset;
-                        $p += $next[0];
-                        $q += $next[1];
-                        if (in_array("$p,$q", $allBoardPositions)) {
-                            $queue[] = "$p,$q";
-                            $allBoardPositions = array_diff($allBoardPositions, ["$p,$q"]);
-                        }
-                    }
-                }
-                if ($allBoardPositions) {
-                    throw new RulesException("Move would split hive");
-                }
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
+        if (!($board->pieceHasNeighbour($boardTiles, $toPosition))) {
             return false;
         }
-        return true;
+
+        $allBoardPositions = array_keys($boardTiles);
+        $queue = [array_shift($allBoardPositions)];
+        while ($queue) {
+            $next = explode(',', array_shift($queue));
+            foreach ($board->getOffsets() as $offset) {
+                list($p, $q) = $offset;
+                $p += $next[0];
+                $q += $next[1];
+                if (in_array("$p,$q", $allBoardPositions)) {
+                    $queue[] = "$p,$q";
+                    $allBoardPositions = array_diff($allBoardPositions, ["$p,$q"]);
+                }
+            }
+        }
+        return !$allBoardPositions;
     }
 
-
+    // hieronder oude code waarvan nog niet duidelijk is wat het is en of het nodig is
 
     private static function len($tile): int
     {
