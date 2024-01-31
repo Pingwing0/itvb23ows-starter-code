@@ -140,7 +140,7 @@ class Board
             }
         }
         $possiblePlayPositions = array_unique($possiblePlayPositions);
-        if (!count($possiblePlayPositions)) {
+        if (!count($boardTiles)) {
             $possiblePlayPositions[] = '0,0';
         }
 

@@ -104,4 +104,10 @@ class Moves
         return false;
     }
 
+    public static function thereIsAPieceAbleToBePlayed(Board $board, Player $player): bool
+    {
+        $possiblePlayPositions = $board->getPossiblePlayPositions($player->getPlayerNumber(), $player->getHand());
+
+        return count($possiblePlayPositions) > 0;
+    }
 }
