@@ -1,5 +1,7 @@
 <?php
 
+use app\pieces\Spin;
+
 class SpinTest extends PHPUnit\Framework\TestCase
 {
     //todo spin moves by moving 3 times
