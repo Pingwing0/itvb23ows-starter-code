@@ -1,6 +1,8 @@
 <?php
 
 use app\RulesMove;
+use app\Board;
+use app\Player;
 
 class RulesMoveTest extends PHPUnit\Framework\TestCase
 {
@@ -10,9 +12,9 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
             '0,1' => [[1, "B"]],
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
-        $player = new \app\Player(0, $hand);
+        $player = new Player(0, $hand);
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
 
@@ -23,9 +25,9 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "Q"]],
             '0,1' => [[1, "Q"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
-        $player = new \app\Player(0, $hand);
+        $player = new Player(0, $hand);
         $fromPosition = '0,0';
         $toPosition = '-1,0';
 
@@ -78,7 +80,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
             '0,1' => [[1, "B"]],
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
 
@@ -89,7 +91,7 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "Q"]],
             '0,1' => [[1, "Q"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,0';
         $toPosition = '-1,0';
 
@@ -103,9 +105,9 @@ class RulesMoveTest extends PHPUnit\Framework\TestCase
             '0,0' => [[0, "Q"]],
             '1,0' => [[1, "Q"]]
         ];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
-        $player = new \app\Player(0, $hand);
+        $player = new Player(0, $hand);
         $fromPosition = '0,0';
         $toPosition = '0,1';
 

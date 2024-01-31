@@ -2,7 +2,9 @@
 
 namespace app;
 
-class RulesException extends \Exception
+use Exception;
+
+class RulesException extends Exception
 {
     public function errorMessage(): string
     {

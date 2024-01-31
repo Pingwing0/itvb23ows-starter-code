@@ -1,5 +1,8 @@
 <?php
 
+use app\Board;
+use app\pieces\Koningin;
+
 class KoninginTest extends PHPUnit\Framework\TestCase
 {
 
@@ -9,10 +12,10 @@ class KoninginTest extends PHPUnit\Framework\TestCase
             '0,1' => [[1, "B"]],
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         $this->assertTrue($koningin->tileToMoveCanMove($board, $fromPosition, $toPosition));
     }
@@ -23,10 +26,10 @@ class KoninginTest extends PHPUnit\Framework\TestCase
             '0,1' => [[1, "B"]],
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         $this->assertTrue($koningin->slideOneSpace($board, $fromPosition, $toPosition));
     }
@@ -37,21 +40,20 @@ class KoninginTest extends PHPUnit\Framework\TestCase
             '0,1' => [[1, "B"]],
             '0,-1' => [[0, "B"]],
             '0,2' => [[1, "S"]]];
-        $fromTile = [[0, "B"]];
         $toPosition = '1,-1';
-        $koningin = new \app\pieces\Koningin('0,0');
+        $koningin = new Koningin('0,0');
 
-        $this->assertTrue($koningin->destinationTileIsEmpty($boardTiles, $toPosition, $fromTile));
+        $this->assertTrue($koningin->destinationTileIsEmpty($boardTiles, $toPosition));
     }
 
     public function testGivenTwoQueensThenTileToMoveCanMoveReturnTrue() {
         $boardTiles = [
             '0,0' => [[0, "Q"]],
             '1,0' => [[1, "B"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,0';
         $toPosition = '0,1';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         $this->assertTrue($koningin->tileToMoveCanMove($board, $fromPosition, $toPosition));
     }
@@ -60,10 +62,10 @@ class KoninginTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "Q"]],
             '0,1' => [[1, "Q"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,0';
         $toPosition = '1,0';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         $this->assertTrue($koningin->slideOneSpace($board, $fromPosition, $toPosition));
     }
@@ -72,10 +74,10 @@ class KoninginTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "Q"]],
             '0,1' => [[1, "Q"]]];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
         $fromPosition = '0,0';
         $toPosition = '-1,0';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         $this->assertFalse($koningin->slideOneSpace($board, $fromPosition, $toPosition));
     }
@@ -85,16 +87,15 @@ class KoninginTest extends PHPUnit\Framework\TestCase
             '0,0' => [[0, "Q"]],
             '1,0' => [[1, "B"]]];
         $toPosition = '0,1';
-        $tile = [[0, "Q"]];
-        $koningin = new \app\pieces\Koningin('0,0');
+        $koningin = new Koningin('0,0');
 
-        $this->assertTrue($koningin->destinationTileIsEmpty($boardTiles, $toPosition, $tile));
+        $this->assertTrue($koningin->destinationTileIsEmpty($boardTiles, $toPosition));
     }
 
     public function testGivenMoreThanOneTileDifferenceThenOnlyOneTileDifferenceReturnsFalse() {
         $fromPosition = '-1,0';
         $toPosition = '0,1';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         self::assertFalse($koningin->onlyOneTileDifference($fromPosition, $toPosition));
     }
@@ -102,7 +103,7 @@ class KoninginTest extends PHPUnit\Framework\TestCase
     public function testGivenOneTileDifferenceThenOnlyOneTileDifferenceReturnsTrue() {
         $fromPosition = '0,-1';
         $toPosition = '1,-1';
-        $koningin = new \app\pieces\Koningin($fromPosition);
+        $koningin = new Koningin($fromPosition);
 
         self::assertTrue($koningin->onlyOneTileDifference($fromPosition, $toPosition));
     }

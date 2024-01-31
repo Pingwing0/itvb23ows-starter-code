@@ -16,12 +16,11 @@ class Koningin extends Piece
     public function tileToMoveCanMove(Board $board, $fromPosition, $toPosition): bool
     {
         $newBoardTiles = $board->getBoardTiles();
-        $fromTile = array_pop($newBoardTiles[$fromPosition]);
         unset($newBoardTiles[$fromPosition]);
 
         return self::positionsAreNotTheSame($fromPosition, $toPosition) &&
-            self::destinationTileIsEmpty($newBoardTiles, $toPosition, $fromTile) &&
-            self::tileIsAbleToSlide($board, $fromPosition, $toPosition);
+            self::destinationTileIsEmpty($newBoardTiles, $toPosition) &&
+            self::slideOneSpace($board, $fromPosition, $toPosition);
     }
 
     private function positionsAreNotTheSame($fromPosition, $toPosition): bool
@@ -29,14 +28,9 @@ class Koningin extends Piece
         return $fromPosition != $toPosition;
     }
 
-    public function destinationTileIsEmpty($boardTiles, $toPosition, $tile): bool
+    public function destinationTileIsEmpty($boardTiles, $toPosition): bool
     {
         return !isset($boardTiles[$toPosition]);
-    }
-
-    private function tileIsAbleToSlide($board, $fromPosition, $toPosition): bool
-    {
-        return self::slideOneSpace($board, $fromPosition, $toPosition);
     }
 
     public function slideOneSpace(Board $board, $from, $to): bool

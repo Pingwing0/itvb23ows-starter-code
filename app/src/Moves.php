@@ -3,7 +3,6 @@
 namespace app;
 
 use app\pieces\Koningin;
-use app\pieces\Piece;
 use app\pieces\Soldatenmier;
 use app\pieces\Spin;
 use app\pieces\Sprinkhaan;

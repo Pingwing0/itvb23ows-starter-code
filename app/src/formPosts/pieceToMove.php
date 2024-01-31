@@ -2,9 +2,6 @@
 
 require_once '../../vendor/autoload.php';
 
-use app\Game;
-use app\Moves;
-
 session_start();
 
 $_SESSION['fromPosition'] = $_POST['fromPosition'];

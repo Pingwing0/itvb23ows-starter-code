@@ -9,6 +9,8 @@ use app\RulesMove;
 
 class Sprinkhaan extends Piece
 {
+    //todo change Exceptions for booleans
+
     /**
      * @throws RulesException
      */

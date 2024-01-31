@@ -12,7 +12,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "S"]],
             '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $spin = new Spin($fromPosition);
 
@@ -26,7 +26,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "S"]],
             '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $spin = new Spin($fromPosition);
 
@@ -40,7 +40,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "S"]],
             '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $spin = new Spin($fromPosition);
 
@@ -54,7 +54,7 @@ class SpinTest extends PHPUnit\Framework\TestCase
         $boardTiles = [
             '0,0' => [[0, "S"]],
             '1,0' => [[0, "Q"]],];
-        $board = new \app\Board($boardTiles);
+        $board = new Board($boardTiles);
 
         $spin = new Spin($fromPosition);
 

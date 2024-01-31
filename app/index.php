@@ -3,7 +3,6 @@
 
     use app\Database;
     use app\Game;
-use app\Moves;
 
 //todo eventueel post actions op een andere manier?
 

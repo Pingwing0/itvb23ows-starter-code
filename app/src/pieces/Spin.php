@@ -3,7 +3,6 @@
 namespace app\pieces;
 
 use app\Board;
-use app\pieces\Piece;
 use app\Player;
 use app\RulesMove;
 

@@ -1,6 +1,7 @@
 <?php
 
 use app\pieces\Sprinkhaan;
+use app\RulesException;
 
 class SprinkhaanTest extends PHPUnit\Framework\TestCase
 {
@@ -40,7 +41,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
         
-        $this->expectException(\app\RulesException::class);
+        $this->expectException(RulesException::class);
         $sprinkhaan->move($toPosition, []);
     }
 
@@ -108,7 +109,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
 
-        $this->expectException(\app\RulesException::class);
+        $this->expectException(RulesException::class);
         $sprinkhaan->move($toPosition, $boardTiles);
     }
 
@@ -124,7 +125,7 @@ class SprinkhaanTest extends PHPUnit\Framework\TestCase
 
         $sprinkhaan = new Sprinkhaan($fromPosition);
 
-        $this->expectException(\app\RulesException::class);
+        $this->expectException(RulesException::class);
         $sprinkhaan->move($toPosition, $boardTiles);
     }
 

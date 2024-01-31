@@ -1,6 +1,7 @@
 <?php
 
 use app\Board;
+use app\Player;
 
 class BoardTest extends PHPUnit\Framework\TestCase
 {
@@ -65,7 +66,7 @@ class BoardTest extends PHPUnit\Framework\TestCase
         $board = new Board($boardTiles);
         $fromPosition = '0,0';
         $hand = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
-        $player = new \app\Player(0, $hand);
+        $player = new Player(0, $hand);
 
         $possibleMovePositions = $board->getPossibleMovePositions($fromPosition, $player);
 
