@@ -77,8 +77,6 @@ class MovesTest extends PHPUnit\Framework\TestCase
         self::assertTrue($result);
     }
 
-    //todo can only pass when no other moves can be played
-
     public function testWhenNoOtherMovesCanBeDonePlayerIsAbleToPassReturnsTrue() {
         $boardTiles = [
             '0,0' => [[0, "S"]],
