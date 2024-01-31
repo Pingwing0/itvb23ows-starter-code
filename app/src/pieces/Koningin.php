@@ -23,7 +23,7 @@ class Koningin extends Piece
             self::slideOneSpace($board, $fromPosition, $toPosition);
     }
 
-    private function positionsAreNotTheSame($fromPosition, $toPosition): bool
+    protected function positionsAreNotTheSame($fromPosition, $toPosition): bool
     {
         return $fromPosition != $toPosition;
     }

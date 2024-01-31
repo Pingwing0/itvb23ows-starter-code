@@ -1,6 +1,7 @@
 <?php
 
 use app\Board;
+use app\pieces\Kever;
 
 class KeverTest extends PHPUnit\Framework\TestCase
 {
