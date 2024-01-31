@@ -28,9 +28,8 @@ class KeverTest extends PHPUnit\Framework\TestCase
         $fromPosition = '0,0';
         $toPosition = '0,1';
         $kever = new Kever($fromPosition);
-        $player = new \app\Player(0, []);
 
-        $result = $kever->move($board, $player, $fromPosition, $toPosition);
+        $result = $kever->move($board, $fromPosition, $toPosition);
         self::assertTrue($result);
     }
 
