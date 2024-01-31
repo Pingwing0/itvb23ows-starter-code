@@ -1,5 +1,6 @@
 <?php
 
+use app\Board;
 use app\pieces\Spin;
 
 class SpinTest extends PHPUnit\Framework\TestCase
@@ -102,14 +103,16 @@ class SpinTest extends PHPUnit\Framework\TestCase
     public function testWhenSpinLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPosition() {
         $fromPosition = '0,0';
         $toPosition = '2,0';
+        $board = new Board([]);
 
         $spin = new Spin($fromPosition);
 
-        $result = $spin->neighbourOfFromPositionIsNeighbourOfToPosition($fromPosition, $toPosition);
+        $result = $spin->neighbourOfFromPositionIsNeighbourOfToPosition($board, $fromPosition, $toPosition);
         self::assertTrue($result);
     }
 
-    //todo cant move to tile already passed
+    //todo cant move to occupied tile
+    
 
 
 
