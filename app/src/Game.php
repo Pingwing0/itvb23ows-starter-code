@@ -124,4 +124,16 @@ class Game
         $this->getBoard()->setBoardTiles($boardTiles);
     }
 
+
+    public function gameIsWonBy(Board $board): array
+    {
+        $winner = [];
+        if ($board->koninginIsSurrounded(0)) {
+            $winner[] = 1;
+        }
+        if ($board->koninginIsSurrounded(1)) {
+            $winner[] = 0;
+        }
+        return $winner;
+    }
 }
