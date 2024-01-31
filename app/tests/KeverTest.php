@@ -30,7 +30,7 @@ class KeverTest extends PHPUnit\Framework\TestCase
         $kever = new Kever($fromPosition);
         $player = new \app\Player(0, []);
 
-        $result = $kever->moveIsLegal($board, $player, $fromPosition, $toPosition);
+        $result = $kever->move($board, $player, $fromPosition, $toPosition);
         self::assertTrue($result);
     }
 
