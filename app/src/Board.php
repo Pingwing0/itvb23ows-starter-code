@@ -203,7 +203,7 @@ class Board
             $p = (int)$fromArray[0] + $offset[0];
             $q = (int)$fromArray[1] + $offset[1];
             $surroundingPosition = $p . "," . $q;
-            if (array_key_exists($surroundingPosition, $boardTiles)) {
+            if (!array_key_exists($surroundingPosition, $boardTiles)) {
                 return false;
             }
         }
