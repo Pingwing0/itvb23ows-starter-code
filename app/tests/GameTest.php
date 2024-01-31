@@ -97,4 +97,21 @@ class GameTest extends PHPUnit\Framework\TestCase
         self::assertEquals([1], $result);
     }
 
+    public function testWhenGameIsWonThenGameIsStoppedReturnsTrue() {
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "A"]],
+            '0,1' => [[0, "B"]],
+            '-1,1' => [[1, "B"]],
+            '-1,0' => [[1, "Q"]],
+            '0,-1' => [[0, "A"]],
+            '1,-1' => [[0, "G"]],];
+        $board = new Board($boardTiles);
+        $game = new Game();
+        $game->gameIsWonBy($board);
+
+        $result = $game->gameIsStopped();
+        self::assertTrue($result);
+    }
+
 }
