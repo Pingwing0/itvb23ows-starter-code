@@ -2,6 +2,7 @@
 
 namespace app;
 
+use app\pieces\Kever;
 use app\pieces\Koningin;
 use app\pieces\Soldatenmier;
 use app\pieces\Spin;
@@ -36,14 +37,13 @@ class Moves
         if ($game->getGameIsStopped()) {
             return;
         }
-        //todo checken of stapelen werkt (werkt volgens mij nog niet)
 
         $player = $game->getCurrentPlayer();
         $board = $game->getBoard();
         $boardTiles = $board->getBoardTiles();
 
-        //todo dit werkt niet bij stapelen (maar dat werkt sowieso nog niet)
-        $pieceLetter = $boardTiles[$fromPosition][0][1];
+        $stack = $boardTiles[$fromPosition];
+        $pieceLetter = $stack[count($stack) - 1][1];
         $piece = null;
         if ($pieceLetter == 'G') {
             $piece = new Sprinkhaan($fromPosition);
@@ -56,6 +56,9 @@ class Moves
         }
         if ($pieceLetter == 'S') {
             $piece = new Spin($fromPosition);
+        }
+        if ($pieceLetter == 'B') {
+            $piece = new Kever($fromPosition);
         }
         if ($piece && $piece->moveIsLegal($board, $player, $fromPosition, $toPosition)) {
             self::executeMove($game, $board, $database, $fromPosition, $toPosition);

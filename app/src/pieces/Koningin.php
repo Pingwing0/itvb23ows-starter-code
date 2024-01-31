@@ -33,7 +33,7 @@ class Koningin extends Piece
         return !isset($boardTiles[$toPosition]);
     }
 
-    public function slideOneSpace(Board $board, $from, $to): bool
+    public function slideOneSpace(Board $board, String $from, String $to): bool
     {
         $boardTiles = $board->getBoardTiles();
         unset($boardTiles[$from]);
