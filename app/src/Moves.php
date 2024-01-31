@@ -11,6 +11,10 @@ class Moves
 {
     public static function playPiece(String $piece, String $toPosition, Game $game, Database $database): void
     {
+        if ($game->getGameIsStopped()) {
+            return;
+        }
+
         $player = $game->getCurrentPlayer();
         $board = $game->getBoard();
         $hand = $player->getHand();
@@ -29,6 +33,9 @@ class Moves
 
     public static function movePiece(String $fromPosition, String $toPosition, Game $game, Database $database): void
     {
+        if ($game->getGameIsStopped()) {
+            return;
+        }
         //todo checken of stapelen werkt (werkt volgens mij nog niet)
 
         $player = $game->getCurrentPlayer();
@@ -73,6 +80,10 @@ class Moves
 
     public static function pass(Game $game, Database $database): void
     {
+        if ($game->getGameIsStopped()) {
+            return;
+        }
+
         if (self::playerIsAbleToPass($game->getBoard(), $game->getCurrentPlayer())) {
             $currentState = $game->getState();
             $database->addMoveToDatabase($game, $currentState, "pass");
@@ -83,6 +94,10 @@ class Moves
 
     public static function undoLastMove(Game $game, Database $database): void
     {
+        if ($game->getGameIsStopped()) {
+            return;
+        }
+        
         //check if move is first move, if so, do nothing
         if (count($game->getBoard()->getBoardTiles()) > 0) {
             $result = $database->selectLastMoveFromGame($game);

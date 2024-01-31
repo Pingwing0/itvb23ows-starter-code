@@ -9,6 +9,17 @@ class Game
     private Player $playerTwo;
     private int $gameId;
     private int $lastMoveId;
+    private bool $gameIsStopped;
+
+    public function getGameIsStopped(): bool
+    {
+        return $this->gameIsStopped;
+    }
+
+    public function setGameIsStopped(bool $gameIsStopped): void
+    {
+        $this->gameIsStopped = $gameIsStopped;
+    }
 
     public function getBoard(): Board
     {
@@ -85,6 +96,7 @@ class Game
         $playerOne = new Player(0),
         $playerTwo = new Player(1)
     ): void {
+        $this->setGameIsStopped(false);
         $this->setBoard($board);
         $this->setPlayerOne($playerOne);
         $this->setPlayerTwo($playerTwo);
@@ -95,7 +107,6 @@ class Game
         } else {
             $this->lastMoveId = 0;
         }
-
 
         $database->addNewGameToDatabase($this);
     }
@@ -134,6 +145,13 @@ class Game
         if ($board->koninginIsSurrounded(1)) {
             $winner[] = 0;
         }
+        if ($winner) {
+            $this->setGameIsStopped(true);
+        }
+
         return $winner;
     }
+
+
+
 }

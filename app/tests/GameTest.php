@@ -110,7 +110,7 @@ class GameTest extends PHPUnit\Framework\TestCase
         $game = new Game();
         $game->gameIsWonBy($board);
 
-        $result = $game->gameIsStopped();
+        $result = $game->getGameIsStopped();
         self::assertTrue($result);
     }
 
