@@ -4,6 +4,7 @@ namespace app;
 
 use app\pieces\Koningin;
 use app\pieces\Soldatenmier;
+use app\pieces\Spin;
 use app\pieces\Sprinkhaan;
 
 class Board
@@ -68,8 +69,6 @@ class Board
         }
         return $boardTiles;
     }
-
-    //todo logica van util
 
     public function pieceHasNeighbour($boardTiles, $pieceOne): bool
     {
@@ -165,6 +164,10 @@ class Board
         if ($piece == 'A') {
             $soldatenmier = new Soldatenmier($fromPosition);
             $possibleMovePositions = $soldatenmier->getPossibleMovePositions($fromPosition, $player, $this);
+        }
+        if ($piece == 'S') {
+            $spin = new Spin($fromPosition);
+            $possibleMovePositions = $spin->getPossibleMovePositions($fromPosition, $player, $this);
         }
         return array_unique($possibleMovePositions);
     }
