@@ -3,8 +3,9 @@
 
     use app\Database;
     use app\Game;
+    use app\RulesPlay;
 
-    session_start();
+session_start();
 
     if (!isset($_SESSION['database'])) {
         $database = new Database();
@@ -160,7 +161,7 @@
                 <?php
                     // dropdown player pieces
                     $hand = $game->getCurrentPlayer()->getHand();
-                    if (\app\RulesPlay::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand)) {
+                    if (RulesPlay::itIsTurnFourAndQueenBeeIsNotYetPlayed($hand)) {
                         $hand = ['Q' => 1];
                     }
                     foreach ($hand as $tileName => $count) {
