@@ -4,6 +4,7 @@ namespace app;
 
 use app\pieces\Koningin;
 use app\pieces\Soldatenmier;
+use app\pieces\Spin;
 use app\pieces\Sprinkhaan;
 
 class Moves
@@ -41,7 +42,6 @@ class Moves
             if ($sprinkhaan->moveIsLegal($board, $player, $fromPosition, $toPosition)) {
                 self::executeMove($game, $board, $database, $fromPosition, $toPosition);
             }
-
         }
         if ($piece == 'Q') {
             $koningin = new Koningin($fromPosition);
@@ -53,6 +53,13 @@ class Moves
         if ($piece == 'A') {
             $soldatenmier = new Soldatenmier($fromPosition);
             if ($soldatenmier->moveIsLegal($board, $player, $fromPosition, $toPosition))
+            {
+                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
+            }
+        }
+        if ($piece == 'S') {
+            $spin = new Spin($fromPosition);
+            if ($spin->moveIsLegal($board, $player, $fromPosition, $toPosition))
             {
                 self::executeMove($game, $board, $database, $fromPosition, $toPosition);
             }

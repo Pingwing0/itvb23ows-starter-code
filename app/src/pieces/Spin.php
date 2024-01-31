@@ -5,6 +5,7 @@ namespace app\pieces;
 use app\Board;
 use app\pieces\Piece;
 use app\Player;
+use app\RulesMove;
 
 class Spin extends Piece
 {
@@ -71,8 +72,11 @@ class Spin extends Piece
 
 
 
-    public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition)
+    public function moveIsLegal(Board $board, Player $player, string $fromPosition, string $toPosition): bool
     {
-        // TODO: Implement moveIsLegal() method.
+        if (RulesMove::positionIsLegalToMove($board, $player, $fromPosition, $toPosition)) {
+            return $this->move($board, $toPosition);
+        }
+        return false;
     }
 }
