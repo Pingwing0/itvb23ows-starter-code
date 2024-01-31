@@ -33,8 +33,6 @@ class MovesTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-
-    //todo test is a piece is able to move
     public function testWhenPlayerCantMoveAnyPieceThenThereIsAPieceAbleToMoveReturnsFalse() {
         $board = new Board([]);
         $player = new \app\Player(0, []);
@@ -53,9 +51,6 @@ class MovesTest extends PHPUnit\Framework\TestCase
         $result = Moves::thereIsAPieceAbleToMove($board, $player);
         self::assertTrue($result);
     }
-
-
-    //todo test is a piece is able to be played
 
     public function testWhenPlayerCantPlayAnyPieceThenThereIsAPieceAbleToBePlayedReturnsFalse() {
         $boardTiles = [
@@ -84,8 +79,20 @@ class MovesTest extends PHPUnit\Framework\TestCase
 
     //todo can only pass when no other moves can be played
 
-//    public function testWhenNoOtherMovesCanBeDonePlayerIsAbleToPassReturnsTrue() {
-//
-//
-//    }
+    public function testWhenNoOtherMovesCanBeDonePlayerIsAbleToPassReturnsTrue() {
+        $boardTiles = [
+            '0,0' => [[0, "S"]],
+            '1,0' => [[1, "Q"]],
+            '0,1' => [[1, "Q"]],
+            '-1,1' => [[1, "Q"]],
+            '-1,0' => [[1, "Q"]],
+            '0,-1' => [[1, "Q"]],
+            '1,-1' => [[1, "Q"]],];
+        $board = new Board($boardTiles);
+        $player = new \app\Player(0, []);
+
+        $result = Moves::playerIsAbleToPass($board, $player);
+        self::assertTrue($result);
+
+    }
 }
