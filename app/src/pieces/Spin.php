@@ -16,13 +16,13 @@ class Spin extends Piece
             return false;
         }
 
-        return  true;
+        return true;
     }
 
     public function neighbourOfFromPositionIsNeighbourOfToPosition(Board $board, $fromPosition, $toPosition): bool
     {
-        $neighboursOfFromPosition = $this->getAllNeighboursOfPosition($board, $fromPosition);
-        $neighboursOfToPosition = $this->getAllNeighboursOfPosition($board, $toPosition);
+        $neighboursOfFromPosition = $this->getAllLegalNeighboursOfPosition($board, $fromPosition);
+        $neighboursOfToPosition = $this->getAllLegalNeighboursOfPosition($board, $toPosition);
 
         foreach ($neighboursOfFromPosition as $from) {
             foreach ($neighboursOfToPosition as $to) {
@@ -34,7 +34,7 @@ class Spin extends Piece
         return false;
     }
 
-    public function getAllNeighboursOfPosition(Board $board, String $position): array
+    public function getAllLegalNeighboursOfPosition(Board $board, String $position): array
     {
 
         $positionArray = explode(",", $position);
@@ -43,9 +43,17 @@ class Spin extends Piece
         foreach ($board->getOffsets() as $offset) {
             $p = (int)$positionArray[0] + $offset[0];
             $q = (int)$positionArray[1] + $offset[1];
-            $allNeighbours[] = $p . "," . $q;
+            $position = $p . "," . $q;
+            if (!$this->positionIsOccupied($board, $position)) {
+                $allNeighbours[] = $position;
+            }
         }
         return $allNeighbours;
+    }
+
+    public function positionIsOccupied(Board $board, String $position): bool
+    {
+        return array_key_exists($position, $board->getBoardTiles());
     }
 
     public function pieceIsNeighbourOf($pieceOne, $pieceTwo): bool {
