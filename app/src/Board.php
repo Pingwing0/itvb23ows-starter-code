@@ -171,7 +171,43 @@ class Board
             $possibleMovePositions = $piece->getPossibleMovePositions($fromPosition, $player, $this);
         }
 
-        return array_unique($possibleMovePositions);
+        return $possibleMovePositions;
+    }
+
+    public function koninginIsSurrounded(int $playerNumber): bool
+    {
+        $boardTiles = $this->getBoardTiles();
+        $koninginPosition = $this->getKoninginPosition($boardTiles, $playerNumber);
+
+        if ($koninginPosition != '') {
+            return $this->allSurroundingTilesAreOccupied($boardTiles, $koninginPosition);
+        }
+        return false;
+    }
+
+    public function getKoninginPosition(array $boardTiles, int $playerNumber): string
+    {
+        foreach ($boardTiles as $position => $tile) {
+            if ($tile[0][0] == $playerNumber && $tile[0][1] == 'Q') {
+                return $position;
+            }
+        }
+        return '';
+    }
+
+    public function allSurroundingTilesAreOccupied(array $boardTiles, String $position): bool
+    {
+        $fromArray = explode(",", $position);
+
+        foreach ($this->getOffsets() as $offset) {
+            $p = (int)$fromArray[0] + $offset[0];
+            $q = (int)$fromArray[1] + $offset[1];
+            $surroundingPosition = $p . "," . $q;
+            if (!array_key_exists($surroundingPosition, $boardTiles)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

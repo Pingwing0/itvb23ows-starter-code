@@ -50,18 +50,18 @@ class RulesMove
         $allBoardPositions = array_keys($boardTiles);
         $queue = [array_shift($allBoardPositions)];
         while ($queue) {
-            $next = explode(',', array_shift($queue));
+            $position = explode(',', array_shift($queue));
             foreach ($board->getOffsets() as $offset) {
                 list($p, $q) = $offset;
-                $p += (int)$next[0];
-                $q += (int)$next[1];
+                $p += (int)$position[0];
+                $q += (int)$position[1];
                 if (in_array("$p,$q", $allBoardPositions)) {
                     $queue[] = "$p,$q";
                     $allBoardPositions = array_diff($allBoardPositions, ["$p,$q"]);
                 }
             }
         }
-        return !$allBoardPositions;
+        return count($allBoardPositions) == 0;
     }
 
 }
