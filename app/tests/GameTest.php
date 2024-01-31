@@ -79,8 +79,6 @@ class GameTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    //todo check if game is stopped when someone has won
-
     public function testWhenGameIsWonByPlayerThenGameIsWonByReturnsWinnerArray() {
         $boardTiles = [
             '0,0' => [[0, "Q"]],

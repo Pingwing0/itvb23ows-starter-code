@@ -94,14 +94,12 @@ class Board
 
     public function neighboursOfPieceAreTheSameColor($player, $pieceOne): bool
     {
-        foreach ($this->getBoardTiles() as $pieceTwo => $st) {
-            //todo wat is st?
-            if (!$st) {
+        foreach ($this->getBoardTiles() as $positionTwo => $stack) {
+            if (!$stack) {
                 continue;
             }
-            //todo wat is c?
-            $c = $st[count($st) - 1][0];
-            if ($c != $player && $this->pieceIsNeighbourOf($pieceOne, $pieceTwo)) {
+            $count = $stack[count($stack) - 1][0];
+            if ($count != $player && $this->pieceIsNeighbourOf($pieceOne, $positionTwo)) {
                 return false;
             }
         }
