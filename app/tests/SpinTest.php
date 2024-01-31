@@ -4,9 +4,6 @@ use app\pieces\Spin;
 
 class SpinTest extends PHPUnit\Framework\TestCase
 {
-    //todo spin moves by moving 3 times
-
-    //todo a move is like a queen
 
     public function testWhenSpinMovesOnceThenItMovesToANeighbouringField() {
         $fromPosition = '-1,0';
@@ -44,7 +41,6 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertEquals('',$result);
     }
 
-    //todo cant move to same field
     public function testWhenSpinMovesToCurrentPositionThenReturnFalse() {
         $fromPosition = '0,0';
         $toPosition = '0,0';
@@ -59,7 +55,6 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertFalse($result);
     }
 
-    //todo can only move over and through empty fields
     public function testWhenSpinMoveOnceToOccupiedTileThenReturnEmptyString() {
         $fromPosition = '0,0';
         $toPosition = '1,0';
@@ -88,6 +83,21 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertFalse($result);
     }
 
+    //todo spin moves by moving 3 times
+
+    public function testWhenSpinMovesThenMoveThreeTimesReturnsThreeTiles() {
+        $fromPosition = '0,0';
+        $toPosition = '2,0';
+        $boardTiles = [
+            '0,0' => [[0, "S"]],
+            '1,0' => [[0, "Q"]],];
+        $board = new \app\Board($boardTiles);
+
+        $spin = new Spin($fromPosition);
+
+        $result = count($spin->moveOnceThreeTimes($board, $toPosition));
+        self::assertEquals(3, $result);
+    }
 
     //todo cant move to tile already passed
 
