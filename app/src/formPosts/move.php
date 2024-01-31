@@ -18,4 +18,6 @@ $toPosition = $_POST['toPosition'];
 
 Moves::movePiece($fromPosition, $toPosition, $game, $database);
 
+unset($_SESSION['fromPosition']);
+
 header('Location: /../../index.php');

@@ -41,7 +41,12 @@ class RulesMove
     public static function tileMoveWontSplitHive(Board $board, $fromPosition, $toPosition): bool
     {
         $boardTiles = $board->getBoardTiles();
-        unset($boardTiles[$fromPosition]);
+        $stack = $boardTiles[$fromPosition];
+        if (count($stack) == 1) {
+            unset($boardTiles[$fromPosition]);
+        } else {
+            unset($boardTiles[$fromPosition][count($stack) - 1]);
+        }
 
         if (!($board->pieceHasNeighbour($boardTiles, $toPosition))) {
             return false;

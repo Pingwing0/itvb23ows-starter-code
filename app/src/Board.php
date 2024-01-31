@@ -2,6 +2,7 @@
 
 namespace app;
 
+use app\pieces\Kever;
 use app\pieces\Koningin;
 use app\pieces\Soldatenmier;
 use app\pieces\Spin;
@@ -92,14 +93,14 @@ class Board
         }
     }
 
-    public function neighboursOfPieceAreTheSameColor($player, $pieceOne): bool
+    public function neighboursOfPieceAreTheSameColor($player, $positionOne): bool
     {
         foreach ($this->getBoardTiles() as $positionTwo => $stack) {
             if (!$stack) {
                 continue;
             }
-            $count = $stack[count($stack) - 1][0];
-            if ($count != $player && $this->pieceIsNeighbourOf($pieceOne, $positionTwo)) {
+            $playerOnTop = $stack[count($stack) - 1][0];
+            if ($playerOnTop != $player && $this->pieceIsNeighbourOf($positionOne, $positionTwo)) {
                 return false;
             }
         }
@@ -147,9 +148,14 @@ class Board
 
     public function getPossibleMovePositions(String $fromPosition, Player $player): array
     {
+        if ($fromPosition == '') {
+            return [];
+        }
+
         $possibleMovePositions = [];
         $boardTiles = $this->getBoardTiles();
-        $pieceLetter = $boardTiles[$fromPosition][0][1];
+        $stack = $boardTiles[$fromPosition];
+        $pieceLetter = $stack[count($stack) - 1][1];
         $piece = null;
 
         if ($pieceLetter == 'Q') {
@@ -163,6 +169,9 @@ class Board
         }
         if ($pieceLetter == 'S') {
             $piece = new Spin($fromPosition);
+        }
+        if ($pieceLetter == 'B') {
+            $piece = new Kever($fromPosition);
         }
 
         if ($piece) {
