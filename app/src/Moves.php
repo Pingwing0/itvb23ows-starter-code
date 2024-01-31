@@ -95,7 +95,8 @@ class Moves
 
     }
 
-    public static function playerIsAbleToPass(Board $board, Player $player) {
+    public static function playerIsAbleToPass(Board $board, Player $player): bool
+    {
         return !self::thereIsAPieceAbleToBePlayed($board, $player) &&
             !self::thereIsAPieceAbleToMove($board, $player);
     }
