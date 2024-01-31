@@ -79,4 +79,22 @@ class GameTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
+    //todo check if game is stopped when someone has won
+
+    public function testWhenGameIsWonByPlayerThenGameIsWonByReturnsWinnerArray() {
+        $boardTiles = [
+            '0,0' => [[0, "Q"]],
+            '1,0' => [[1, "A"]],
+            '0,1' => [[0, "B"]],
+            '-1,1' => [[1, "B"]],
+            '-1,0' => [[1, "Q"]],
+            '0,-1' => [[0, "A"]],
+            '1,-1' => [[0, "G"]],];
+        $board = new Board($boardTiles);
+        $game = new Game();
+
+        $result = $game->gameIsWonBy();
+        self::assertEquals([1], $result);
+    }
+
 }
