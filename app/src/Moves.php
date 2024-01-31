@@ -3,6 +3,7 @@
 namespace app;
 
 use app\pieces\Koningin;
+use app\pieces\Piece;
 use app\pieces\Soldatenmier;
 use app\pieces\Spin;
 use app\pieces\Sprinkhaan;
@@ -98,4 +99,17 @@ class Moves
         }
 
     }
+
+    public static function thereIsAPieceAbleToMove(Board $board, Player $player): bool
+    {
+        $tilesToCheck = $board->getTilesFromPlayer($player->getPlayerNumber());
+
+        foreach ($tilesToCheck as $position => $tile) {
+            if (count($board->getPossibleMovePositions($position, $player)) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
