@@ -37,30 +37,22 @@ class Moves
         $boardTiles = $board->getBoardTiles();
 
         //todo dit werkt niet bij stapelen (maar dat werkt sowieso nog niet)
-        $piece = $boardTiles[$fromPosition][0][1];
-        if ($piece == 'G') {
-            $sprinkhaan = new Sprinkhaan($fromPosition);
-            if ($sprinkhaan->moveIsLegal($board, $player, $fromPosition, $toPosition)) {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        $pieceLetter = $boardTiles[$fromPosition][0][1];
+        $piece = null;
+        if ($pieceLetter == 'G') {
+            $piece = new Sprinkhaan($fromPosition);
         }
-        if ($piece == 'Q') {
-            $koningin = new Koningin($fromPosition);
-            if ($koningin->moveIsLegal($board, $player, $fromPosition, $toPosition))
-            {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        if ($pieceLetter == 'Q') {
+            $piece = new Koningin($fromPosition);
         }
-        if ($piece == 'A') {
-            $soldatenmier = new Soldatenmier($fromPosition);
-            if ($soldatenmier->moveIsLegal($board, $player, $fromPosition, $toPosition))
-            {
-                self::executeMove($game, $board, $database, $fromPosition, $toPosition);
-            }
+        if ($pieceLetter == 'A') {
+            $piece = new Soldatenmier($fromPosition);
         }
-        if ($piece == 'S') {
-            $spin = new Spin($fromPosition);
-            if ($spin->moveIsLegal($board, $player, $fromPosition, $toPosition))
+        if ($pieceLetter == 'S') {
+            $piece = new Spin($fromPosition);
+        }
+        if ($piece) {
+            if ($piece->moveIsLegal($board, $player, $fromPosition, $toPosition))
             {
                 self::executeMove($game, $board, $database, $fromPosition, $toPosition);
             }
