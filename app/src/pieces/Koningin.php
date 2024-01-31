@@ -3,7 +3,6 @@
 namespace app\pieces;
 
 use app\Board;
-use app\RulesException;
 use app\RulesMove;
 
 class Koningin extends Piece
@@ -22,47 +21,22 @@ class Koningin extends Piece
 
         return self::positionsAreNotTheSame($fromPosition, $toPosition) &&
             self::destinationTileIsEmpty($newBoardTiles, $toPosition, $fromTile) &&
-            self::tileIsAbleToSlide($fromTile, $board, $fromPosition, $toPosition);
+            self::tileIsAbleToSlide($board, $fromPosition, $toPosition);
     }
 
     private function positionsAreNotTheSame($fromPosition, $toPosition): bool
     {
-        try {
-            if ($fromPosition == $toPosition) {
-                throw new RulesException("Tile must move");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return $fromPosition != $toPosition;
     }
 
     public function destinationTileIsEmpty($boardTiles, $toPosition, $tile): bool
     {
-        //todo dit hoort ook bij de kever (die nog niet geimplementeerd is)
-        try {
-            if (isset($boardTiles[$toPosition]) && $tile[1] != "B"){
-                throw new RulesException("Tile is not empty");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return !isset($boardTiles[$toPosition]);
     }
 
-    private function tileIsAbleToSlide($tile, $board, $fromPosition, $toPosition): bool
+    private function tileIsAbleToSlide($board, $fromPosition, $toPosition): bool
     {
-        try{
-            if (($tile[1] == "Q" || $tile[1] == "B") && !self::slideOneSpace($board, $fromPosition, $toPosition)) {
-                throw new RulesException("Tile is not able to slide");
-            }
-        } catch(RulesException $e) {
-            echo $e->errorMessage();
-            return false;
-        }
-        return true;
+        return self::slideOneSpace($board, $fromPosition, $toPosition);
     }
 
     public function slideOneSpace(Board $board, $from, $to): bool
