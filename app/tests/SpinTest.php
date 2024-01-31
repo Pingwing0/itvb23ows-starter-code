@@ -99,6 +99,18 @@ class SpinTest extends PHPUnit\Framework\TestCase
         self::assertEquals(3, $result);
     }
 
+    public function testWhenSpinLegalMoveThenNeighbourOfFromPositionIsNeighbourOfToPosition() {
+        $fromPosition = '0,0';
+        $toPosition = '2,0';
+
+        $spin = new Spin($fromPosition);
+
+        $result = $spin->neighbourOfFromPositionIsNeighbourOfToPosition($fromPosition, $toPosition);
+        self::assertTrue($result);
+    }
+
     //todo cant move to tile already passed
+
+
 
 }
