@@ -122,8 +122,6 @@ class BoardTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    //todo check if queen is surrounded
-
     public function testWhenKoninginIsSurroundedThenKoninginIsSurroundedReturnsTrue() {
         $boardTiles = [
             '0,0' => [[0, "Q"]],
@@ -155,6 +153,5 @@ class BoardTest extends PHPUnit\Framework\TestCase
         $result = $board->getKoninginPosition($boardTiles, $playerNumber);
         self::assertEquals('0,0', $result);
     }
-
 
 }

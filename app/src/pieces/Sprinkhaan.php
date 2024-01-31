@@ -8,7 +8,6 @@ use app\RulesMove;
 
 class Sprinkhaan extends Piece
 {
-    //todo change Exceptions for booleans
 
     public function move($toPosition, $boardTiles): bool
     {

@@ -4,8 +4,6 @@
     use app\Database;
     use app\Game;
 
-//todo eventueel post actions op een andere manier?
-
     session_start();
 
     if (!isset($_SESSION['database'])) {
@@ -98,7 +96,7 @@
     <body>
         <div class="board">
             <?php
-            //todo dit proberen te snappen, hier worden de tegels op het bord weergegeven? Wat zijn de var hier?
+                // hier wordt het bord gebouwd
                 $min_p = 1000;
                 $min_q = 1000;
                 foreach ($board->getBoardTiles() as $position => $tile) {
@@ -131,7 +129,6 @@
         <div class="hand">
             White:
             <?php
-            //todo functie die dit kan printen? (want herhaling) (heeft geen prio)
                 foreach ($playerOne->getHand() as $tile => $ct) {
                     for ($i = 0; $i < $ct; $i++) {
                         echo '<div class="tile player0"><span>'.$tile."</span></div> ";
