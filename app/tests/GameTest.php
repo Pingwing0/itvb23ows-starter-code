@@ -93,7 +93,7 @@ class GameTest extends PHPUnit\Framework\TestCase
         $board = new Board($boardTiles);
         $game = new Game();
 
-        $result = $game->gameIsWonBy();
+        $result = $game->gameIsWonBy($board);
         self::assertEquals([1], $result);
     }
 
