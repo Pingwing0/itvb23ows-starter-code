@@ -93,6 +93,5 @@ class MovesTest extends PHPUnit\Framework\TestCase
 
         $result = Moves::playerIsAbleToPass($board, $player);
         self::assertTrue($result);
-
     }
 }
