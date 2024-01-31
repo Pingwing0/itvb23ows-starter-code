@@ -32,7 +32,11 @@
 
     if ($gameWinners) {
         if (count($gameWinners) == 1) {
-            echo "<h1> $gameWinners[0] won the game! </h1>";
+            if ($gameWinners[0] == 0) {
+                echo "<h1> White won the game! </h1>";
+            } else {
+                echo "<h1> Black won the game! </h1>";
+            }
         } else {
             echo "<h1> The game is a tie! </h1>";
         }
