@@ -4,7 +4,6 @@ namespace app\pieces;
 
 use app\Board;
 use app\Player;
-use app\RulesException;
 use app\RulesMove;
 
 class Soldatenmier extends Piece
