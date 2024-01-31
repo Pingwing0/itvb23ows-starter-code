@@ -159,7 +159,7 @@ class Board
         }
         if ($pieceLetter == 'G') {
             $piece = new Sprinkhaan($fromPosition);
-       }
+        }
         if ($pieceLetter == 'A') {
             $piece = new Soldatenmier($fromPosition);
         }
