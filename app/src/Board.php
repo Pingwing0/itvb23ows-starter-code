@@ -174,7 +174,8 @@ class Board
         return array_unique($possibleMovePositions);
     }
 
-    public function koninginIsSurrounded(int $playerNumber) {
+    public function koninginIsSurrounded(int $playerNumber): bool
+    {
         $boardTiles = $this->getBoardTiles();
         $koninginPosition = $this->getKoninginPosition($boardTiles, $playerNumber);
 
@@ -184,7 +185,8 @@ class Board
         return false;
     }
 
-    public function getKoninginPosition(array $boardTiles, int $playerNumber) {
+    public function getKoninginPosition(array $boardTiles, int $playerNumber): string
+    {
         foreach ($boardTiles as $position => $tile) {
             if ($tile[0][0] == $playerNumber && $tile[0][1] == 'Q') {
                 return $position;
@@ -193,7 +195,7 @@ class Board
         return '';
     }
 
-    public function allSurroundingTilesAreOccupied(array $boardTiles, String $position)
+    public function allSurroundingTilesAreOccupied(array $boardTiles, String $position): bool
     {
         $fromArray = explode(",", $position);
 
