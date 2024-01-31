@@ -151,24 +151,26 @@ class Board
     {
         $possibleMovePositions = [];
         $boardTiles = $this->getBoardTiles();
-        $piece = $boardTiles[$fromPosition][0][1];
+        $pieceLetter = $boardTiles[$fromPosition][0][1];
+        $piece = null;
 
-        if ($piece == 'Q') {
-            $koningin = new Koningin($fromPosition);
-            $possibleMovePositions = $koningin->getPossibleMovePositions($fromPosition, $player, $this);
+        if ($pieceLetter == 'Q') {
+            $piece = new Koningin($fromPosition);
         }
-        if ($piece == 'G') {
-            $sprinkhaan = new Sprinkhaan($fromPosition);
-            $possibleMovePositions = $sprinkhaan->getPossibleMovePositions($fromPosition, $player, $this);
+        if ($pieceLetter == 'G') {
+            $piece = new Sprinkhaan($fromPosition);
+       }
+        if ($pieceLetter == 'A') {
+            $piece = new Soldatenmier($fromPosition);
         }
-        if ($piece == 'A') {
-            $soldatenmier = new Soldatenmier($fromPosition);
-            $possibleMovePositions = $soldatenmier->getPossibleMovePositions($fromPosition, $player, $this);
+        if ($pieceLetter == 'S') {
+            $piece = new Spin($fromPosition);
         }
-        if ($piece == 'S') {
-            $spin = new Spin($fromPosition);
-            $possibleMovePositions = $spin->getPossibleMovePositions($fromPosition, $player, $this);
+
+        if ($piece) {
+            $possibleMovePositions = $piece->getPossibleMovePositions($fromPosition, $player, $this);
         }
+
         return array_unique($possibleMovePositions);
     }
 
