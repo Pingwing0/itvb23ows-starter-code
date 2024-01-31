@@ -17,6 +17,23 @@ class KeverTest extends PHPUnit\Framework\TestCase
 
         $result = $kever->move($board, $fromPosition, $toPosition);
         self::assertTrue($result);
-
     }
+
+    public function testWhenKeverIsStackedAndMovesToOtherStackThenMoveReturnsTrue() {
+        $boardTiles = [
+            '0,0' => [[0, "Q"], [0, "B"]],
+            '0,1' => [[1, "Q"], [1, "B"]],
+            '0,-1' => [[1, "Q"]]];
+        $board = new Board($boardTiles);
+        $fromPosition = '0,0';
+        $toPosition = '0,1';
+        $kever = new Kever($fromPosition);
+        $player = new \app\Player(0, []);
+
+        $result = $kever->moveIsLegal($board, $player, $fromPosition, $toPosition);
+        self::assertTrue($result);
+    }
+
+
+
 }
