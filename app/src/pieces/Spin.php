@@ -17,8 +17,7 @@ class Spin extends Piece
             return false;
         }
 
-        return ($this->neighbourOfFromPositionIsNeighbourOfToPosition(
-            $board, $this->getPosition(), $toPosition));
+        return $this->neighbourOfFromPositionIsNeighbourOfToPosition($board, $this->getPosition(), $toPosition);
     }
 
     public function neighbourOfFromPositionIsNeighbourOfToPosition(Board $board, $fromPosition, $toPosition): bool
