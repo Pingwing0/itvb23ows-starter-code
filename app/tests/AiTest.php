@@ -1,8 +1,9 @@
 <?php
 
 use app\ai\Ai;
+use app\ai\CurlRequest;
 
-class AITest extends PHPUnit\Framework\TestCase
+class AiTest extends PHPUnit\Framework\TestCase
 {
     //todo ai mocken
 
@@ -24,15 +25,18 @@ class AITest extends PHPUnit\Framework\TestCase
 
     public function testWhenAiResponseToPostThenResponseIsArray() {
         $curlRequestMock = $this->getMockBuilder(CurlRequest::class)
-            ->onlyMethods(['execute'])
-            ->getMock();
+            ->onlyMethods(['execute', 'setOption', 'close'])
+            ->disableOriginalConstructor()
+            ->getMock('');
 
         $response = '["play", "Q", "-1,1"]';
         $curlRequestMock->method('execute')->willReturn($response);
+        $curlRequestMock->method('setOption');
+        $curlRequestMock->method('close');
 
         $ai = new Ai();
 
-        $result = $ai->postToApi(['postData']);
+        $result = $ai->postToApi(['postData'], $curlRequestMock);
         $expectedResult = ['play',  'Q', '-1,1'];
         self::assertEquals($expectedResult, $result);
     }
