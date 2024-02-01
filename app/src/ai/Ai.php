@@ -13,6 +13,7 @@ class Ai
         $curlRequest->setOption(CURLOPT_RETURNTRANSFER, true);
         $curlRequest->setOption(CURLOPT_POST, true);
         $curlRequest->setOption(CURLOPT_POSTFIELDS, $postDataJson);
+        $curlRequest->setOption(CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
 
         $json_response = $curlRequest->execute();
         $curlRequest->close();
