@@ -9,7 +9,7 @@ use app\Moves;
 class Ai
 {
     public function postToApi(
-        array $postData, CurlRequest $curlRequest = new CurlRequest("https://localhost:5000")
+        array $postData, CurlRequest $curlRequest = new CurlRequest('')
     ) {
         $postDataJson = json_encode($postData);
 
@@ -53,7 +53,7 @@ class Ai
         Moves::executePass($game, $database);
     }
 
-    public function aiPlaysTurn(Game $game, Database $database): void
+    public function aiPlaysTurn(Game $game, Database $database, CurlRequest $curlRequest): void
     {
         $boardTiles = $game->getBoard()->getBoardTiles();
         $handPlayerOne = $game->getPlayerOne()->getHand();
@@ -61,7 +61,8 @@ class Ai
         $currentPlayerNumber = $game->getCurrentPlayer()->getPlayerNumber();
 
         $dataToSend = $this->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentPlayerNumber);
-        $response = $this->postToApi($dataToSend);
+        $response = $this->postToApi($dataToSend, $curlRequest);
+
         $move = $response[0];
         if ($move == "play") {
             $piece = $response[1];

@@ -15,4 +15,4 @@ $database = $_SESSION['database'];
 
 Moves::undoLastMove($game, $database);
 
-header('Location: /../../index.php');
+header('Location: /../../main.php');

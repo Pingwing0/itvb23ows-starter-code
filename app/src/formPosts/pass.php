@@ -2,6 +2,7 @@
 
 require_once '../../vendor/autoload.php';
 
+use app\ai\CurlRequest;
 use app\Database;
 use app\Game;
 use app\Moves;
@@ -14,5 +15,12 @@ $game = $_SESSION['game'];
 $database = $_SESSION['database'];
 
 Moves::pass($game, $database);
+if ($game->getCurrentPlayer()->isAi()) {
+    $url = $_ENV["AI_API_HOST"];
+    $curlRequest = new CurlRequest($url);
+    $ai = $game->getCurrentPlayer()->getAi();
+    $ai->aiPlaysTurn($game, $database, $curlRequest);
+}
 
-header('Location: /../../index.php');
+
+header('Location: /../../main.php');

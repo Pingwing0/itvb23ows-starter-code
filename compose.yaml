@@ -9,6 +9,10 @@ services:
       MYSQL_USERNAME: "${MYSQL_USERNAME}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      AI_API_HOST: "${AI_API_HOST}"
+    links:
+      - ai
+      - mysql
   mysql:
     build:
       context: ./mysql
