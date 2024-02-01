@@ -9,6 +9,10 @@ services:
       MYSQL_USERNAME: "${MYSQL_USERNAME}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      AI_API_HOST: "${AI_API_HOST}"
+    links:
+      - ai
+      - mysql
   mysql:
     build:
       context: ./mysql
@@ -18,3 +22,7 @@ services:
       MYSQL_ROOT_HOST: "%"
     ports:
       - '3306:3306'
+  ai:
+    build: ./ai
+    ports:
+      - '5000:5000'

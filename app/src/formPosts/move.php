@@ -2,6 +2,7 @@
 
 require_once '../../vendor/autoload.php';
 
+use app\ai\CurlRequest;
 use app\Database;
 use app\Game;
 use app\Moves;
@@ -18,6 +19,13 @@ $toPosition = $_POST['toPosition'];
 
 Moves::movePiece($fromPosition, $toPosition, $game, $database);
 
+if ($game->getCurrentPlayer()->isAi()) {
+    $url = $_ENV["AI_API_HOST"];
+    $curlRequest = new CurlRequest($url);
+    $ai = $game->getCurrentPlayer()->getAi();
+    $ai->aiPlaysTurn($game, $database, $curlRequest);
+}
+
 unset($_SESSION['fromPosition']);
 
-header('Location: /../../index.php');
+header('Location: /../../main.php');

@@ -2,10 +2,14 @@
 
 namespace app;
 
+use app\ai\Ai;
+
 class Player
 {
     private array $hand;
     private int $playerNumber;
+
+    private Ai $ai;
 
     public function __construct(
         $playerNumber,
@@ -32,11 +36,30 @@ class Player
 
     public function removePieceFromHand($piece): void
     {
+        if (!array_key_exists($piece, $this->getHand())) {
+            // waarom is de ai zo dom T.T
+            return;
+        }
         if ($this->getHand()[$piece] == 1) {
             unset($this->hand[$piece]);
         } else {
             $this->hand[$piece]--;
         }
+    }
+
+    public function getAi(): Ai
+    {
+        return $this->ai;
+    }
+
+    public function setAi(Ai $ai): void
+    {
+        $this->ai = $ai;
+    }
+
+    public function isAi(): bool
+    {
+        return $this->getAi() !== null;
     }
 
 }

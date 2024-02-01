@@ -6,4 +6,4 @@ session_start();
 
 $_SESSION['fromPosition'] = $_POST['fromPosition'];
 
-header('Location: /../../index.php');
+header('Location: /../../main.php');

@@ -23,13 +23,19 @@ class Moves
 
         if (RulesPlay::positionIsLegalToPlay($toPosition, $playerNumber, $hand, $board, $piece)
             && !RulesPlay::tileNotInHand($hand, $piece)) {
-            $currentState = $game->getState();
-            $board->addPiece($piece, $playerNumber, $toPosition);
-            $player->removePieceFromHand($piece);
-            $game->switchTurn();
-            $database->addMoveToDatabase($game, $currentState,"play", toPosition: $toPosition);
+            self::executePlay($game, $board, $database, $piece, $player, $playerNumber, $toPosition);
         }
+    }
 
+    public static function executePlay(
+        $game, $board, $database, $piece, $player, $playerNumber, $toPosition
+    ): void
+    {
+        $currentState = $game->getState();
+        $board->addPiece($piece, $playerNumber, $toPosition);
+        $player->removePieceFromHand($piece);
+        $game->switchTurn();
+        $database->addMoveToDatabase($game, $currentState,"play", toPosition: $toPosition);
     }
 
     public static function movePiece(String $fromPosition, String $toPosition, Game $game, Database $database): void
@@ -66,7 +72,7 @@ class Moves
 
     }
 
-    private static function executeMove(Game $game, Board $board, Database $database, $fromPosition, $toPosition): void
+    public static function executeMove(Game $game, Board $board, Database $database, $fromPosition, $toPosition): void
     {
         $boardTiles = $board->getBoardTiles();
 
@@ -85,11 +91,15 @@ class Moves
         }
 
         if (self::playerIsAbleToPass($game->getBoard(), $game->getCurrentPlayer())) {
-            $currentState = $game->getState();
-            $database->addMoveToDatabase($game, $currentState, "pass");
-            $game->switchTurn();
+            self::executePass($game, $database);
         }
+    }
 
+    public static function executePass(Game $game, Database $database): void
+    {
+        $currentState = $game->getState();
+        $database->addMoveToDatabase($game, $currentState, "pass");
+        $game->switchTurn();
     }
 
     public static function undoLastMove(Game $game, Database $database): void
