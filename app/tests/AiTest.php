@@ -107,14 +107,29 @@ class AiTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    public function testWhenAiMovesThenPieceMovedToGetsAddedToTheBoard() {
+    public function testWhenAiMovesThenPieceMovedToThenBoardGetsAltered() {
+        $dbMock = $this->getMockBuilder(Database::class)
+            ->onlyMethods([
+                'getLastMoveId',
+                'addNewGameToDatabase',
+                'addMoveToDatabase'])
+            ->getMock();
+        $dbMock->method('getLastMoveId')->willReturn([0]);
+        $dbMock->method('addNewGameToDatabase');
+        $dbMock->method('addMoveToDatabase');
 
+        $fromPosition = '0,0';
+        $toPosition = '1,1';
+        $boardTiles = ['0,0' => [[0, 'Q']]];
+        $board = new Board($boardTiles);
+        $game = new Game();
+        $game->restart($dbMock, $board);
+        $ai = new Ai();
+        $ai->move($game, $dbMock, $fromPosition, $toPosition);
 
-    }
-
-    public function testWhenAiMovesThenPieceStartingPointGetsRemovedFromBoard() {
-
-
+        $result = $game->getBoard()->getBoardTiles();
+        $expectedResult = ['1,1' => [[0, 'Q']]];
+        self::assertEquals($expectedResult, $result);
     }
 
 
