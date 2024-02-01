@@ -5,15 +5,11 @@ use app\ai\CurlRequest;
 use app\Board;
 use app\Database;
 use app\Game;
-use app\Player;
 
 class AiTest extends PHPUnit\Framework\TestCase
 {
     //todo ai implementeren in game
-    // voor nu ai = player 2 (black)
     // stappen:
-    //  play
-    //  move
     //  pass
     // choose to play against ai html form, if yes change game player to ai player
     // when move done -> send to ai
@@ -132,5 +128,25 @@ class AiTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
+    public function testWhenAiPassesThenSwitchTurn() {
+        $dbMock = $this->getMockBuilder(Database::class)
+            ->onlyMethods([
+                'getLastMoveId',
+                'addNewGameToDatabase',
+                'addMoveToDatabase'])
+            ->getMock();
+        $dbMock->method('getLastMoveId')->willReturn([0]);
+        $dbMock->method('addNewGameToDatabase');
+        $dbMock->method('addMoveToDatabase');
+
+        $game = new Game();
+        $game->restart($dbMock);
+        $ai = new Ai();
+        $ai->pass($game, $dbMock);
+
+        $result = $game->getCurrentPlayer()->getPlayerNumber();
+        $expectedResult = 1;
+        self::assertEquals($expectedResult, $result);
+    }
 
 }
