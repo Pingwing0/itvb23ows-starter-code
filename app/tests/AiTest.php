@@ -3,6 +3,8 @@
 use app\ai\Ai;
 use app\ai\CurlRequest;
 use app\Board;
+use app\Database;
+use app\Game;
 use app\Player;
 
 class AiTest extends PHPUnit\Framework\TestCase
@@ -13,7 +15,7 @@ class AiTest extends PHPUnit\Framework\TestCase
     //  play
     //  move
     //  pass
-    // choose player?
+    // choose to play against ai html form, if yes change game player to ai player
     // when move done -> send to ai
     // ai -> do move
 
@@ -56,5 +58,54 @@ class AiTest extends PHPUnit\Framework\TestCase
         ];
         self::assertEquals($expectedResult, $result);
     }
+
+    public function testWhenAiPlaysThenPieceGetsAddedToBoard() {
+        $dbMock = $this->getMockBuilder(Database::class)
+            ->onlyMethods(['getLastMoveId', 'addNewGameToDatabase'])
+            ->getMock();
+        $dbMock->method('getLastMoveId')->willReturn([0]);
+
+        $pieceType = 'Q';
+        $position = '1,1';
+        $game = new Game();
+        $game->restart($dbMock);
+        $ai = new Ai();
+
+        $ai->play($game, $dbMock, $pieceType, $position);
+
+        $result = $game->getBoard()->getBoardTiles();
+        $expectedResult = ['1,1' => [[0, 'Q']]];
+        self::assertEquals($expectedResult, $result);
+    }
+
+    public function testWhenAiPlaysThenRemovesThatPieceFromHand() {
+        $dbMock = $this->getMockBuilder(Database::class)
+            ->onlyMethods(['getLastMoveId', 'addNewGameToDatabase'])
+            ->getMock();
+        $dbMock->method('getLastMoveId')->willReturn([0]);
+
+        $pieceType = 'Q';
+        $position = '1,1';
+        $game = new Game();
+        $game->restart($dbMock);
+        $ai = new Ai();
+
+        $ai->play($game, $dbMock, $pieceType, $position);
+
+        $result = $game->getPlayerOne()->getHand();
+        $expectedResult = ["B" => 2, "S" => 2, "A" => 3, "G" => 3];
+        self::assertEquals($expectedResult, $result);
+    }
+
+    public function testWhenAiMovesThenPieceMovedToGetsAddedToTheBoard() {
+
+
+    }
+
+    public function testWhenAiMovesThenPieceStartingPointGetsRemovedFromBoard() {
+
+
+    }
+
 
 }
