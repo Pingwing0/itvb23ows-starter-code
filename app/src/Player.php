@@ -36,6 +36,10 @@ class Player
 
     public function removePieceFromHand($piece): void
     {
+        if (!array_key_exists($piece, $this->getHand())) {
+            // waarom is de ai zo dom T.T
+            return;
+        }
         if ($this->getHand()[$piece] == 1) {
             unset($this->hand[$piece]);
         } else {
