@@ -91,11 +91,15 @@ class Moves
         }
 
         if (self::playerIsAbleToPass($game->getBoard(), $game->getCurrentPlayer())) {
-            $currentState = $game->getState();
-            $database->addMoveToDatabase($game, $currentState, "pass");
-            $game->switchTurn();
+            self::executePass($game, $database);
         }
+    }
 
+    public static function executePass(Game $game, Database $database): void
+    {
+        $currentState = $game->getState();
+        $database->addMoveToDatabase($game, $currentState, "pass");
+        $game->switchTurn();
     }
 
     public static function undoLastMove(Game $game, Database $database): void

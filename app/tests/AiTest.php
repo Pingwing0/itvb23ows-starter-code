@@ -9,8 +9,6 @@ use app\Game;
 class AiTest extends PHPUnit\Framework\TestCase
 {
     //todo ai implementeren in game
-    // stappen:
-    //  pass
     // choose to play against ai html form, if yes change game player to ai player
     // when move done -> send to ai
     // ai -> do move

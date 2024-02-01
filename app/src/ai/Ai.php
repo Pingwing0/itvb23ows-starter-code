@@ -47,6 +47,11 @@ class Ai
         Moves::executeMove($game, $board, $database, $fromPosition, $toPosition);
     }
 
+    public function pass(Game $game, Database $database): void
+    {
+        Moves::executePass($game, $database);
+    }
+
 
 
 }
