@@ -33,7 +33,8 @@ class Ai
             ];
     }
 
-    public function play(Game $game, Database $database, String $piece, String $position) {
+    public function play(Game $game, Database $database, String $piece, String $position): void
+    {
         $board = $game->getBoard();
         $player = $game->getCurrentPlayer();
         $playerNumber = $player->getPlayerNumber();
@@ -52,6 +53,29 @@ class Ai
         Moves::executePass($game, $database);
     }
 
+    public function aiPlaysTurn(Game $game, Database $database): void
+    {
+        $boardTiles = $game->getBoard()->getBoardTiles();
+        $handPlayerOne = $game->getPlayerOne()->getHand();
+        $handPlayerTwo = $game->getPlayerTwo()->getHand();
+        $currentPlayerNumber = $game->getCurrentPlayer()->getPlayerNumber();
 
+        $dataToSend = $this->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentPlayerNumber);
+        $response = $this->postToApi($dataToSend);
+        $move = $response[0];
+        if ($move == "play") {
+            $piece = $response[1];
+            $position = $response[2];
+            $this->play($game, $database, $piece, $position);
+        }
+        if ($move == "move") {
+            $fromPosition = $response[1];
+            $toPosition = $response[2];
+            $this->move($game, $database, $fromPosition, $toPosition);
+        }
+        if ($move == "pass") {
+            $this->pass($game, $database);
+        }
+    }
 
 }
