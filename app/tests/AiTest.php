@@ -37,14 +37,13 @@ class AiTest extends PHPUnit\Framework\TestCase
 
     public function testWhenPreparingToSendApiDataThenDataToSendContainsPlayerHandsAndBoard() {
         $boardTiles = ['0,0' => [[0, "Q"]]];
-        $board = new Board($boardTiles);
-        $playerOne = new Player(0, ['S' => 1]);
-        $playerTwo = new Player(1, ["Q" => 1, "B" => 2]);
-        $currentPlayer = $playerOne;
+        $handPlayerOne = ['S' => 1];
+        $handPlayerTwo = ["Q" => 1, "B" => 2];
+        $currentPlayerNumber = 0;
 
         $ai = new Ai();
 
-        $result = $ai->getDataToSend($board, $playerOne, $playerTwo, $currentPlayer);
+        $result = $ai->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentPlayerNumber);
         $expectedResult = [
             "move_number" => 0,
             "hand" => [
