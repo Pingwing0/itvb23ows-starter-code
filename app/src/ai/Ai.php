@@ -2,6 +2,10 @@
 
 namespace app\ai;
 
+use app\Database;
+use app\Game;
+use app\Moves;
+
 class Ai
 {
     public function postToApi(
@@ -27,6 +31,14 @@ class Ai
             "hand" => [$playerOne, $playerTwo],
             "board" => $boardTiles
             ];
+    }
+
+    public function play(Game $game, Database $database, String $piece, String $position) {
+        $board = $game->getBoard();
+        $player = $game->getCurrentPlayer();
+        $playerNumber = $player->getPlayerNumber();
+
+        Moves::executePlay($game, $board, $database, $piece, $player, $playerNumber, $position);
     }
 
 

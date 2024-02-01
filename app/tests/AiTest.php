@@ -61,9 +61,14 @@ class AiTest extends PHPUnit\Framework\TestCase
 
     public function testWhenAiPlaysThenPieceGetsAddedToBoard() {
         $dbMock = $this->getMockBuilder(Database::class)
-            ->onlyMethods(['getLastMoveId', 'addNewGameToDatabase'])
+            ->onlyMethods([
+                'getLastMoveId',
+                'addNewGameToDatabase',
+                'addMoveToDatabase'])
             ->getMock();
         $dbMock->method('getLastMoveId')->willReturn([0]);
+        $dbMock->method('addNewGameToDatabase');
+        $dbMock->method('addMoveToDatabase');
 
         $pieceType = 'Q';
         $position = '1,1';
@@ -80,9 +85,14 @@ class AiTest extends PHPUnit\Framework\TestCase
 
     public function testWhenAiPlaysThenRemovesThatPieceFromHand() {
         $dbMock = $this->getMockBuilder(Database::class)
-            ->onlyMethods(['getLastMoveId', 'addNewGameToDatabase'])
+            ->onlyMethods([
+                'getLastMoveId',
+                'addNewGameToDatabase',
+                'addMoveToDatabase'])
             ->getMock();
         $dbMock->method('getLastMoveId')->willReturn([0]);
+        $dbMock->method('addNewGameToDatabase');
+        $dbMock->method('addMoveToDatabase');
 
         $pieceType = 'Q';
         $position = '1,1';
