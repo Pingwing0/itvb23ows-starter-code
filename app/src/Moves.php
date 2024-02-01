@@ -72,7 +72,7 @@ class Moves
 
     }
 
-    private static function executeMove(Game $game, Board $board, Database $database, $fromPosition, $toPosition): void
+    public static function executeMove(Game $game, Board $board, Database $database, $fromPosition, $toPosition): void
     {
         $boardTiles = $board->getBoardTiles();
 

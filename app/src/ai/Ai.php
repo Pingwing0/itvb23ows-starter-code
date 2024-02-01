@@ -41,6 +41,12 @@ class Ai
         Moves::executePlay($game, $board, $database, $piece, $player, $playerNumber, $position);
     }
 
+    public function move(Game $game, Database $database, String $fromPosition, String $toPosition): void
+    {
+        $board = $game->getBoard();
+        Moves::executeMove($game, $board, $database, $fromPosition, $toPosition);
+    }
+
 
 
 }
