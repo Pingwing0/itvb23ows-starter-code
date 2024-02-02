@@ -124,7 +124,7 @@ class Game
         $this->setPlayerOne($playerOne);
         $this->setPlayerTwo($playerTwo);
         $this->setCurrentPlayer($this->getPlayerOne());
-        $this->setCurrentMoveNumber(1);
+        $this->setCurrentMoveNumber(0);
         $lastMoveId = $database->getLastMoveId();
         if ($lastMoveId) {
             $this->lastMoveId = $lastMoveId[0];
