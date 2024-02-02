@@ -25,10 +25,10 @@ class Ai
         return json_decode($json_response);
     }
 
-    public function getDataToSend(array $boardTiles, array $playerOne, array $playerTwo, int $currentPlayer): array
+    public function getDataToSend(array $boardTiles, array $handPlayerOne, array $handPlayerTwo, int $currentMove): array
     {
-        return ["move_number" => $currentPlayer,
-            "hand" => [$playerOne, $playerTwo],
+        return ["move_number" => $currentMove,
+            "hand" => [$handPlayerOne, $handPlayerTwo],
             "board" => $boardTiles
             ];
     }
@@ -58,9 +58,9 @@ class Ai
         $boardTiles = $game->getBoard()->getBoardTiles();
         $handPlayerOne = $game->getPlayerOne()->getHand();
         $handPlayerTwo = $game->getPlayerTwo()->getHand();
-        $currentPlayerNumber = $game->getCurrentPlayer()->getPlayerNumber();
+        $currentMoveNumber = $game->getCurrentMoveNumber();
 
-        $dataToSend = $this->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentPlayerNumber);
+        $dataToSend = $this->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentMoveNumber);
         $response = $this->postToApi($dataToSend, $curlRequest);
 
         $move = $response[0];

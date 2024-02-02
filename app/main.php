@@ -150,10 +150,11 @@
         <div class="turn">
             Turn: <?php
             if ($currentPlayer->getPlayerNumber() == 0) {
-                echo "White";
+                echo "White turn ";
             } else {
-                echo "Black";
-            } ?>
+                echo "Black turn ";
+            }
+            echo $game->getCurrentMoveNumber()?>
         </div>
 
         <form method="post" action="src/formPosts/play.php">

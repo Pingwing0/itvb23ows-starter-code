@@ -28,13 +28,14 @@ class Moves
     }
 
     public static function executePlay(
-        $game, $board, $database, $piece, $player, $playerNumber, $toPosition
+        Game $game, Board $board, Database $database, $piece, $player, $playerNumber, $toPosition
     ): void
     {
         $currentState = $game->getState();
         $board->addPiece($piece, $playerNumber, $toPosition);
         $player->removePieceFromHand($piece);
         $game->switchTurn();
+        $game->currentMoveNumberPlusOne();
         $database->addMoveToDatabase($game, $currentState,"play", toPosition: $toPosition);
     }
 
@@ -82,6 +83,7 @@ class Moves
             $game, $currentState, "move", toPosition: $toPosition, fromPosition: $fromPosition
         );
         $game->switchTurn();
+        $game->currentMoveNumberPlusOne();
     }
 
     public static function pass(Game $game, Database $database): void
@@ -100,6 +102,7 @@ class Moves
         $currentState = $game->getState();
         $database->addMoveToDatabase($game, $currentState, "pass");
         $game->switchTurn();
+        $game->currentMoveNumberPlusOne();
     }
 
     public static function undoLastMove(Game $game, Database $database): void
@@ -115,6 +118,7 @@ class Moves
             $game->setLastMoveId($result['previous_id']);
             $game->setState($result['state']);
             $game->switchTurn();
+            $game->currentMoveNumberMinusOne();
         }
 
     }
