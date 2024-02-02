@@ -58,9 +58,9 @@ class Ai
         $boardTiles = $game->getBoard()->getBoardTiles();
         $handPlayerOne = $game->getPlayerOne()->getHand();
         $handPlayerTwo = $game->getPlayerTwo()->getHand();
-        $currentPlayerNumber = $game->getCurrentPlayer()->getPlayerNumber();
+        $currentMoveNumber = $game->getCurrentMoveNumber();
 
-        $dataToSend = $this->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentPlayerNumber);
+        $dataToSend = $this->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentMoveNumber);
         $response = $this->postToApi($dataToSend, $curlRequest);
 
         $move = $response[0];
