@@ -31,13 +31,13 @@ class AiTest extends PHPUnit\Framework\TestCase
         $boardTiles = ['0,0' => [[0, "Q"]]];
         $handPlayerOne = ['S' => 1];
         $handPlayerTwo = ["Q" => 1, "B" => 2];
-        $currentPlayerNumber = 0;
+        $currentMoveNumber = 3;
 
         $ai = new Ai();
 
-        $result = $ai->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentPlayerNumber);
+        $result = $ai->getDataToSend($boardTiles, $handPlayerOne, $handPlayerTwo, $currentMoveNumber);
         $expectedResult = [
-            "move_number" => 0,
+            "move_number" => 3,
             "hand" => [
                 ['S' => 1],
                 ["Q" => 1, "B" => 2]

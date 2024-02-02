@@ -25,10 +25,10 @@ class Ai
         return json_decode($json_response);
     }
 
-    public function getDataToSend(array $boardTiles, array $playerOne, array $playerTwo, int $currentPlayer): array
+    public function getDataToSend(array $boardTiles, array $handPlayerOne, array $handPlayerTwo, int $currentMove): array
     {
-        return ["move_number" => $currentPlayer,
-            "hand" => [$playerOne, $playerTwo],
+        return ["move_number" => $currentMove,
+            "hand" => [$handPlayerOne, $handPlayerTwo],
             "board" => $boardTiles
             ];
     }
