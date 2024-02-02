@@ -143,4 +143,25 @@ class AiTest extends PHPUnit\Framework\TestCase
         self::assertEquals($expectedResult, $result);
     }
 
+    public function testWhenAiPlaysMoveThenGameCurrentMoveNumberReturnsPlusOne() {
+        $dbMock = $this->getMockBuilder(Database::class)
+            ->onlyMethods([
+                'getLastMoveId',
+                'addNewGameToDatabase',
+                'addMoveToDatabase'])
+            ->getMock();
+        $dbMock->method('getLastMoveId')->willReturn([0]);
+        $dbMock->method('addNewGameToDatabase');
+        $dbMock->method('addMoveToDatabase');
+
+        $game = new Game();
+        $game->restart($dbMock);
+        $ai = new Ai();
+        $ai->pass($game, $dbMock);
+
+        $result = $game->getCurrentPlayer()->getCurrentMoveNumber();
+        $expectedResult = 1;
+        self::assertEquals($expectedResult, $result);
+    }
+
 }
