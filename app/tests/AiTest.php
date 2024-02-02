@@ -160,7 +160,7 @@ class AiTest extends PHPUnit\Framework\TestCase
         $ai->pass($game, $dbMock);
 
         $result = $game->getCurrentMoveNumber();
-        $expectedResult = 1;
+        $expectedResult = 2;
         self::assertEquals($expectedResult, $result);
     }
 

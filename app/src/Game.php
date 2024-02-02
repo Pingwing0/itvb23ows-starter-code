@@ -87,21 +87,21 @@ class Game
         return $this->currentMoveNumber;
     }
 
-    public function setCurrentMoveNumber(bool $currentMoveNumber): void
+    public function setCurrentMoveNumber(int $currentMoveNumber): void
     {
         $this->currentMoveNumber = $currentMoveNumber;
     }
 
     public function currentMoveNumberPlusOne(): void
     {
-        $number = $this->getCurrentMoveNumber() + 1;
-        $this->setCurrentMoveNumber($number);
+        $number = $this->getCurrentMoveNumber();
+        $this->setCurrentMoveNumber($number + 1);
     }
 
     public function currentMoveNumberMinusOne(): void
     {
-        $number = $this->getCurrentMoveNumber() - 1;
-        $this->setCurrentMoveNumber($number);
+        $number = $this->getCurrentMoveNumber();
+        $this->setCurrentMoveNumber($number - 1);
     }
 
     public function switchTurn(): void
