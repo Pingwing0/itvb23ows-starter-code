@@ -10,6 +10,7 @@ class Game
     private int $gameId;
     private int $lastMoveId;
     private bool $gameIsStopped;
+    private int $currentMoveNumber;
 
     public function getGameIsStopped(): bool
     {
@@ -81,6 +82,28 @@ class Game
         $this->lastMoveId = $lastMoveId;
     }
 
+    public function getCurrentMoveNumber(): int
+    {
+        return $this->currentMoveNumber;
+    }
+
+    public function setCurrentMoveNumber(bool $currentMoveNumber): void
+    {
+        $this->currentMoveNumber = $currentMoveNumber;
+    }
+
+    public function currentMoveNumberPlusOne(): void
+    {
+        $number = $this->getCurrentMoveNumber() + 1;
+        $this->setCurrentMoveNumber($number);
+    }
+
+    public function currentMoveNumberMinusOne(): void
+    {
+        $number = $this->getCurrentMoveNumber() - 1;
+        $this->setCurrentMoveNumber($number);
+    }
+
     public function switchTurn(): void
     {
         if ($this->getCurrentPlayer() === $this->getPlayerOne() ) {
@@ -101,6 +124,7 @@ class Game
         $this->setPlayerOne($playerOne);
         $this->setPlayerTwo($playerTwo);
         $this->setCurrentPlayer($this->getPlayerOne());
+        $this->setCurrentMoveNumber(0);
         $lastMoveId = $database->getLastMoveId();
         if ($lastMoveId) {
             $this->lastMoveId = $lastMoveId[0];
